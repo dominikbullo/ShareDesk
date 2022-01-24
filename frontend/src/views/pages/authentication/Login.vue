@@ -5,7 +5,7 @@
       <!-- Login v1 -->
       <b-card class="mb-0">
         <b-link class="brand-logo">
-          <vuexy-logo />
+          <vuexy-logo/>
 
           <h2 class="brand-text text-primary ml-1">
             Vuexy
@@ -132,25 +132,25 @@
             href="javascript:void(0)"
             variant="facebook"
           >
-            <feather-icon icon="FacebookIcon" />
+            <feather-icon icon="FacebookIcon"/>
           </b-button>
           <b-button
             href="javascript:void(0)"
             variant="twitter"
           >
-            <feather-icon icon="TwitterIcon" />
+            <feather-icon icon="TwitterIcon"/>
           </b-button>
           <b-button
             href="javascript:void(0)"
             variant="google"
           >
-            <feather-icon icon="MailIcon" />
+            <feather-icon icon="MailIcon"/>
           </b-button>
           <b-button
             href="javascript:void(0)"
             variant="github"
           >
-            <feather-icon icon="GithubIcon" />
+            <feather-icon icon="GithubIcon"/>
           </b-button>
         </div>
       </b-card>
@@ -162,7 +162,17 @@
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
-  BButton, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
+  BButton,
+  BForm,
+  BFormInput,
+  BFormGroup,
+  BCard,
+  BLink,
+  BCardTitle,
+  BCardText,
+  BInputGroup,
+  BInputGroupAppend,
+  BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
 import { required, email } from '@validations'
@@ -173,6 +183,9 @@ import store from '@/store/index'
 import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
+import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 
 export default {
   components: {
@@ -193,7 +206,7 @@ export default {
     ValidationObserver,
   },
   mixins: [togglePasswordVisibility],
-  data() {
+  data () {
     return {
       status: '',
       password: 'admin',
@@ -205,10 +218,10 @@ export default {
     }
   },
   computed: {
-    passwordToggleIcon() {
+    passwordToggleIcon () {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
-    imgUrl() {
+    imgUrl () {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.sideImg = require('@/assets/images/pages/login-v2-dark.svg')
@@ -218,40 +231,41 @@ export default {
     },
   },
   methods: {
-    login() {
+    login () {
       this.$refs.loginForm.validate().then(success => {
         if (success) {
           useJwt.login({
             email: this.userEmail,
             password: this.password,
-          })
-            .then(response => {
-              console.log(response)
-              const { userData } = response.data
-              useJwt.setToken(response.data.access)
-              useJwt.setRefreshToken(response.data.refresh)
-              localStorage.setItem('userData', JSON.stringify(userData))
-              this.$ability.update(userData.ability)
+          }).then(response => {
+            console.log(response)
+            useJwt.setToken(response.data.access)
+            useJwt.setRefreshToken(response.data.refresh)
 
-              // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-              this.$router.replace(getHomeRouteForLoggedInUser(userData.role))
-                .then(() => {
+            const decoded = jwt_decode(response.data.refresh)
+            this.$http.get(`/users/${decoded.user_id}`).then(res => {
+                const userData = res.data
+                localStorage.setItem('userData', JSON.stringify(userData))
+                // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
+                // this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
+                this.$router.replace('/').then(() => {
                   this.$toast({
                     component: ToastificationContent,
                     position: 'top-right',
                     props: {
-                      title: `Welcome ${userData.fullName || userData.username}`,
+                      title: `Welcome ${userData.full_name || userData.email}`,
                       icon: 'CoffeeIcon',
                       variant: 'success',
                       text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
                     },
                   })
                 })
-            })
-            .catch(error => {
-              console.error(error)
-              this.$refs.loginForm.setErrors(error.response.data.error)
-            })
+              },
+            )
+          }).catch(error => {
+            console.error(error)
+            this.$refs.loginForm.setErrors(error.response.data.error)
+          })
         }
       })
     },

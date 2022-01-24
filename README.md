@@ -18,6 +18,10 @@ If all works well, you should be able to create an admin account with:
 
 `docker-compose up --build`
 
+### DB migrations
+`docker-compose run --rm backend python manage.py makemigrations`
+`docker-compose run --rm backend python manage.py migrate`
+
 ## Assignment
 1.	Analýza požiadaviek na systém
    - 1.1.	Používatelia rôznych typov (zamestnanec, administrátor)
