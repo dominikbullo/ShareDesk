@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from apps.users.models import User
@@ -17,7 +18,7 @@ from apps.users.serializers import UserSerializer, UserWriteSerializer
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:
@@ -59,8 +60,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(methods=['POST'], detail=False)
     def register(self, request):
-        last_name = request.data.get('last_name', None)
-        first_name = request.data.get('first_name', None)
+        last_name = request.data.get('last_name', "")
+        first_name = request.data.get('first_name', "")
         email = request.data.get('email', None)
         password = request.data.get('password', None)
 
@@ -71,8 +72,6 @@ class UserViewSet(viewsets.ModelViewSet):
         user = User.objects.create(
             email=email,
             password=password,
-            last_name=last_name,
-            first_name=first_name,
             is_admin=False,
         )
         return Response(
