@@ -26,11 +26,10 @@ If all works well, you should be able to create an admin account with:
 
 ## Assignment
 
-1. Analýza požiadaviek na systém
+1. Analýza požiadaviek na systém.
 
 - 1.1. Používatelia rôznych typov (zamestnanec, administrátor)
-- 1.2. Registrácia pomocou exspirujúceho tokenu. (administrátor odošle email s registračnou linkou zamestnancom)
-  Prihlásenie/Registrácia používateľov
+- 1.2. Prihlásenie/Registrácia používateľov
 - 1.3. Rozdeľovanie zamestnancov do tímov
 - 1.4. Správa zdieľaných pracovných miest s vizuálnou reprezentáciou miest a dispozícií priestorov.
 - 1.5. Priraďovanie miest tímom ale aj jednotlivým zamestnancom (majú nárok na stále prac. miesto)
