@@ -14,6 +14,10 @@ If all works well, you should be able to create an admin account with:
 `docker-compose run backend python manage.py createsuperuser`
 
 
+###After adding packpage to pipenv  easiest way
+
+`docker-compose up --build`
+
 ##Assignment
 1.	Analýza požiadaviek na systém
    - 1.1.	Používatelia rôznych typov (zamestnanec, administrátor)

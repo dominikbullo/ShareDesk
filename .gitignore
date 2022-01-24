@@ -189,3 +189,5 @@ media/
 # Venv
 venv
 /.env
+**/requirements.txt
+**/requirements_dev.txt

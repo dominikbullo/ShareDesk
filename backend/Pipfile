@@ -46,6 +46,7 @@ ipython_genutils = "*"
 Pillow = "*"
 Pygments = "*"
 Werkzeug = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
