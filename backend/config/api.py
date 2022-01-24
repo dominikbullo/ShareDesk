@@ -5,6 +5,8 @@ from core import router as custom_router
 
 from apps.users.api.urls import router as users_router
 from apps.teams.api.urls import router as teams_router
+from apps.workspaces.api.urls import router as workspaces_router
+from apps.reservations.api.urls import router as reservations_router
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -17,6 +19,8 @@ router = custom_router.DefaultRouter()
 router.trailing_slash = '/?'
 router.extend(users_router)
 router.extend(teams_router)
+router.extend(workspaces_router)
+router.extend(reservations_router)
 
 urlpatterns = [
     path("token/", TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -26,4 +30,6 @@ urlpatterns = [
     path("", include(router.urls)),
     path("", include("apps.users.api.urls")),
     path("", include("apps.teams.api.urls")),
+    path("", include("apps.workspaces.api.urls")),
+    path("", include("apps.reservations.api.urls")),
 ]
