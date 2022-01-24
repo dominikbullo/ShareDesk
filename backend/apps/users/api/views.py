@@ -1,4 +1,3 @@
-import requests
 from uuid import uuid4
 
 from django.contrib.auth import authenticate, login
@@ -8,17 +7,16 @@ from django.template.loader import render_to_string
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from apps.users.models import User
-from apps.users.serializers import UserSerializer, UserWriteSerializer
+from apps.users.api.serializers import UserSerializer, UserWriteSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = []
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:

@@ -15,7 +15,6 @@ ROOT_DIR = environ.Path(__file__) - 2
 # Load operating system environment variables and then prepare to use them
 env = environ.Env()
 
-
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
@@ -36,6 +35,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'apps.users',
+    'apps.teams',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -175,7 +175,6 @@ TEMPLATES = [
     },
 ]
 
-
 # PASSWORD STORAGE SETTINGS
 # ------------------------------------------------------------------------------
 # See https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
@@ -207,7 +206,6 @@ AUTHENTICATION_BACKENDS = [
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = 'users.User'
-
 
 # DJANGO REST FRAMEWORK
 # ------------------------------------------------------------------------------
