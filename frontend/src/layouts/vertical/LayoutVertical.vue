@@ -18,7 +18,7 @@
 import LayoutVertical from '@core/layouts/layout-vertical/LayoutVertical.vue'
 // import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer.vue'
 // import { $themeConfig } from '@themeConfig'
-import Navbar from '../components/Navbar.vue'
+import Navbar from '../components/app-navbar/Navbar.vue'
 
 export default {
   components: {
