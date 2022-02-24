@@ -5,9 +5,8 @@
       <!-- Register -->
       <b-card class="mb-0">
         <b-link class="brand-logo">
-          <vuexy-logo />
           <h2 class="brand-text text-primary ml-1">
-            Vuexy
+            ShareDesk
           </h2>
         </b-link>
 
@@ -112,7 +111,7 @@
         </b-card-text>
 
       </b-card>
-    <!-- /Register -->
+      <!-- /Register -->
     </div>
   </div>
 
@@ -152,7 +151,7 @@ export default {
     ValidationObserver,
   },
   mixins: [togglePasswordVisibility],
-  data() {
+  data () {
     return {
       regEmail: '',
       password: '',
@@ -164,34 +163,32 @@ export default {
     }
   },
   computed: {
-    passwordToggleIcon() {
+    passwordToggleIcon () {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
   },
   methods: {
-    register() {
+    register () {
       this.$refs.registerForm.validate().then(success => {
         if (success) {
           useJwt.register({
             email: this.regEmail,
             password: this.password,
+          }).then(() => {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Form Submitted',
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+            console.log('register suscess')
+            this.$router.push('/')
+          }).catch(error => {
+            console.log('error login')
+            this.$refs.registerForm.setErrors(error.response.data.error)
           })
-            .then(() => {
-              this.$toast({
-                component: ToastificationContent,
-                props: {
-                  title: 'Form Submitted',
-                  icon: 'EditIcon',
-                  variant: 'success',
-                },
-              })
-              console.log('register suscess')
-              this.$router.push('/')
-            })
-            .catch(error => {
-              console.log('error login')
-              this.$refs.registerForm.setErrors(error.response.data.error)
-            })
         }
       })
     },

@@ -5,19 +5,14 @@
       <!-- Login v1 -->
       <b-card class="mb-0">
         <b-link class="brand-logo">
-          <vuexy-logo/>
-
           <h2 class="brand-text text-primary ml-1">
-            Vuexy
+            ShareDesk
           </h2>
         </b-link>
 
         <b-card-title class="mb-1">
-          Welcome to ShareDesk! 👋
+          Vitajte v aplikacií ShareDesk! 👋
         </b-card-title>
-        <b-card-text class="mb-2">
-          Please sign-in to your account and start the adventure
-        </b-card-text>
 
         <!-- form -->
         <validation-observer
@@ -115,7 +110,7 @@
 
         <b-card-text class="text-center mt-2">
           <span>New on our platform? </span>
-          <b-link :to="{name:'auth-register-v1'}">
+          <b-link :to="{name:'auth-register'}">
             <span>Create an account</span>
           </b-link>
         </b-card-text>
