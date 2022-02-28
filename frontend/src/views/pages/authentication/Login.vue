@@ -172,8 +172,8 @@ export default {
   data () {
     return {
       status: '',
-      password: 'admin',
-      userEmail: 'a@b.sk',
+      password: 'testing321',
+      userEmail: 'dominik@bullo.sk',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rules
       required,
