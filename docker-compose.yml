@@ -72,3 +72,6 @@ services:
       - postgres
     volumes:
       - /tmp/backups/:/backups/
+    links:
+      - postgres
+    env_file: .env
