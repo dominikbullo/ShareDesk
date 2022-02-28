@@ -1,7 +1,8 @@
 version: '3.3'
 
 volumes:
-  share_desk_data: { }
+  sharedesk_data: { }
+  pgadmin_data: { }
 
 services:
   backend:
@@ -28,8 +29,10 @@ services:
   postgres:
     image: postgres:alpine
     volumes:
-      - share_desk_data:/var/lib/postgresql/data
+      - sharedesk_data:/var/lib/postgresql/data
     env_file: .env
+    ports:
+      - ${DB_PORT}:${DB_PORT}
 
 
   mailhog:
@@ -39,6 +42,15 @@ services:
     logging:
       driver: none
 
+  # pgadmin for managing postgis db (runs at localhost:5050)
+  # To add the above postgres server to pgadmin, use hostname as defined by docker: 'postgres'
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    env_file: .env
 
   nginx:
     image: nginx:alpine
