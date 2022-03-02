@@ -5,6 +5,8 @@ Diploma thesis
 
 ## Development
 
+### Installation
+
 Install [Docker](https://docs.docker.com/install/) and [Docker-Compose](https://docs.docker.com/compose/). Start your
 virtual machines with the following shell command:
 
@@ -14,15 +16,61 @@ If all works well, you should be able to create an admin account with:
 
 `docker-compose run --rm backend python manage.py createsuperuser`
 
-### After adding packpage to pipenv  easiest way
+#### Adding package to pipenv
 
-`docker-compose up --build`
+After adding, run `docker-compose up --build`
 
-### DB migrations
+### Database
+
+#### Migrations
 
 `docker-compose run --rm backend python manage.py makemigrations`
 
 `docker-compose run --rm backend python manage.py migrate`
+
+#### Manual backup
+
+From dir where you want to back up file, ideally `/tmp/backups` to match docker-compose
+
+`docker run --rm -v "$PWD:/backups" -u "$(id -u):$(id -g)" -e POSTGRES_HOST=host.docker.internal -e POSTGRES_DB=share_desk -e POSTGRES_USER=postgresuser -e POSTGRES_PASSWORD=mysecretpass  prodrigestivill/postgres-backup-local /backup.sh`
+
+## Deploy app
+
+For production you'll need to fill out `.env` file and use
+`docker-compose-prod.yml` file:
+
+    $ docker-compose -f docker-compose-prod.yml up --build -d
+
+The app will then be available at http://localhost:8000
+
+## Built With
+
+* [Docker](https://www.docker.com/)
+* [12 Factor](http://12factor.net/)
+* Template: [Vuexy](https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/landing/)
+* Frontend: [Vue.js](https://vuejs.org/) + [Vue Cli](https://cli.vuejs.org/)
+  + [PWA](https://developers.google.com/web/progressive-web-apps/)
+* Backend: [Django](https://www.djangoproject.com/)
+* Database: [PostgreSQL](https://ww.postgresql.org/)
+* Server: [Nginx](https://nginx.org/)
+* API:  [Django REST Framework](https://www.django-rest-framework.org/)
+
+## Versioning
+
+I use [Conventional versioning](https://www.conventionalcommits.org/en/) for versioning style with combination
+of [standard version utility](https://github.com/conventional-changelog/standard-version) . For the versions available,
+see the
+[Releases on this repository](https://github.com/dominikbullo/ShareDesk/releases) or if you need more details you could
+check you
+[Tags on this repository](https://github.com/dominikbullo/ShareDesk/tags).
+
+## Authors
+
+* **Dominik Bullo** - *Initial work* - [bullo.sk](http://bullo.sk/)
+
+## License
+
+This project is licensed under the GPL License - see the [LICENSE](LICENSE) file for details
 
 ## Assignment
 

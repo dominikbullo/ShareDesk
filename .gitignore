@@ -191,3 +191,4 @@ venv
 /.env
 **/requirements.txt
 **/requirements_dev.txt
+/tmp/
