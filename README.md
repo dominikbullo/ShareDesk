@@ -51,7 +51,7 @@ The app will then be available at http://localhost:8000
 * Frontend: [Vue.js](https://vuejs.org/) + [Vue Cli](https://cli.vuejs.org/)
   + [PWA](https://developers.google.com/web/progressive-web-apps/)
 * Backend: [Django](https://www.djangoproject.com/)
-* Database: [PostgreSQL](https://ww.postgresql.org/)
+* Database: [PostgreSQL](https://www.postgresql.org/)
 * Server: [Nginx](https://nginx.org/)
 * API:  [Django REST Framework](https://www.django-rest-framework.org/)
 
