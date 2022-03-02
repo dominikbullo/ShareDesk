@@ -15,7 +15,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  scrollBehavior () {
+  scrollBehavior() {
     return { x: 0, y: 0 }
   },
   routes: [
@@ -43,7 +43,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, _, next) => {
   const isLoggedIn = isUserLoggedIn()
-  console.log(isLoggedIn)
+  console.log(`Is logged in? ${isLoggedIn ? 'yes' : 'no'}`)
 
   if (!canNavigate(to)) {
     // Redirect to login if not logged in
@@ -56,8 +56,8 @@ router.beforeEach((to, _, next) => {
 
   // Redirect if logged in
   // if (to.meta.redirectIfLoggedIn && isLoggedIn) {
-  // const userData = getUserData()
-  // next(getHomeRouteForLoggedInUser(userData ? userData.role : null))
+  //   const userData = getUserData()
+  //   next(getHomeRouteForLoggedInUser(userData ? userData.role : null))
   // }
 
   return next()

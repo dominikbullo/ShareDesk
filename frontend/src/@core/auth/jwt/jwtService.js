@@ -42,7 +42,7 @@ export default class JwtService {
         const originalRequest = config
 
         // if (status === 401) {
-        if (response && response.status === 401) {
+        if (response && response.status === 404) {
           if (!this.isAlreadyFetchingAccessToken) {
             this.isAlreadyFetchingAccessToken = true
             this.refreshToken().then(r => {
@@ -72,7 +72,9 @@ export default class JwtService {
   }
 
   onAccessTokenFetched(accessToken) {
-    this.subscribers = this.subscribers.filter(callback => callback(accessToken))
+    this.subscribers = this.subscribers.filter(
+      callback => callback(accessToken),
+    )
   }
 
   addSubscriber(callback) {
@@ -105,7 +107,7 @@ export default class JwtService {
 
   refreshToken() {
     return this.axiosIns.post(this.jwtConfig.refreshEndpoint, {
-      refreshToken: this.getRefreshToken(),
+      refresh: this.getRefreshToken(),
     })
   }
 }
