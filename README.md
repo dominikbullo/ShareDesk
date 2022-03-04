@@ -74,6 +74,8 @@ see the
 check you
 [Tags on this repository](https://github.com/dominikbullo/ShareDesk/tags).
 
+You could also see all changes in [CHANGELOG](CHANGELOG) file with detail changes.
+
 ### New version
 
 Must have a node installed and then run command: `standard-version`
