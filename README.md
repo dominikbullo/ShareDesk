@@ -28,6 +28,16 @@ After adding, run `docker-compose up --build`
 
 `docker-compose run --rm backend python manage.py migrate`
 
+#### Reset migrations
+
+https://simpleisbetterthancomplex.com/tutorial/2016/07/26/how-to-reset-migrations.html
+
+1. Drop cascade
+2. Remove migrations from folder
+3. `docker-compose run --rm backend python manage.py makemigrations <app_name>`
+4. `docker-compose run --rm backend python manage.py migrate --fake <app_name> zero`
+5. `docker-compose run --rm backend python manage.py migrate <app_name>`
+
 #### Manual backup
 
 From dir where you want to back up file, ideally `/tmp/backups` to match docker-compose
