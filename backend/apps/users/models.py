@@ -4,15 +4,17 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 from django.db import models
 from django.utils import timezone
 
+from core.choices import UserTypeChoices
+
 
 class UserManager(BaseUserManager):
     def _create_user(
-            self,
-            email,
-            password,
-            is_staff,
-            is_superuser,
-            **extra_fields):
+        self,
+        email,
+        password,
+        is_staff,
+        is_superuser,
+        **extra_fields):
         """
         Creates and saves a User with the given username, email and password.
         """
@@ -72,6 +74,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name='Registered at',
         auto_now_add=timezone.now)
 
+    user_role = models.CharField(max_length=10, choices=UserTypeChoices.choices, default=UserTypeChoices.EMPLOYEE)
+
     # Fields settings
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
@@ -85,11 +89,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
+
     full_name.fget.short_description = 'Full name'
 
     @property
     def short_name(self):
         return f'{self.last_name} {self.first_name[0]}.'
+
     short_name.fget.short_description = 'Short name'
 
     def get_full_name(self):
