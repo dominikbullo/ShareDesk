@@ -51,7 +51,7 @@ For production you'll need to fill out `.env` file and use
 
     $ docker-compose -f docker-compose-prod.yml up --build -d
 
-The app will then be available at http://localhost:8000
+The app will then be available at http://localhost
 
 ## Built With
 
@@ -73,6 +73,10 @@ see the
 [Releases on this repository](https://github.com/dominikbullo/ShareDesk/releases) or if you need more details you could
 check you
 [Tags on this repository](https://github.com/dominikbullo/ShareDesk/tags).
+
+### New version
+
+Must have a node installed and then run command: `standard-version`
 
 ## Authors
 
