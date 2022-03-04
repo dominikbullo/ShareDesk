@@ -1,7 +1,22 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.0.2](https://github.com/dominikbullo/ShareDesk/compare/v0.0.1...v0.0.2) (2022-03-04)
+
+
+### Features
+
+* add user roles ([34e2553](https://github.com/dominikbullo/ShareDesk/commit/34e255310915ac435b35f185f6189f5dfbba3fdb))
+* **backend:** add spot to spot reservations ([3d4bc2c](https://github.com/dominikbullo/ShareDesk/commit/3d4bc2ce0b497c9ffd1ac08bc1f1bfe7da14590b))
+* **backend:** spot issue added spot ([4593050](https://github.com/dominikbullo/ShareDesk/commit/4593050f331ceb8d5d42a1348564ce61a651de8e))
+* db backup links and env variables ([aa3ba10](https://github.com/dominikbullo/ShareDesk/commit/aa3ba10af806692402594821d9c8db3799f7c47a))
+* refresh token if expired ([7cebdfc](https://github.com/dominikbullo/ShareDesk/commit/7cebdfc8370f493105ccb091012da2f9405ef56b))
+
+
+### Bug Fixes
+
+* package-lock files ([d49ad5f](https://github.com/dominikbullo/ShareDesk/commit/d49ad5ff2c9253a922cced6485af04f6ee8a9875))
 
 ### [0.0.1](https://github.com/dominikbullo/ShareDesk/compare/v0.0.0...v0.0.1) (2022-02-28)
 
