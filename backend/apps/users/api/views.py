@@ -61,25 +61,18 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(methods=['POST'], detail=False)
     def register(self, request):
-        last_name = request.data.get('last_name', "")
-        first_name = request.data.get('first_name', "")
         email = request.data.get('email', None)
-        password = request.data.get('password', None)
 
         if User.objects.filter(email__iexact=email).exists():
             return Response({'status': 210})
 
-        # user creation
-        user = User.objects.create_user(
-            email=email,
-            password=password,
-            is_admin=False,
-        ),
-
-        # TODO: change this serializer
-        return Response(
-            UserSerializer(user).data,
-            status=status.HTTP_201_CREATED)
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                json = serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['POST'], detail=False)
     def password_reset(self, request, format=None):
