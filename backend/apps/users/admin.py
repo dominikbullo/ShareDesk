@@ -1,6 +1,4 @@
-from django.apps import apps
 from django.contrib import admin
-from django.contrib.admin.sites import AlreadyRegistered
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -31,6 +29,21 @@ class UserAdmin(BaseUserAdmin):
     ordering = ['email']
     readonly_fields = ['last_login', 'registered_at']
 
+
+from rest_framework_simplejwt.token_blacklist.admin import OutstandingTokenAdmin
+from rest_framework_simplejwt.token_blacklist import models
+
+from rest_framework_simplejwt import token_blacklist
+
+
+class OutstandingTokenAdmin(token_blacklist.admin.OutstandingTokenAdmin):
+
+    def has_delete_permission(self, *args, **kwargs):
+        return True  # or whatever logic you want
+
+
+admin.site.unregister(token_blacklist.models.OutstandingToken)
+admin.site.register(token_blacklist.models.OutstandingToken, OutstandingTokenAdmin)
 
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)

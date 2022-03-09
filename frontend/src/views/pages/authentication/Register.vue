@@ -13,9 +13,6 @@
         <b-card-title class="mb-1">
           Adventure starts here 🚀
         </b-card-title>
-        <b-card-text class="mb-2">
-          Make your app management easy and fun!
-        </b-card-text>
 
         <!-- form -->
         <validation-observer ref="registerForm">
@@ -23,74 +20,142 @@
             class="auth-register-form mt-2"
             @submit.prevent="register"
           >
+            <b-row>
+              <b-col md="6">
 
-            <!-- email -->
-            <b-form-group
-              label="Email"
-              label-for="email"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Email"
-                rules="required|email"
-              >
-                <b-form-input
-                  id="email"
-                  v-model="regEmail"
-                  :state="errors.length > 0 ? false:null"
-                  name="register-email"
-                  placeholder="john@example.com"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-
-            <!-- password -->
-            <b-form-group
-              label="Password"
-              label-for="password"
-            >
-              <validation-provider
-                #default="{ errors }"
-                name="Password"
-                rules="required"
-              >
-                <b-input-group
-                  class="input-group-merge"
-                  :class="errors.length > 0 ? 'is-invalid':null"
+                <!-- First name -->
+                <b-form-group
+                  label="First Name"
+                  label-for="mc-first-name"
                 >
-                  <b-form-input
-                    id="password"
-                    v-model="password"
-                    :type="passwordFieldType"
-                    :state="errors.length > 0 ? false:null"
-                    class="form-control-merge"
-                    name="register-password"
-                    placeholder="············"
-                  />
-                  <b-input-group-append is-text>
-                    <feather-icon
-                      :icon="passwordToggleIcon"
-                      class="cursor-pointer"
-                      @click="togglePasswordVisibility"
+                  <validation-provider
+                    #default="{ errors }"
+                    name="First Name"
+                    rules="required|alpha"
+                  >
+                    <b-form-input
+                      id="mc-first-name"
+                      placeholder="First Name"
+                      :state="errors.length > 0 ? false:null"
+                      v-model="regFirstName"
                     />
-                  </b-input-group-append>
-                </b-input-group>
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
 
-            <!-- checkbox -->
-            <b-form-group>
-              <b-form-checkbox
-                id="register-privacy-policy"
-                v-model="status"
-                name="checkbox-1"
-              >
-                I agree to
-                <b-link>privacy policy & terms</b-link>
-              </b-form-checkbox>
-            </b-form-group>
+                <!-- Last name -->
+                <b-form-group
+                  label="Last Name"
+                  label-for="mc-last-name"
+                >
+                  <validation-provider
+                    #default="{ errors }"
+                    name="Last Name"
+                    rules="required|alpha"
+                  >
+                    <b-form-input
+                      id="mc-last-name"
+                      placeholder="Last Name"
+                      :state="errors.length > 0 ? false:null"
+                      v-model="regLastName"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+              <b-col md="6">
+                <!-- email -->
+                <b-form-group
+                  label="Email"
+                  label-for="email"
+                >
+                  <validation-provider
+                    #default="{ errors }"
+                    name="Email"
+                    rules="required|email"
+                  >
+                    <b-form-input
+                      id="email"
+                      v-model="regEmail"
+                      :state="errors.length > 0 ? false:null"
+                      name="register-email"
+                      placeholder="john@example.com"
+                    />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+
+                <!-- password -->
+                <b-form-group
+                  label="Password"
+                  label-for="password"
+                >
+                  <validation-provider
+                    #default="{ errors }"
+                    name="Password"
+                    rules="required"
+                  >
+                    <b-input-group
+                      class="input-group-merge"
+                      :class="errors.length > 0 ? 'is-invalid':null"
+                    >
+                      <b-form-input
+                        id="password"
+                        v-model="password"
+                        :type="passwordFieldType"
+                        :state="errors.length > 0 ? false:null"
+                        class="form-control-merge"
+                        name="register-password"
+                        placeholder="············"
+                      />
+                      <b-input-group-append is-text>
+                        <feather-icon
+                          :icon="passwordToggleIcon"
+                          class="cursor-pointer"
+                          @click="togglePasswordVisibility"
+                        />
+                      </b-input-group-append>
+                    </b-input-group>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+
+                <!-- password -->
+                <b-form-group
+                  label="Password confirm"
+                  label-for="password"
+                >
+                  <validation-provider
+                    #default="{ errors }"
+                    name="Password"
+                    rules="required"
+                  >
+                    <b-input-group
+                      class="input-group-merge"
+                      :class="errors.length > 0 ? 'is-invalid':null"
+                    >
+                      <b-form-input
+                        id="password-confirm"
+                        v-model="password"
+                        :type="passwordFieldType"
+                        :state="errors.length > 0 ? false:null"
+                        class="form-control-merge"
+                        name="register-password"
+                        placeholder="············"
+                      />
+                      <b-input-group-append is-text>
+                        <feather-icon
+                          :icon="passwordToggleIcon"
+                          class="cursor-pointer"
+                          @click="togglePasswordVisibility"
+                        />
+                      </b-input-group-append>
+                    </b-input-group>
+                    <small class="text-danger">{{ errors[0] }}</small>
+                  </validation-provider>
+                </b-form-group>
+              </b-col>
+            </b-row>
 
             <!-- submit button -->
             <b-button
@@ -118,14 +183,14 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import {ValidationProvider, ValidationObserver} from 'vee-validate'
 import {
   BCard, BLink, BCardTitle, BCardText, BForm,
   BButton, BFormInput, BFormGroup, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
-import { required, email } from '@validations'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import {required, email} from '@validations'
+import {togglePasswordVisibility} from '@core/mixins/ui/forms'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 import store from '@/store/index'
@@ -151,11 +216,12 @@ export default {
     ValidationObserver,
   },
   mixins: [togglePasswordVisibility],
-  data () {
+  data() {
     return {
-      regEmail: '',
-      password: '',
-      status: '',
+      regFirstName: 'test',
+      regLastName: 'testovací',
+      regEmail: 'a@b.sk',
+      password: 'testing321',
 
       // validation rules
       required,
@@ -163,15 +229,17 @@ export default {
     }
   },
   computed: {
-    passwordToggleIcon () {
+    passwordToggleIcon() {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
   },
   methods: {
-    register () {
+    register() {
       this.$refs.registerForm.validate().then(success => {
         if (success) {
           useJwt.register({
+            first_name: this.regFirstName,
+            last_name: this.regLastName,
             email: this.regEmail,
             password: this.password,
           }).then(() => {
