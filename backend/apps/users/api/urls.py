@@ -6,6 +6,6 @@ app_name = 'users'
 
 # https://www.django-rest-framework.org/api-guide/routers/
 router = DefaultRouter()
-router.register(r"users", UserViewSet, basename="users")
+router.register(r"users?", UserViewSet, basename="user")
 
 urlpatterns = []

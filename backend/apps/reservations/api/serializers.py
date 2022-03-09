@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from apps.reservations.models import Reservation
+from apps.reservations.models import SpotReservation
 
 
-class ReservationSerializer(serializers.ModelSerializer):
+class SpotReservationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Reservation
+        model = SpotReservation
         fields = "__all__"

@@ -18,4 +18,6 @@ class SpotReservation(models.Model):
     reservation = models.ForeignKey(Reservation, related_name='reservations_for_spot', on_delete=models.CASCADE)
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
     permanent = models.BooleanField(default=False)
-    frequency = models.IntegerField(blank=True, null=True)
+    # Don't need frequency - 2 sceneries
+    # Book for reservation time, or permanent, from reservation time start for everyday
+    # frequency = models.IntegerField(blank=True, null=True)

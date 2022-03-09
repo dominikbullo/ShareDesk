@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from django.conf import settings
@@ -15,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
         return obj.avatar.url if obj.avatar else settings.STATIC_URL + \
-            'images/default_avatar.png'
+                                                 'images/default_avatar.png'
 
     def get_full_name(self, obj):
         return obj.full_name
@@ -34,7 +35,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserWriteSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ['email', 'password', 'first_name', 'last_name']

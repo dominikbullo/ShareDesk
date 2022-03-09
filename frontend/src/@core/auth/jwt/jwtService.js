@@ -5,7 +5,7 @@ export default class JwtService {
   axiosIns = null
 
   // jwtConfig <= Will be used by this service
-  jwtConfig = { ...jwtDefaultConfig }
+  jwtConfig = {...jwtDefaultConfig}
 
   // For Refreshing Token
   isAlreadyFetchingAccessToken = false
@@ -15,7 +15,7 @@ export default class JwtService {
 
   constructor(axiosIns, jwtOverrideConfig) {
     this.axiosIns = axiosIns
-    this.jwtConfig = { ...this.jwtConfig, ...jwtOverrideConfig }
+    this.jwtConfig = {...this.jwtConfig, ...jwtOverrideConfig}
 
     // Request Interceptor
     this.axiosIns.interceptors.request.use(
@@ -38,7 +38,7 @@ export default class JwtService {
       response => response,
       error => {
         // const { config, response: { status } } = error
-        const { config, response } = error
+        const {config, response} = error
         const originalRequest = config
 
         // if (status === 401) {
@@ -103,6 +103,10 @@ export default class JwtService {
 
   register(...args) {
     return this.axiosIns.post(this.jwtConfig.registerEndpoint, ...args)
+  }
+
+  logout(...args) {
+    return this.axiosIns.post(this.jwtConfig.logoutEndpoint, ...args)
   }
 
   refreshToken() {

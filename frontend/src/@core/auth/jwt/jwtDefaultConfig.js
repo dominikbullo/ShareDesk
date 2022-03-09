@@ -3,7 +3,7 @@ export default {
   loginEndpoint: '/token/',
   registerEndpoint: '/users/register/',
   refreshEndpoint: '/token/refresh/',
-  logoutEndpoint: '/logout',
+  logoutEndpoint: '/logout/',
 
   // This will be prefixed in authorization header with token
   // e.g. Authorization: Bearer <token>

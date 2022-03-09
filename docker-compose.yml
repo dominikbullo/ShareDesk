@@ -16,6 +16,8 @@ services:
     entrypoint: /entrypoint.sh
     restart: on-failure
     env_file: .env
+    ports:
+      - "8080:8000"
 
   frontend:
     image: node:16-alpine

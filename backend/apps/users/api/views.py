@@ -1,13 +1,16 @@
 from uuid import uuid4
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.users.models import User
 from apps.users.api.serializers import UserSerializer, UserWriteSerializer
@@ -67,11 +70,13 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response({'status': 210})
 
         # user creation
-        user = User.objects.create(
+        user = User.objects.create_user(
             email=email,
             password=password,
             is_admin=False,
-        )
+        ),
+
+        # TODO: change this serializer
         return Response(
             UserSerializer(user).data,
             status=status.HTTP_201_CREATED)
@@ -101,3 +106,20 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            # Also, logout from Django itself and DRF
+            logout(request)
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

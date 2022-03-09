@@ -72,7 +72,7 @@
       <span>Chat</span>
     </b-dropdown-item>
 
-    <b-dropdown-divider />
+    <b-dropdown-divider/>
 
     <b-dropdown-item
       :to="{ name: 'pages-account-setting' }"
@@ -117,16 +117,17 @@
         class="mr-50"
       />
       <span>Logout</span>
-    </b-dropdown-item></b-nav-item-dropdown>
+    </b-dropdown-item>
+  </b-nav-item-dropdown>
 </template>
 
 <script>
 import {
   BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
 } from 'bootstrap-vue'
-import { initialAbility } from '@/libs/acl/config'
+import {avatarText} from '@core/utils/filter'
+import {initialAbility} from '@/libs/acl/config'
 import useJwt from '@/auth/jwt/useJwt'
-import { avatarText } from '@core/utils/filter'
 
 export default {
   components: {
@@ -143,7 +144,12 @@ export default {
   },
   methods: {
     logout() {
-      console.log("logout")
+      console.log('logout')
+      useJwt.logout({
+        refresh: localStorage.getItem(useJwt.jwtConfig.storageRefreshTokenKeyName),
+      }).then(response => {
+        console.log(response)
+      })
       // Remove userData from localStorage
       // ? You just removed token from localStorage. If you like, you can also make API call to backend to blacklist used token
       localStorage.removeItem(useJwt.jwtConfig.storageTokenKeyName)
@@ -156,7 +162,7 @@ export default {
       // this.$ability.update(initialAbility)
 
       // Redirect to login page
-      this.$router.push({ name: 'auth-login' })
+      this.$router.push({name: 'auth-login'})
     },
   },
 }
