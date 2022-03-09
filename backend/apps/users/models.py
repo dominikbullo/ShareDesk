@@ -75,6 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         auto_now_add=timezone.now)
 
     user_role = models.CharField(max_length=10, choices=UserTypeChoices.choices, default=UserTypeChoices.EMPLOYEE)
+    teams = models.ManyToManyField('teams.Team', blank=True)
 
     # Fields settings
     EMAIL_FIELD = 'email'

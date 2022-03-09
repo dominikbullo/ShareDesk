@@ -1,4 +1,6 @@
+from django.apps import apps
 from django.contrib import admin
+from django.contrib.admin.sites import AlreadyRegistered
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
@@ -16,8 +18,9 @@ class UserAdmin(BaseUserAdmin):
     list_display = ['full_name', 'email']
     fieldsets = [
         ['Auth', {'fields': ['email', 'password']}],
-        ['Personal info', {'fields': ['last_name', 'first_name', 'user_role', 'avatar']}],
-        ['Settings', {'fields': ['groups', 'is_admin', 'is_active', 'is_staff', 'is_superuser']}],
+        ['Personal info', {'fields': ['last_name', 'first_name', 'avatar']}],
+        ['Work information', {'fields': ['user_role', 'teams', ]}],
+        ['Settings', {'fields': ['is_admin', 'is_active', 'is_staff', 'is_superuser']}],
         ['Important dates', {'fields': ['last_login', 'registered_at']}],
     ]
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
