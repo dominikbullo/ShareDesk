@@ -22,11 +22,12 @@ axiosIns.interceptors.request.use(config => {
   return Promise.reject(error)
 })
 
+// Add request/response interceptor
 axiosIns.interceptors.response.use(response => {
   console.log('[AXIOS] Response Interceptors', response)
   return response
 }, error => {
-  console.error('[AXIOS] Response Interceptors Error', error)
+  console.error('[AXIOS] Response Interceptors', error)
   return Promise.reject(error)
 })
 

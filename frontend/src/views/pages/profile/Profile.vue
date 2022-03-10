@@ -3,7 +3,7 @@
     v-if="Object.keys(profileData).length"
     id="user-profile"
   >
-    <profile-header :header-data="profileData.header" />
+    <profile-header :header-data="profileData.header"/>
     <!-- profile info  -->
     <section id="profile-info">
       <b-row>
@@ -14,9 +14,9 @@
           order="2"
           order-lg="1"
         >
-          <profile-about :about-data="profileData.userAbout" />
-          <profile-suggested-pages :pages-data="profileData.suggestedPages" />
-          <profile-twitter-feed :twitter-feed="profileData.twitterFeeds" />
+          <profile-about :about-data="profileData.userAbout"/>
+          <profile-suggested-pages :pages-data="profileData.suggestedPages"/>
+          <profile-twitter-feed :twitter-feed="profileData.twitterFeeds"/>
         </b-col>
         <!--/ about suggested page and twitter feed -->
 
@@ -27,7 +27,7 @@
           order="1"
           order-lg="2"
         >
-          <profile-post :posts="profileData.post" />
+          <profile-post :posts="profileData.post"/>
         </b-col>
         <!-- post -->
 
@@ -37,9 +37,9 @@
           cols="12"
           order="3"
         >
-          <profile-latest-photos :latest-images="profileData.latestPhotos" />
-          <profile-suggestion :suggestions="profileData.suggestions" />
-          <profile-polls :polls-data="profileData.polls" />
+          <profile-latest-photos :latest-images="profileData.latestPhotos"/>
+          <profile-suggestion :suggestions="profileData.suggestions"/>
+          <profile-polls :polls-data="profileData.polls"/>
         </b-col>
         <!--/ latest photos suggestion and polls -->
 
@@ -48,7 +48,7 @@
           cols="12"
           order="4"
         >
-          <profile-bottom />
+          <profile-bottom/>
         </b-col>
         <!--/ load more  -->
       </b-row>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { BRow, BCol } from 'bootstrap-vue'
+import {BRow, BCol} from 'bootstrap-vue'
 
 import ProfileHeader from './ProfileHeader.vue'
 import ProfileAbout from './ProfileAbout.vue'
@@ -88,16 +88,18 @@ export default {
   },
   data() {
     return {
-      profileData: { },
+      profileData: {},
     }
   },
   created() {
-    this.$http.get('/profile/data').then(res => { this.profileData = res.data })
+    this.$http.get('/user/profile/').then(res => {
+      this.profileData = res.data
+    })
   },
 }
 /* eslint-disable global-require */
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 @import '@core/scss/vue/pages/page-profile.scss';
 </style>

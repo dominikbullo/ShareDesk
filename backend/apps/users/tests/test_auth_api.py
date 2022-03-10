@@ -78,5 +78,5 @@ class TestLoginCase(APITestCase):
         self.client.post(self.logout_url, body)
         r = self.client.get("/admin")
         body = r.closed
-        self.assertEquals(r.status_code, 302, body)
+        self.assertEquals(r.status_code, 301, body)
         self.assertTrue(body, body)

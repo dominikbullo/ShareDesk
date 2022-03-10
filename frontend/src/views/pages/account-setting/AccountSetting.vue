@@ -40,7 +40,7 @@
         <span class="font-weight-bold">Change Password</span>
       </template>
 
-      <account-setting-password />
+      <account-setting-password/>
     </b-tab>
     <!--/ change password tab -->
 
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { BTabs, BTab } from 'bootstrap-vue'
+import {BTabs, BTab} from 'bootstrap-vue'
 import AccountSettingGeneral from './AccountSettingGeneral.vue'
 import AccountSettingPassword from './AccountSettingPassword.vue'
 import AccountSettingInformation from './AccountSettingInformation.vue'
@@ -127,7 +127,9 @@ export default {
     }
   },
   beforeCreate() {
-    this.$http.get('/account-setting/data').then(res => { this.options = res.data })
+    this.$http.get('/user/profile').then(res => {
+      this.options = res.data
+    })
   },
 }
 </script>
