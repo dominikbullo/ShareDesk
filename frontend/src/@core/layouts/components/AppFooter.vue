@@ -4,18 +4,18 @@
       COPYRIGHT  © {{ new Date().getFullYear() }}
       <b-link
         class="ml-25"
-        href="https://1.envato.market/pixinvent_portfolio"
+        href="https://bullo.sk/"
         target="_blank"
-      >Pixinvent</b-link>
+      >Dominik Bullo</b-link>
       <span class="d-none d-sm-inline-block">, All rights Reserved</span>
     </span>
-
-    <span class="float-md-right d-none d-md-block">Hand-crafted &amp; Made with
-      <feather-icon
-        icon="HeartIcon"
-        size="21"
-        class="text-danger stroke-current"
-      />
+    <span class="float-md-right d-none d-md-block">
+      <b-link
+        class="ml-10"
+        href="https://bullo.sk/"
+        target="_blank"
+      >Share Desk</b-link>
+      version {{ $store.getters['app/appVersion'] }}
     </span>
   </p>
 </template>

@@ -5,6 +5,7 @@ export default {
   state: {
     windowWidth: 0,
     shallShowOverlay: false,
+    packageVersion: process.env.VUE_APP_VERSION || '0',
   },
   getters: {
     currentBreakPoint: state => {
@@ -15,6 +16,7 @@ export default {
       if (windowWidth >= $themeBreakpoints.sm) return 'sm'
       return 'xs'
     },
+    appVersion: state => state.packageVersion,
   },
   mutations: {
     UPDATE_WINDOW_WIDTH(state, val) {
