@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/dominikbullo/ShareDesk/compare/v0.0.2...v0.0.3) (2022-03-10)
+
+
+### Features
+
+* **auth:** If token is undefined on FE, redirect to login page ([0ef4576](https://github.com/dominikbullo/ShareDesk/commit/0ef4576c714083b2add414e3b081eb4c7e7e011e))
+* **backend:** logout ([994e0ca](https://github.com/dominikbullo/ShareDesk/commit/994e0ca36585701c6d1622c8f41e546884e020dc))
+* **teams:** manytomany in db ([6bc89bc](https://github.com/dominikbullo/ShareDesk/commit/6bc89bcf98fc578c02b4676cf274e0e593afc77e))
+* **users:** registrations with necessary infos ([c0795a2](https://github.com/dominikbullo/ShareDesk/commit/c0795a21eeec31418637e27079b51be3e212a4cc))
+* version in footer and also as env variable and variable in store ([4e4c80c](https://github.com/dominikbullo/ShareDesk/commit/4e4c80c28175242cd7b82d8aed3a4a0849d983dd))
+
+
+### Bug Fixes
+
+* **auth:** registration from FE working ([75b0199](https://github.com/dominikbullo/ShareDesk/commit/75b0199e1dfad62d4e79c1a933bc013d2177b616))
+
 ### [0.0.2](https://github.com/dominikbullo/ShareDesk/compare/v0.0.1...v0.0.2) (2022-03-04)
 
 
