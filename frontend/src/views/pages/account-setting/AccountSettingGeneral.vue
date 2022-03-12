@@ -151,7 +151,21 @@
 
 <script>
 import {
-  BFormFile, BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BAlert, BCard, BCardText, BMedia, BMediaAside, BMediaBody, BLink, BImg,
+  BFormFile,
+  BButton,
+  BForm,
+  BFormGroup,
+  BFormInput,
+  BRow,
+  BCol,
+  BAlert,
+  BCard,
+  BCardText,
+  BMedia,
+  BMediaAside,
+  BMediaBody,
+  BLink,
+  BImg,
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
@@ -181,7 +195,8 @@ export default {
   props: {
     generalData: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
   },
   data() {
