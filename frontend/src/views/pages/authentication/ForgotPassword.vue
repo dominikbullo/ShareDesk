@@ -57,27 +57,28 @@
 
         <b-card-text class="text-center mt-2">
           <b-link :to="{name:'auth-login'}">
-            <feather-icon icon="ChevronLeftIcon" /> Back to login
+            <feather-icon icon="ChevronLeftIcon" />
+            Back to login
           </b-link>
         </b-card-text>
 
       </b-card>
-    <!-- /Forgot Password v1 -->
+      <!-- /Forgot Password v1 -->
     </div>
   </div>
 </template>
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
 import {
   BCard, BLink, BCardText, BCardTitle, BFormGroup, BFormInput, BForm, BButton,
 } from 'bootstrap-vue'
 import { required, email } from '@validations'
+import CustomLogo from '@/layouts/components/Logo.vue'
 
 export default {
   components: {
-    VuexyLogo,
+    CustomLogo,
     BCard,
     BLink,
     BCardText,

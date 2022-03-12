@@ -18,7 +18,8 @@
           variant="primary"
           class="mb-1 btn-sm-block"
           :to="loginRoute()"
-        >Back to Home</b-button>
+        >Back to Home
+        </b-button>
         <b-img
           fluid
           :src="imgUrl"
@@ -32,13 +33,13 @@
 <script>
 /* eslint-disable global-require */
 import { BLink, BImg, BButton } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
+import CustomLogo from '@/layouts/components/Logo.vue'
 import store from '@/store/index'
 import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 
 export default {
   components: {
-    BLink, BImg, BButton, VuexyLogo,
+    BLink, BImg, BButton, CustomLogo,
   },
   data() {
     return {

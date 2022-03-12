@@ -110,12 +110,13 @@
 
         <p class="text-center mt-2">
           <b-link :to="{name:'auth-login'}">
-            <feather-icon icon="ChevronLeftIcon" /> Back to login
+            <feather-icon icon="ChevronLeftIcon" />
+            Back to login
           </b-link>
         </p>
 
       </b-card>
-    <!-- /Reset Password v1 -->
+      <!-- /Reset Password v1 -->
     </div>
   </div>
 
@@ -123,16 +124,16 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
 import {
   BCard, BCardTitle, BCardText, BForm, BFormGroup, BInputGroup, BInputGroupAppend, BLink, BFormInput, BButton,
 } from 'bootstrap-vue'
 import { required } from '@validations'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import CustomLogo from '@/layouts/components/Logo.vue'
 
 export default {
   components: {
-    VuexyLogo,
+    CustomLogo,
     BCard,
     BButton,
     BCardTitle,

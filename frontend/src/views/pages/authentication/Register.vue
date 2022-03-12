@@ -35,9 +35,9 @@
                   >
                     <b-form-input
                       id="mc-first-name"
+                      v-model="regFirstName"
                       placeholder="First Name"
                       :state="errors.length > 0 ? false:null"
-                      v-model="regFirstName"
                     />
                     <small class="text-danger">{{ errors[0] }}</small>
                   </validation-provider>
@@ -55,9 +55,9 @@
                   >
                     <b-form-input
                       id="mc-last-name"
+                      v-model="regLastName"
                       placeholder="Last Name"
                       :state="errors.length > 0 ? false:null"
-                      v-model="regLastName"
                     />
                     <small class="text-danger">{{ errors[0] }}</small>
                   </validation-provider>
@@ -183,22 +183,22 @@
 </template>
 
 <script>
-import {ValidationProvider, ValidationObserver} from 'vee-validate'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BCard, BLink, BCardTitle, BCardText, BForm,
   BButton, BFormInput, BFormGroup, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
-import {required, email} from '@validations'
-import {togglePasswordVisibility} from '@core/mixins/ui/forms'
+import { required, email } from '@validations'
+import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import CustomLogo from '@/layouts/components/Logo.vue'
 
 import store from '@/store/index'
 import useJwt from '@/auth/jwt/useJwt'
 
 export default {
   components: {
-    VuexyLogo,
+    CustomLogo,
     // BSV
     BCard,
     BLink,

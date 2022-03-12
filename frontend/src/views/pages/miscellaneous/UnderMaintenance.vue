@@ -46,7 +46,7 @@
       </div>
     </div>
   </div>
-<!-- / Under maintenance-->
+  <!-- / Under maintenance-->
 </template>
 
 <script>
@@ -54,7 +54,7 @@
 import {
   BLink, BFormInput, BButton, BForm, BImg,
 } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
+import CustomLogo from '@/layouts/components/Logo.vue'
 import store from '@/store/index'
 
 export default {
@@ -64,7 +64,7 @@ export default {
     BButton,
     BForm,
     BImg,
-    VuexyLogo,
+    CustomLogo,
   },
   data() {
     return {

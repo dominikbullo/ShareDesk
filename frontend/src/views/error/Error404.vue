@@ -34,18 +34,18 @@
       </div>
     </div>
   </div>
-<!-- / Error page-->
+  <!-- / Error page-->
 </template>
 
 <script>
 /* eslint-disable global-require */
 import { BLink, BButton, BImg } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
+import CustomLogo from '@/layouts/components/Logo.vue'
 import store from '@/store/index'
 
 export default {
   components: {
-    VuexyLogo,
+    CustomLogo,
     BLink,
     BButton,
     BImg,

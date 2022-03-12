@@ -115,7 +115,6 @@
           </b-link>
         </b-card-text>
 
-
       </b-card>
       <!-- /Login v1 -->
     </div>
@@ -137,18 +136,17 @@ import {
   BInputGroupAppend,
   BFormCheckbox,
 } from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
 import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import axios from 'axios'
+import jwt_decode from 'jwt-decode'
 import useJwt from '@/auth/jwt/useJwt'
 import store from '@/store/index'
 import { getHomeRouteForLoggedInUser } from '@/auth/utils'
 
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
-
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
+import CustomLogo from '@/layouts/components/Logo.vue'
 
 export default {
   components: {
@@ -160,7 +158,7 @@ export default {
     BCard,
     BCardTitle,
     BLink,
-    VuexyLogo,
+    CustomLogo,
     BCardText,
     BInputGroup,
     BInputGroupAppend,
@@ -169,7 +167,7 @@ export default {
     ValidationObserver,
   },
   mixins: [togglePasswordVisibility],
-  data () {
+  data() {
     return {
       status: '',
       password: 'testing321',
@@ -181,10 +179,10 @@ export default {
     }
   },
   computed: {
-    passwordToggleIcon () {
+    passwordToggleIcon() {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
-    imgUrl () {
+    imgUrl() {
       if (store.state.appConfig.layout.skin === 'dark') {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.sideImg = require('@/assets/images/pages/login-v2-dark.svg')
@@ -194,7 +192,7 @@ export default {
     },
   },
   methods: {
-    login () {
+    login() {
       this.$refs.loginForm.validate().then(success => {
         if (success) {
           useJwt.login({
@@ -207,24 +205,23 @@ export default {
 
             const decoded = jwt_decode(response.data.refresh)
             this.$http.get(`/users/${decoded.user_id}`).then(res => {
-                const userData = res.data
-                localStorage.setItem('userData', JSON.stringify(userData))
-                // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-                // this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
-                this.$router.replace('/').then(() => {
-                  this.$toast({
-                    component: ToastificationContent,
-                    position: 'top-right',
-                    props: {
-                      title: `Welcome ${userData.full_name || userData.email}`,
-                      icon: 'CoffeeIcon',
-                      variant: 'success',
-                      text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
-                    },
-                  })
+              const userData = res.data
+              localStorage.setItem('userData', JSON.stringify(userData))
+              // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
+              // this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
+              this.$router.replace('/').then(() => {
+                this.$toast({
+                  component: ToastificationContent,
+                  position: 'top-right',
+                  props: {
+                    title: `Welcome ${userData.full_name || userData.email}`,
+                    icon: 'CoffeeIcon',
+                    variant: 'success',
+                    text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
+                  },
                 })
-              },
-            )
+              })
+            })
           }).catch(error => {
             console.error(error)
             this.$refs.loginForm.setErrors(error.response.data.error)
