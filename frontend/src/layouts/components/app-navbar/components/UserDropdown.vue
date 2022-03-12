@@ -28,7 +28,7 @@
     </template>
 
     <b-dropdown-item
-      :to="{ name: 'pages-profile'}"
+      :to="{ name: 'pages-account-setting' }"
       link-class="d-flex align-items-center"
     >
       <feather-icon
@@ -36,43 +36,10 @@
         icon="UserIcon"
         class="mr-50"
       />
-      <span>Profile</span>
-    </b-dropdown-item>
-    <b-dropdown-item
-      :to="{ name: 'apps-email' }"
-      link-class="d-flex align-items-center"
-    >
-      <feather-icon
-        size="16"
-        icon="MailIcon"
-        class="mr-50"
-      />
-      <span>Inbox</span>
-    </b-dropdown-item>
-    <b-dropdown-item
-      :to="{ name: 'apps-todo' }"
-      link-class="d-flex align-items-center"
-    >
-      <feather-icon
-        size="16"
-        icon="CheckSquareIcon"
-        class="mr-50"
-      />
-      <span>Task</span>
-    </b-dropdown-item>
-    <b-dropdown-item
-      :to="{ name: 'apps-chat' }"
-      link-class="d-flex align-items-center"
-    >
-      <feather-icon
-        size="16"
-        icon="MessageSquareIcon"
-        class="mr-50"
-      />
-      <span>Chat</span>
+      <span>Moje rezervácie</span>
     </b-dropdown-item>
 
-    <b-dropdown-divider/>
+    <b-dropdown-divider />
 
     <b-dropdown-item
       :to="{ name: 'pages-account-setting' }"
@@ -86,28 +53,6 @@
       <span>Settings</span>
     </b-dropdown-item>
     <b-dropdown-item
-      :to="{ name: 'pages-pricing' }"
-      link-class="d-flex align-items-center"
-    >
-      <feather-icon
-        size="16"
-        icon="CreditCardIcon"
-        class="mr-50"
-      />
-      <span>Pricing</span>
-    </b-dropdown-item>
-    <b-dropdown-item
-      :to="{ name: 'pages-faq' }"
-      link-class="d-flex align-items-center"
-    >
-      <feather-icon
-        size="16"
-        icon="HelpCircleIcon"
-        class="mr-50"
-      />
-      <span>FAQ</span>
-    </b-dropdown-item>
-    <b-dropdown-item
       link-class="d-flex align-items-center"
       @click="logout"
     >
@@ -118,6 +63,7 @@
       />
       <span>Logout</span>
     </b-dropdown-item>
+
   </b-nav-item-dropdown>
 </template>
 
@@ -125,8 +71,7 @@
 import {
   BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
 } from 'bootstrap-vue'
-import {avatarText} from '@core/utils/filter'
-import {initialAbility} from '@/libs/acl/config'
+import { avatarText } from '@core/utils/filter'
 import useJwt from '@/auth/jwt/useJwt'
 
 export default {
@@ -162,7 +107,7 @@ export default {
       // this.$ability.update(initialAbility)
 
       // Redirect to login page
-      this.$router.push({name: 'auth-login'})
+      this.$router.push({ name: 'auth-login' })
     },
   },
 }

@@ -18,16 +18,16 @@
 
     <!-- Left Col -->
     <div class="bookmark-wrapper align-items-center flex-grow-1 d-none d-lg-flex">
-<!--      <bookmarks />-->
+      <!--      <bookmarks />-->
       <dark-Toggler class="d-none d-lg-block" />
     </div>
 
     <!-- Right Col -->
-<!--      <search-bar />-->
+    <!--      <search-bar />-->
     <b-navbar-nav class="nav align-items-center ml-auto">
-<!--      <locale />-->
-<!--      <cart-dropdown />-->
-<!--      <notification-dropdown />-->
+      <!--      <locale />-->
+      <!--      <cart-dropdown />-->
+      <!--      <notification-dropdown />-->
       <user-dropdown />
     </b-navbar-nav>
   </div>
@@ -52,7 +52,8 @@ export default {
   props: {
     toggleVerticalMenuActive: {
       type: Function,
-      default: () => {},
+      default: () => {
+      },
     },
   },
 

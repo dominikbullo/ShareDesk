@@ -1,4 +1,5 @@
-import jwtDefaultConfig from './jwtDefaultConfig'
+import jwtDefaultConfig from '@core/auth/jwt/jwtDefaultConfig'
+import router from '@/router'
 
 export default class JwtService {
   // Will be used by this service for making API calls
@@ -41,7 +42,6 @@ export default class JwtService {
         const { config, response } = error
         const originalRequest = config
 
-        // if (status === 401) {
         if (response && response.status === 401) {
           if (!this.isAlreadyFetchingAccessToken) {
             this.isAlreadyFetchingAccessToken = true
@@ -49,10 +49,14 @@ export default class JwtService {
               this.isAlreadyFetchingAccessToken = false
 
               // Update accessToken in localStorage
-              this.setToken(r.data.accessToken)
+              this.setToken(r.data.access)
               this.setRefreshToken(r.data.refreshToken)
 
-              this.onAccessTokenFetched(r.data.accessToken)
+              this.onAccessTokenFetched(r.data.access)
+            }, reason => {
+              console.error(reason)
+              router.push({ name: 'auth-login' })
+              return Promise.reject(error)
             })
           }
           const retryOriginalRequest = new Promise(resolve => {
@@ -72,7 +76,9 @@ export default class JwtService {
   }
 
   onAccessTokenFetched(accessToken) {
-    this.subscribers = this.subscribers.filter(callback => callback(accessToken))
+    this.subscribers = this.subscribers.filter(
+      callback => callback(accessToken),
+    )
   }
 
   addSubscriber(callback) {
@@ -103,9 +109,17 @@ export default class JwtService {
     return this.axiosIns.post(this.jwtConfig.registerEndpoint, ...args)
   }
 
+  logout(...args) {
+    return this.axiosIns.post(this.jwtConfig.logoutEndpoint, ...args)
+  }
+
   refreshToken() {
+    if (this.getRefreshToken() === 'undefined') {
+      // console.log('token not found inc local storage')
+      return Promise.reject(new Error('Token not found in local storage'))
+    }
     return this.axiosIns.post(this.jwtConfig.refreshEndpoint, {
-      refreshToken: this.getRefreshToken(),
+      refresh: this.getRefreshToken(),
     })
   }
 }
