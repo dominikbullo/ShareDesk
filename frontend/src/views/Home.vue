@@ -1,34 +1,67 @@
 <template>
-  <div>
-    <b-card title="Kick start your project 🚀">
-      <b-card-text>{{ $t('Home') }}</b-card-text>
-      <b-card-text>Please make sure to read our
-        <b-link
-          href="https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/"
-          target="_blank"
-        >
-          Template Documentation
-        </b-link>
-        to understand where to go from here and how to use our template.
-      </b-card-text>
-    </b-card>
+  <b-row class="match-height">
+    <b-col
+      lg="4"
+      md="6"
+    >
+      <card-advance-employee-task />
+    </b-col>
+    <b-col
+      lg="4"
+      md="6"
+    >
+      <card-advance-meetup />
+    </b-col>
+    <b-col
+      lg="4"
+      md="6"
+    >
+      <card-advance-profile />
+    </b-col>
+    <b-col
+      lg="4"
+      md="6"
+    >
+      <card-advance-transactions />
+    </b-col>
 
-    <b-card title="Want to integrate JWT? 🔒">
-      <b-card-text>We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.
-      </b-card-text>
-      <b-card-text>Please read our JWT Documentation to get more out of JWT authentication.</b-card-text>
-    </b-card>
-  </div>
+    <!-- Timeline -->
+    <b-col lg="8">
+      <card-advance-timeline />
+    </b-col>
+
+    <b-col
+      lg="4"
+      md="6"
+    >
+      <card-advance-browser-states />
+    </b-col>
+  </b-row>
 </template>
 
 <script>
-import { BCard, BCardText, BLink } from 'bootstrap-vue'
+import {
+  BCol, BRow,
+} from 'bootstrap-vue'
+
+import CardAdvanceEmployeeTask from './card/card-advance/CardAdvanceEmployeeTask.vue'
+import CardAdvanceMeetup from './card/card-advance/CardAdvanceMeetup.vue'
+import CardAdvanceProfile from './card/card-advance/CardAdvanceProfile.vue'
+import CardAdvanceTransactions from './card/card-advance/CardAdvanceTransactions.vue'
+import CardAdvanceBrowserStates from './card/card-advance/CardAdvanceBrowserStates.vue'
+import CardAdvanceTimeline from './card/card-advance/CardAdvanceTimeline.vue'
 
 export default {
   components: {
-    BCard,
-    BCardText,
-    BLink,
+    BRow,
+    BCol,
+
+    CardAdvanceEmployeeTask,
+    CardAdvanceMeetup,
+    CardAdvanceProfile,
+    CardAdvanceTransactions,
+    CardAdvanceBrowserStates,
+    CardAdvanceTimeline,
   },
 }
 </script>

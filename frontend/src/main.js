@@ -13,7 +13,7 @@ import './global-components'
 import '@/libs/portal-vue'
 import '@/libs/toastification'
 
-import i18n from './i18n/i18n'
+import i18n from './libs/i18n'
 
 // BSV Plugin Registration
 Vue.use(ToastPlugin)

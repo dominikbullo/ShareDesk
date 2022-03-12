@@ -34,7 +34,7 @@
 import {
   BLink, BNavbarNav,
 } from 'bootstrap-vue'
-import Locale from './components/Locale'
+import Locale from './components/Locale.vue'
 import DarkToggler from './components/DarkToggler.vue'
 import UserDropdown from './components/UserDropdown.vue'
 
@@ -43,8 +43,8 @@ export default {
     BLink,
 
     // Navbar Components
-    Locale,
     BNavbarNav,
+    Locale,
     DarkToggler,
     UserDropdown,
   },
