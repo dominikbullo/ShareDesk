@@ -28,16 +28,6 @@ export default [
         route: 'home',
         icon: 'UsersIcon',
       },
-      {
-        title: 'Home',
-        route: 'home',
-        icon: 'HomeIcon',
-      },
-      {
-        title: 'Home',
-        route: 'home',
-        icon: 'HomeIcon',
-      },
     ],
   },
   {

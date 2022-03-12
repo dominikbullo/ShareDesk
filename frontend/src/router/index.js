@@ -2,12 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // Routes
-import {canNavigate} from '@/libs/acl/routeProtection'
+import { canNavigate } from '@/libs/acl/routeProtection'
 import {
   isUserLoggedIn,
   getUserData,
   getHomeRouteForLoggedInUser,
 } from '@/auth/utils'
+import apps from './routes/apps'
 import pages from './routes/pages'
 
 Vue.use(VueRouter)
@@ -16,7 +17,7 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   scrollBehavior() {
-    return {x: 0, y: 0}
+    return { x: 0, y: 0 }
   },
   routes: [
     {
@@ -33,6 +34,7 @@ const router = new VueRouter({
         ],
       },
     },
+    ...apps,
     ...pages,
     {
       path: '*',
@@ -47,7 +49,7 @@ router.beforeEach((to, _, next) => {
 
   if (!canNavigate(to)) {
     // Redirect to login if not logged in
-    if (!isLoggedIn) return next({name: 'auth-login'})
+    if (!isLoggedIn) return next({ name: 'auth-login' })
 
     // If logged in => not authorized
     // return next({ name: 'misc-not-authorized' })
