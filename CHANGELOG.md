@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/dominikbullo/ShareDesk/compare/v0.0.3...v0.1.0) (2022-03-12)
+
+
+### Features
+
+* **FE-users:** Import demo user app ([2bcedeb](https://github.com/dominikbullo/ShareDesk/commit/2bcedebb1f38b41793260d62c71ea06b9488cf38))
+* **frontend:** add localization ([c9ae335](https://github.com/dominikbullo/ShareDesk/commit/c9ae33508dfcac5fcaa91a6a4a1d550dd61d56c5))
+
 ### [0.0.3](https://github.com/dominikbullo/ShareDesk/compare/v0.0.2...v0.0.3) (2022-03-10)
 
 
