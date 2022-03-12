@@ -18,16 +18,13 @@
 
     <!-- Left Col -->
     <div class="bookmark-wrapper align-items-center flex-grow-1 d-none d-lg-flex">
-      <!--      <bookmarks />-->
       <dark-Toggler class="d-none d-lg-block" />
     </div>
 
     <!-- Right Col -->
     <!--      <search-bar />-->
     <b-navbar-nav class="nav align-items-center ml-auto">
-      <!--      <locale />-->
-      <!--      <cart-dropdown />-->
-      <!--      <notification-dropdown />-->
+      <locale />
       <user-dropdown />
     </b-navbar-nav>
   </div>
@@ -37,6 +34,7 @@
 import {
   BLink, BNavbarNav,
 } from 'bootstrap-vue'
+import Locale from './components/Locale'
 import DarkToggler from './components/DarkToggler.vue'
 import UserDropdown from './components/UserDropdown.vue'
 
@@ -45,6 +43,7 @@ export default {
     BLink,
 
     // Navbar Components
+    Locale,
     BNavbarNav,
     DarkToggler,
     UserDropdown,

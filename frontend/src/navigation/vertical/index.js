@@ -6,33 +6,33 @@ export default [
   },
   {
     title: 'Reservations',
-    route: '#',
+    route: 'apps-reservations-list',
     icon: 'HomeIcon',
   },
+  // {
+  //   title: 'My reservations',
+  //   route: 'apps-reservations-list',
+  //   icon: 'HomeIcon',
+  // },
   {
-    title: 'My reservations',
-    route: '#',
-    icon: 'HomeIcon',
-  },
-  {
-    title: 'Teams',
+    title: 'Users',
     icon: 'HomeIcon',
     children: [
       {
         title: 'Users list',
-        route: 'home',
+        route: 'apps-users-list',
         icon: 'UserIcon',
       },
       {
         title: 'Teams list',
-        route: 'home',
+        route: 'apps-teams-list',
         icon: 'UsersIcon',
       },
     ],
   },
   {
-    title: 'Problems',
-    route: '#',
+    title: 'Spot issues',
+    route: 'apps-reservations-issues-list',
     icon: 'AlertTriangleIcon',
   },
 

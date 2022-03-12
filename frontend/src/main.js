@@ -13,6 +13,8 @@ import './global-components'
 import '@/libs/portal-vue'
 import '@/libs/toastification'
 
+import i18n from './i18n/i18n'
+
 // BSV Plugin Registration
 Vue.use(ToastPlugin)
 Vue.use(ModalPlugin)
@@ -31,5 +33,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App),
 }).$mount('#app')
