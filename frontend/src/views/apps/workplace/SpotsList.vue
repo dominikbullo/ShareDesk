@@ -219,10 +219,10 @@ export default {
     statusVariant() {
       const statusColor = {
         /* eslint-disable key-spacing */
-        booked: 'light-primary',
+        booked: 'light-danger',
         broken: 'light-warning',
         free: 'light-success',
-        permanent: 'light-danger',
+        permanent: 'light-primary',
         // broken: 'light-info',
         /* eslint-enable key-spacing */
       }

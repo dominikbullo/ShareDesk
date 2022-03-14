@@ -14,12 +14,27 @@ export default function useTeamsList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'user', sortable: true },
-    { key: 'email', sortable: true },
-    { key: 'role', sortable: true },
     {
-      key: 'currentPlan',
-      label: 'Plan',
+      key: 'name',
+      label: 'Team Name',
+      formatter: title,
+      sortable: true,
+    },
+    {
+      key: 'membersCount',
+      label: 'Number of members',
+      formatter: title,
+      sortable: true,
+    },
+    {
+      key: 'created_at',
+      label: 'Created at',
+      formatter: title,
+      sortable: true,
+    },
+    {
+      key: 'created_by',
+      label: 'Created by',
       formatter: title,
       sortable: true,
     },
@@ -56,21 +71,22 @@ export default function useTeamsList() {
 
   const fetchUsers = (ctx, callback) => {
     store
-      .dispatch('app-user/fetchUsers', {
-        q: searchQuery.value,
-        perPage: perPage.value,
-        page: currentPage.value,
-        sortBy: sortBy.value,
-        sortDesc: isSortDirDesc.value,
-        role: roleFilter.value,
-        plan: planFilter.value,
-        status: statusFilter.value,
+      .dispatch('app-team/fetchTeams', {
+        // q: searchQuery.value,
+        // perPage: perPage.value,
+        // page: currentPage.value,
+        // sortBy: sortBy.value,
+        // sortDesc: isSortDirDesc.value,
+        // role: roleFilter.value,
+        // plan: planFilter.value,
+        // status: statusFilter.value,
       })
       .then(response => {
-        const { users, total } = response.data
+        const users = response.data
+        // TODO add total members of team
 
         callback(users)
-        totalUsers.value = total
+        totalUsers.value = users.length
       })
       .catch(() => {
         toast({

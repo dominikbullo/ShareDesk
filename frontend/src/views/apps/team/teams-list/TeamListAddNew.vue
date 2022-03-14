@@ -39,19 +39,27 @@
           @reset.prevent="resetForm"
         >
 
-          <!-- Full Name -->
+          <!--          <v-select-->
+          <!--            v-model="selected"-->
+          <!--            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
+          <!--            multiple-->
+          <!--            label="title"-->
+          <!--            :options="option"-->
+          <!--          />-->
+
+          <!-- Team Name -->
           <validation-provider
             #default="validationContext"
-            name="Full Name"
+            name="Team Name"
             rules="required"
           >
             <b-form-group
-              label="Full Name"
-              label-for="full-name"
+              label="Team Name"
+              label-for="team-name"
             >
               <b-form-input
-                id="full-name"
-                v-model="userData.fullName"
+                id="team-name"
+                v-model="userData.name"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim
@@ -64,171 +72,164 @@
             </b-form-group>
           </validation-provider>
 
-          <!-- Username -->
-          <validation-provider
-            #default="validationContext"
-            name="Username"
-            rules="required|alpha-num"
-          >
-            <b-form-group
-              label="Username"
-              label-for="username"
-            >
-              <b-form-input
-                id="username"
-                v-model="userData.username"
-                :state="getValidationState(validationContext)"
-                trim
-              />
+          <!--          &lt;!&ndash; Username &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="Username"-->
+          <!--            rules="required|alpha-num"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="Username"-->
+          <!--              label-for="username"-->
+          <!--            >-->
+          <!--              <b-form-input-->
+          <!--                id="username"-->
+          <!--                v-model="userData.username"-->
+          <!--                :state="getValidationState(validationContext)"-->
+          <!--                trim-->
+          <!--              />-->
 
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--              <b-form-invalid-feedback>-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
-          <!-- Email -->
-          <validation-provider
-            #default="validationContext"
-            name="Email"
-            rules="required|email"
-          >
-            <b-form-group
-              label="Email"
-              label-for="email"
-            >
-              <b-form-input
-                id="email"
-                v-model="userData.email"
-                :state="getValidationState(validationContext)"
-                trim
-              />
+          <!--          &lt;!&ndash; Email &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="Email"-->
+          <!--            rules="required|email"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="Email"-->
+          <!--              label-for="email"-->
+          <!--            >-->
+          <!--              <b-form-input-->
+          <!--                id="email"-->
+          <!--                v-model="userData.email"-->
+          <!--                :state="getValidationState(validationContext)"-->
+          <!--                trim-->
+          <!--              />-->
 
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--              <b-form-invalid-feedback>-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
-          <!-- Company -->
-          <validation-provider
-            #default="validationContext"
-            name="Contact"
-            rules="required"
-          >
-            <b-form-group
-              label="Contact"
-              label-for="contact"
-            >
-              <b-form-input
-                id="contact"
-                v-model="userData.contact"
-                :state="getValidationState(validationContext)"
-                trim
-              />
+          <!--          &lt;!&ndash; Company &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="Contact"-->
+          <!--            rules="required"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="Contact"-->
+          <!--              label-for="contact"-->
+          <!--            >-->
+          <!--              <b-form-input-->
+          <!--                id="contact"-->
+          <!--                v-model="userData.contact"-->
+          <!--                :state="getValidationState(validationContext)"-->
+          <!--                trim-->
+          <!--              />-->
 
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--              <b-form-invalid-feedback>-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
-          <!-- Company -->
-          <validation-provider
-            #default="validationContext"
-            name="Company"
-            rules="required"
-          >
-            <b-form-group
-              label="Company"
-              label-for="company"
-            >
-              <b-form-input
-                id="company"
-                v-model="userData.company"
-                :state="getValidationState(validationContext)"
-                trim
-              />
+          <!--          &lt;!&ndash; Company &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="Company"-->
+          <!--            rules="required"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="Company"-->
+          <!--              label-for="company"-->
+          <!--            >-->
+          <!--              <b-form-input-->
+          <!--                id="company"-->
+          <!--                v-model="userData.company"-->
+          <!--                :state="getValidationState(validationContext)"-->
+          <!--                trim-->
+          <!--              />-->
 
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--              <b-form-invalid-feedback>-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
-          <!-- Country -->
-          <validation-provider
-            #default="validationContext"
-            name="Country"
-            rules="required"
-          >
-            <b-form-group
-              label="Country"
-              label-for="country"
-              :state="getValidationState(validationContext)"
-            >
-              <v-select
-                v-model="userData.country"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="countries"
-                :clearable="false"
-                input-id="country"
-              />
-              <b-form-invalid-feedback :state="getValidationState(validationContext)">
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--          &lt;!&ndash; Country &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="Country"-->
+          <!--            rules="required"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="Country"-->
+          <!--              label-for="country"-->
+          <!--              :state="getValidationState(validationContext)"-->
+          <!--            >-->
+          <!--              <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
-          <!-- User Role -->
-          <validation-provider
-            #default="validationContext"
-            name="User Role"
-            rules="required"
-          >
-            <b-form-group
-              label="User Role"
-              label-for="user-role"
-              :state="getValidationState(validationContext)"
-            >
-              <v-select
-                v-model="userData.role"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="roleOptions"
-                :reduce="val => val.value"
-                :clearable="false"
-                input-id="user-role"
-              />
-              <b-form-invalid-feedback :state="getValidationState(validationContext)">
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--          &lt;!&ndash; User Role &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="User Role"-->
+          <!--            rules="required"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="User Role"-->
+          <!--              label-for="user-role"-->
+          <!--              :state="getValidationState(validationContext)"-->
+          <!--            >-->
+          <!--              <v-select-->
+          <!--                v-model="userData.role"-->
+          <!--                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
+          <!--                :options="roleOptions"-->
+          <!--                :reduce="val => val.value"-->
+          <!--                :clearable="false"-->
+          <!--                input-id="user-role"-->
+          <!--              />-->
+          <!--              <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
-          <!-- Plan -->
-          <validation-provider
-            #default="validationContext"
-            name="Plan"
-            rules="required"
-          >
-            <b-form-group
-              label="Plan"
-              label-for="plan"
-              :state="getValidationState(validationContext)"
-            >
-              <v-select
-                v-model="userData.currentPlan"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="planOptions"
-                :reduce="val => val.value"
-                :clearable="false"
-                input-id="plan"
-              />
-              <b-form-invalid-feedback :state="getValidationState(validationContext)">
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
+          <!--          &lt;!&ndash; Plan &ndash;&gt;-->
+          <!--          <validation-provider-->
+          <!--            #default="validationContext"-->
+          <!--            name="Plan"-->
+          <!--            rules="required"-->
+          <!--          >-->
+          <!--            <b-form-group-->
+          <!--              label="Plan"-->
+          <!--              label-for="plan"-->
+          <!--              :state="getValidationState(validationContext)"-->
+          <!--            >-->
+          <!--              <v-select-->
+          <!--                v-model="userData.currentPlan"-->
+          <!--                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
+          <!--                :options="planOptions"-->
+          <!--                :reduce="val => val.value"-->
+          <!--                :clearable="false"-->
+          <!--                input-id="plan"-->
+          <!--              />-->
+          <!--              <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
+          <!--                {{ validationContext.errors[0] }}-->
+          <!--              </b-form-invalid-feedback>-->
+          <!--            </b-form-group>-->
+          <!--          </validation-provider>-->
 
           <!-- Form Actions -->
           <div class="d-flex mt-2">
@@ -238,7 +239,7 @@
               class="mr-2"
               type="submit"
             >
-              Add
+              {{ $t('Create') }}
             </b-button>
             <b-button
               v-ripple.400="'rgba(186, 191, 199, 0.15)'"
@@ -246,7 +247,7 @@
               variant="outline-secondary"
               @click="hide"
             >
-              Cancel
+              {{ $t('Cancel') }}
             </b-button>
           </div>
 
@@ -313,14 +314,7 @@ export default {
   },
   setup(props, { emit }) {
     const blankUserData = {
-      fullName: '',
-      username: '',
-      email: '',
-      role: null,
-      currentPlan: null,
-      company: '',
-      country: '',
-      contact: '',
+      name: '',
     }
 
     const userData = ref(JSON.parse(JSON.stringify(blankUserData)))
@@ -329,7 +323,7 @@ export default {
     }
 
     const onSubmit = () => {
-      store.dispatch('app-user/addUser', userData.value)
+      store.dispatch('app-team/addTeam', userData.value)
         .then(() => {
           emit('refetch-data')
           emit('update:is-add-new-user-sidebar-active', false)

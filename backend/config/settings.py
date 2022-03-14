@@ -216,6 +216,8 @@ REST_FRAMEWORK = {
     'UPLOADED_FILES_USE_URL': False,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # TODO: disable this on prod
+        'rest_framework.authentication.SessionAuthentication',
     ],
     # TODO: enable this on prod
     # 'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
