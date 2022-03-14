@@ -7,7 +7,7 @@ export default [
   {
     title: 'Reservations',
     route: 'apps-reservations-list',
-    icon: 'HomeIcon',
+    icon: 'ListIcon',
   },
   // {
   //   title: 'My reservations',
@@ -31,9 +31,19 @@ export default [
     ],
   },
   {
-    title: 'Spot issues',
-    route: 'apps-reservations-issues-list',
-    icon: 'AlertTriangleIcon',
+    title: 'Workspaces',
+    icon: 'HomeIcon',
+    children: [
+      {
+        title: 'Spot list',
+        route: 'apps-workspaces-list',
+        icon: 'ListIcon',
+      },
+      {
+        title: 'Spot issues',
+        route: 'apps-workspaces-issues-list',
+        icon: 'AlertTriangleIcon',
+      },
+    ],
   },
-
 ]

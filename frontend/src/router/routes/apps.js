@@ -1,6 +1,6 @@
 export default [
   // *===============================================---*
-  // *--------- USER ---- ---------------------------------------*
+  // *--------- USERS ----------------------------------*
   // *===============================================---*
   {
     path: '/apps/users/list',
@@ -18,7 +18,7 @@ export default [
   //   component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   // },
   // *===============================================---*
-  // *--------- Teams ---- ---------------------------------------*
+  // *--------- TEAMS ----------------------------------*
   // *===============================================---*
   {
     path: '/apps/teams/list',
@@ -35,4 +35,25 @@ export default [
   //   name: 'apps-users-edit',
   //   component: () => import('@/views/apps/user/users-edit/TeamsEdit.vue'),
   // },
+  // *===============================================---*
+  // *--------- RESERVATIONS ---------------------------*
+  // *===============================================---*
+  {
+    path: '/apps/reservations/list',
+    name: 'apps-reservations-list',
+    component: () => import('@/views/apps/reservation/ReservationsList.vue'),
+  },
+  // *===============================================---*
+  // *--------- WORKSPACES -----------------------------*
+  // *===============================================---*
+  {
+    path: '/apps/workspaces/list',
+    name: 'apps-workspaces-list',
+    component: () => import('@/views/apps/workplace/SpotsList.vue'),
+  },
+  {
+    path: '/apps/workspaces/issues/list',
+    name: 'apps-workspaces-issues-list',
+    component: () => import('@/views/apps/workplace/SpotIssuesList.vue'),
+  },
 ]
