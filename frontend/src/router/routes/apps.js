@@ -20,19 +20,19 @@ export default [
   // *===============================================---*
   // *--------- Teams ---- ---------------------------------------*
   // *===============================================---*
-  // {
-  //   path: '/apps/teams+/list',
-  //   name: 'apps-users-list',
-  //   component: () => import('@/views/apps/user/users-list/UsersList.vue'),
-  // },
+  {
+    path: '/apps/teams/list',
+    name: 'apps-teams-list',
+    component: () => import('@/views/apps/team/teams-list/TeamsList.vue'),
+  },
   // {
   //   path: '/apps/users/view/:id',
   //   name: 'apps-users-view',
-  //   component: () => import('@/views/apps/user/users-view/UsersView.vue'),
+  //   component: () => import('@/views/apps/user/users-view/TeamsView.vue'),
   // },
   // {
   //   path: '/apps/users/edit/:id',
   //   name: 'apps-users-edit',
-  //   component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
+  //   component: () => import('@/views/apps/user/users-edit/TeamsEdit.vue'),
   // },
 ]
