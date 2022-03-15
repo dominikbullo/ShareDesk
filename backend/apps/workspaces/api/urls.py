@@ -7,6 +7,6 @@ app_name = 'workspaces'
 
 # https://www.django-rest-framework.org/api-guide/routers/
 router = DefaultRouter()
-router.register(r"workspaces", WorkspaceViewSet, basename="workspaces")
+router.register(r"workspaces?", WorkspaceViewSet, basename="workspaces")
 
 urlpatterns = []

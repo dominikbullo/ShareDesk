@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.conf import settings
 
 from apps.users.models import User
+from core.choices import UserTypeChoices
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -12,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField(read_only=True)
     full_name = serializers.SerializerMethodField(read_only=True)
     short_name = serializers.SerializerMethodField(read_only=True)
+    user_role = serializers.ChoiceField(choices=UserTypeChoices.choices, read_only=True)
 
     def get_avatar(self, obj):
         return obj.avatar.url if obj.avatar else settings.STATIC_URL + \
@@ -30,7 +32,8 @@ class UserSerializer(serializers.ModelSerializer):
             'avatar',
             'full_name',
             'short_name',
-            'registered_at']
+            'registered_at',
+            'user_role']
 
 
 class UserWriteSerializer(serializers.ModelSerializer):
