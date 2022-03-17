@@ -9,16 +9,6 @@
       @refetch-data="refetchData"
     />
 
-    <!-- Filters -->
-    <users-list-filters
-      :role-filter.sync="roleFilter"
-      :plan-filter.sync="planFilter"
-      :status-filter.sync="statusFilter"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      :status-options="statusOptions"
-    />
-
     <!-- Table Container Card -->
     <b-card
       no-body
@@ -222,14 +212,12 @@ import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
 import store from '@/store'
-import UsersListFilters from './TeamsListFilters.vue'
-import useTeamsList from './useTeamsList'
-import userStoreModule from '../userStoreModule'
-import UserListAddNew from './TeamListAddNew.vue'
+import useUsersList from '@/views/apps/user/users-list/useUsersList'
+import userStoreModule from '@/views/apps/user/userStoreModule'
+import UserListAddNew from '@/views/apps/user/users-list/UserListAddNew.vue'
 
 export default {
   components: {
-    UsersListFilters,
     UserListAddNew,
 
     BCard,

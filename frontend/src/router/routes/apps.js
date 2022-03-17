@@ -7,11 +7,11 @@ export default [
     name: 'apps-users-list',
     component: () => import('@/views/apps/user/users-list/UsersList.vue'),
   },
-  // {
-  //   path: '/apps/users/view/:id',
-  //   name: 'apps-users-view',
-  //   component: () => import('@/views/apps/user/users-view/UsersView.vue'),
-  // },
+  {
+    path: '/apps/users/view/:id',
+    name: 'apps-users-view',
+    component: () => import('@/views/apps/user/users-view/UsersView.vue'),
+  },
   // {
   //   path: '/apps/users/edit/:id',
   //   name: 'apps-users-edit',
@@ -25,11 +25,11 @@ export default [
     name: 'apps-teams-list',
     component: () => import('@/views/apps/team/teams-list/TeamsList.vue'),
   },
-  // {
-  //   path: '/apps/users/view/:id',
-  //   name: 'apps-users-view',
-  //   component: () => import('@/views/apps/user/users-view/TeamsView.vue'),
-  // },
+  {
+    path: '/apps/teams/view/:id',
+    name: 'apps-teams-view',
+    component: () => import('@/views/apps/team/teams-view/TeamsView.vue'),
+  },
   // {
   //   path: '/apps/users/edit/:id',
   //   name: 'apps-users-edit',

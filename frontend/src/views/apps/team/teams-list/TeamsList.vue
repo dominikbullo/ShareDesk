@@ -8,16 +8,6 @@
       @refetch-data="refetchData"
     />
 
-    <!-- Filters -->
-    <users-list-filters
-      :role-filter.sync="roleFilter"
-      :plan-filter.sync="planFilter"
-      :status-filter.sync="statusFilter"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      :status-options="statusOptions"
-    />
-
     <!-- Table Container Card -->
     <b-card
       no-body
@@ -83,24 +73,24 @@
       >
 
         <!-- Column: User -->
-        <template #cell(user)="data">
+        <template #cell(name)="data">
           <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="data.item.avatar"
-                :text="avatarText(data.item.fullName)"
-                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
-                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
-              />
-            </template>
+            <!--            <template #aside>-->
+            <!--              <b-avatar-->
+            <!--                size="32"-->
+            <!--                :src="data.item.avatar"-->
+            <!--                :text="avatarText(data.item.fullName)"-->
+            <!--                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"-->
+            <!--                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
+            <!--              />-->
+            <!--            </template>-->
             <b-link
-              :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
+              :to="{ name: 'apps-teams-view', params: { id: data.item.id } }"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.fullName }}
+              {{ data.item.name }}
             </b-link>
-            <small class="text-muted">@{{ data.item.username }}</small>
+            <small class="text-muted">{{ data.item.name }}</small>
           </b-media>
         </template>
 
@@ -221,14 +211,12 @@ import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
 import store from '@/store'
-import UsersListFilters from './TeamsListFilters.vue'
 import useTeamsList from './useTeamsList'
 import userStoreModule from '../teamStoreModule'
 import UserListAddNew from './TeamListAddNew.vue'
 
 export default {
   components: {
-    UsersListFilters,
     UserListAddNew,
 
     BCard,
