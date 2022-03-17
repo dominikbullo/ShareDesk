@@ -1,12 +1,11 @@
 from rest_framework.routers import DefaultRouter
 
-from apps.reservations.api.views import SpotReservationViewSet, SpotViewSet
+from apps.reservations.api.views import ReservationViewSet
 
 app_name = 'reservations'
 
 # https://www.django-rest-framework.org/api-guide/routers/
 router = DefaultRouter()
-router.register(r"spots?/reservations?", SpotReservationViewSet, basename="spot_reservations")
-router.register(r"spots?", SpotViewSet, basename="spots")
+router.register(r"/reservations?", ReservationViewSet, basename="spot_reservations")
 
 urlpatterns = []

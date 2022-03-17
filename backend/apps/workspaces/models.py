@@ -33,5 +33,5 @@ class Spot(models.Model):
 class SpotIssue(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, related_name='created_spot_issues', on_delete=models.DO_NOTHING)
-    spot = models.OneToOneField(Spot, on_delete=models.CASCADE)
+    spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
     description = models.TextField()
