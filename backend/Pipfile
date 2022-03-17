@@ -47,6 +47,7 @@ Pillow = "*"
 Pygments = "*"
 Werkzeug = "*"
 djangorestframework-simplejwt = "*"
+django-filter = "*"
 
 [dev-packages]
 

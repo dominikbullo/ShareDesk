@@ -10,3 +10,4 @@ from apps.teams.models import Team
 class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
     queryset = Team.objects.all()
+    filterset_fields = "__all__"
