@@ -54,6 +54,6 @@ export default [
   {
     path: '/apps/workspaces/issues/list',
     name: 'apps-workspaces-issues-list',
-    component: () => import('@/views/apps/workplace/SpotIssuesList.vue'),
+    component: () => import('@/views/apps/workplace/issues-list/SpotIssuesList.vue'),
   },
 ]

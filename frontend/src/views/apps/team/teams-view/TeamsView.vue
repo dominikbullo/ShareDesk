@@ -212,7 +212,7 @@ import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
 import store from '@/store'
-import useUsersList from '@/views/apps/user/users-list/useUsersList'
+import useIssuesList from '@/views/apps/user/users-list/useUsersList'
 import userStoreModule from '@/views/apps/user/userStoreModule'
 import UserListAddNew from '@/views/apps/user/users-list/UserListAddNew.vue'
 
@@ -237,14 +237,14 @@ export default {
     vSelect,
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = 'app-user'
+    const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule)
+    if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, userStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME)) store.unregisterModule(USER_APP_STORE_MODULE_NAME)
+      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
     })
 
     const isAddNewUserSidebarActive = ref(false)

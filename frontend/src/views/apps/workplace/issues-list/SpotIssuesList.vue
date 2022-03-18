@@ -2,10 +2,8 @@
 
   <div>
 
-    <user-list-add-new
+    <spot-issue-list-add-new
       :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
       @refetch-data="refetchData"
     />
 
@@ -63,7 +61,7 @@
       <b-table
         ref="refUserListTable"
         class="position-relative"
-        :items="fetchUsers"
+        :items="fetchIssues"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -212,13 +210,13 @@ import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
 import store from '@/store'
-import useIssuesList from '../users-list/useUsersList'
-import userStoreModule from '../userStoreModule'
-import UserListAddNew from '../users-list/UserListAddNew.vue'
+import useIssuesList from './useIssuesList'
+import workspaceStoreModuLe from '../workspaceStoreModule'
+import SpotIssueListAddNew from './SpotIssueListAddNew.vue'
 
 export default {
   components: {
-    UserListAddNew,
+    SpotIssueListAddNew,
 
     BCard,
     BRow,
@@ -237,41 +235,20 @@ export default {
     vSelect,
   },
   setup() {
-    const USER_APP_STORE_MODULE_NAME = 'app-user'
+    const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule)
+    if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModuLe)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(USER_APP_STORE_MODULE_NAME)) store.unregisterModule(USER_APP_STORE_MODULE_NAME)
+      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
     })
 
     const isAddNewUserSidebarActive = ref(false)
 
-    const roleOptions = [
-      { label: 'Admin', value: 'admin' },
-      { label: 'Author', value: 'author' },
-      { label: 'Editor', value: 'editor' },
-      { label: 'Maintainer', value: 'maintainer' },
-      { label: 'Subscriber', value: 'subscriber' },
-    ]
-
-    const planOptions = [
-      { label: 'Basic', value: 'basic' },
-      { label: 'Company', value: 'company' },
-      { label: 'Enterprise', value: 'enterprise' },
-      { label: 'Team', value: 'team' },
-    ]
-
-    const statusOptions = [
-      { label: 'Pending', value: 'pending' },
-      { label: 'Active', value: 'active' },
-      { label: 'Inactive', value: 'inactive' },
-    ]
-
     const {
-      fetchUsers,
+      fetchIssues,
       tableColumns,
       perPage,
       currentPage,
@@ -293,14 +270,14 @@ export default {
       roleFilter,
       planFilter,
       statusFilter,
-    } = useUsersList()
+    } = useIssuesList()
 
     return {
 
       // Sidebar
       isAddNewUserSidebarActive,
 
-      fetchUsers,
+      fetchIssues,
       tableColumns,
       perPage,
       currentPage,
@@ -320,10 +297,6 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
-
-      roleOptions,
-      planOptions,
-      statusOptions,
 
       // Extra Filters
       roleFilter,
