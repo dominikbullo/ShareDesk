@@ -3,24 +3,42 @@ from django.db import models
 from apps.users.models import User
 
 
+class RoomLayout(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    # created_by = models.ForeignKey(User, related_name='created_layouts', on_delete=models.DO_NOTHING)
+    name = models.CharField(max_length=255)
+
+
+# class FloorLayout(models.Model):
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     # created_by = models.ForeignKey(User, related_name='created_layouts', on_delete=models.DO_NOTHING)
+#     name = models.CharField(max_length=255)
+
+
 class Workspace(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, related_name='created_worskspaces', on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
 
 
-class Layout(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    # created_by = models.ForeignKey(User, related_name='created_layouts', on_delete=models.DO_NOTHING)
+class Floor(models.Model):
+    workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
+    floor_number = models.IntegerField()
     name = models.CharField(max_length=255)
+
+
+# class FloorPlan(models.Model):
+#     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=255)
 
 
 class Room(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    # created_by = models.ForeignKey(User, related_name='created_rooms', on_delete=models.DO_NOTHING)
-    position = models.ForeignKey(Workspace, on_delete=models.CASCADE)
-    layout = models.ForeignKey(Layout, on_delete=models.CASCADE)
+    floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
+    layout = models.ForeignKey(RoomLayout, on_delete=models.CASCADE)
+    capacity = models.IntegerField()
     name = models.CharField(max_length=255)
+    number = models.IntegerField(blank=True, null=True)
 
 
 class Spot(models.Model):
