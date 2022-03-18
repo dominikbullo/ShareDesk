@@ -1,6 +1,7 @@
 from django.db import models
 
 from apps.users.models import User
+from core.choices import SpotIssueStatusChoices
 
 
 class RoomLayout(models.Model):
@@ -22,11 +23,17 @@ class Workspace(models.Model):
     # created_by = models.ForeignKey(User, related_name='created_worskspaces', on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return self.name
+
 
 class Floor(models.Model):
     workspace = models.ForeignKey(Workspace, on_delete=models.CASCADE)
-    floor_number = models.IntegerField()
+    number = models.IntegerField()
     name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.number}"
 
 
 # class FloorPlan(models.Model):
@@ -42,6 +49,16 @@ class Room(models.Model):
     name = models.CharField(max_length=255)
     number = models.CharField(max_length=255, blank=True, null=True)
 
+    def __str__(self):
+        if self.number:
+            return f"Room {self.number} on {self.floor}. floor"
+        return f"Room on {self.floor}."
+
+    def spot_number(self):
+        if self.number:
+            return self.number
+        return "No identification"
+
 
 class Spot(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,11 +66,23 @@ class Spot(models.Model):
     row = models.IntegerField()
     column = models.IntegerField()
     enabled = models.BooleanField(default=True)
-    name = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"Spot {self.identifier} in {self.room}"
 
 
 class SpotIssue(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, related_name='created_spot_issues', on_delete=models.DO_NOTHING)
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=255)
     description = models.TextField()
+    status = models.CharField(
+        max_length=20,
+        choices=SpotIssueStatusChoices.choices,
+        default=SpotIssueStatusChoices.SUBMITTED
+    )
+
+    def __str__(self):
+        return f"{self.subject} at {self.spot}"
