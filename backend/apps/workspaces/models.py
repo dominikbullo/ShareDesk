@@ -51,8 +51,8 @@ class Room(models.Model):
 
     def __str__(self):
         if self.number:
-            return f"Room {self.number} on {self.floor}. floor"
-        return f"Room on {self.floor}."
+            return f"room {self.number}"
+        return f"room on {self.floor}."
 
     def spot_number(self):
         if self.number:
@@ -69,7 +69,7 @@ class Spot(models.Model):
     identifier = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"Spot {self.identifier} in {self.room}"
+        return f"spot {self.identifier}"
 
 
 class SpotIssue(models.Model):

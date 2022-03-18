@@ -14,14 +14,10 @@ export default function useIssuesList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'user', sortable: true },
-    { key: 'email', sortable: true },
-    { key: 'user_role', sortable: true },
-    {
-      key: 'registered_at',
-      label: 'Register',
-      sortable: true,
-    },
+    { key: 'subject', sortable: true },
+    { key: 'created_by', sortable: true },
+    { key: 'created_at', sortable: true },
+    { key: 'spot', sortable: true },
     { key: 'status', sortable: true },
     { key: 'actions' },
   ]
@@ -106,9 +102,9 @@ export default function useIssuesList() {
   }
 
   const resolveUserStatusVariant = status => {
-    if (status === 'pending') return 'warning'
-    if (status === 'active') return 'success'
-    if (status === 'inactive') return 'secondary'
+    if (status === 'open') return 'warning'
+    if (status === 'in_progress') return 'success'
+    if (status === 'resolved') return 'secondary'
     return 'primary'
   }
 

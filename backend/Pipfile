@@ -48,6 +48,9 @@ Pygments = "*"
 Werkzeug = "*"
 djangorestframework-simplejwt = "*"
 django-filter = "*"
+django-rest-polymorphic = "*"
+django-simple-history = "*"
+django-polymorphic = "*"
 
 [dev-packages]
 
