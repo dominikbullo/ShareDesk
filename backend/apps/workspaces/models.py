@@ -6,6 +6,8 @@ from apps.users.models import User
 class RoomLayout(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, related_name='created_layouts', on_delete=models.DO_NOTHING)
+    rows = models.IntegerField()
+    columns = models.IntegerField()
     name = models.CharField(max_length=255)
 
 
@@ -38,14 +40,16 @@ class Room(models.Model):
     layout = models.ForeignKey(RoomLayout, on_delete=models.CASCADE)
     capacity = models.IntegerField()
     name = models.CharField(max_length=255)
-    number = models.IntegerField(blank=True, null=True)
+    number = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Spot(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    # created_by = models.ForeignKey(User, related_name='created_spot', on_delete=models.DO_NOTHING)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    row = models.IntegerField()
+    column = models.IntegerField()
+    enabled = models.BooleanField(default=True)
     name = models.CharField(max_length=255)
-    position = models.ForeignKey(Room, on_delete=models.CASCADE)
 
 
 class SpotIssue(models.Model):
