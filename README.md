@@ -44,6 +44,8 @@ From dir where you want to back up file, ideally `/tmp/backups` to match docker-
 
 `docker run --rm -v "$PWD:/backups" -u "$(id -u):$(id -g)" -e POSTGRES_HOST=host.docker.internal -e POSTGRES_DB=share_desk -e POSTGRES_USER=postgresuser -e POSTGRES_PASSWORD=mysecretpass  prodrigestivill/postgres-backup-local /backup.sh`
 
+`docker run --rm --tty --interactive -v $BACKUPFILE:tmp/backups/daily/share_desk-20220322.sql.gz postgres:$VERSION /bin/sh -c "zcat tmp/backups/daily/share_desk-20220322.sql.gz | psql --host=host.docker.internal --username=postgresuser --dbname=share_desk -W`
+
 ## Deploy app
 
 For production you'll need to fill out `.env` file and use
