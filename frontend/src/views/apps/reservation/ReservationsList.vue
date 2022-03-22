@@ -1,10 +1,27 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <div class="row">
-        <div class="col-8 py-5">
+  <div>
+    <reservations-list-filters
+      :role-filter.sync="roleFilter"
+      :plan-filter.sync="planFilter"
+      :status-filter.sync="statusFilter"
+      :role-options="roleOptions"
+      :plan-options="planOptions"
+      :status-options="statusOptions"
+    />
+
+    <b-card>
+      <b-card-header class="pb-50">
+        <h5>
+          Filters
+        </h5>
+      </b-card-header>
+      <b-row>
+        <b-col
+          md="7"
+          class="pt-5"
+        >
           <div>
-            <table class="mx-auto">
+            <table>
               <tbody>
                 <tr v-for="idxr, r in rows">
                   <td
@@ -23,16 +40,17 @@
               </tbody>
             </table>
           </div>
-        </div>
-        <div class="col-4 pt-3">
+        </b-col>
+        <b-col
+          md="5"
+          class="pt-3"
+          align-content="center"
+        >
           <div
             v-show="selectedSeat !=null"
             class="card"
             style="display: none;"
           >
-            <div class="card-header">
-              Properties
-            </div>
             <div class="card-body">
               <ul class="list-group">
                 <li
@@ -134,15 +152,26 @@
               </ul>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </b-col>
+      </b-row>
+    </b-card>
   </div>
 </template>
 
 <script>
 
+import {
+  BCard, BCol, BRow,
+} from 'bootstrap-vue'
+import ReservationsListFilters from '@/views/apps/reservation/ReservationsListFilters'
+
 export default {
+  components: {
+    ReservationsListFilters,
+    BCard,
+    BRow,
+    BCol,
+  },
   data() {
     return {
       errors: [],
@@ -151,10 +180,9 @@ export default {
       rows: 8,
       cols: 12,
       seats: [],
+      country: 'id',
+      countryOption: ['test', 'test2', 'test3'],
     }
-  },
-  computed: {},
-  beforeMount() {
   },
   mounted() {
     this.generateSeats()
@@ -242,7 +270,17 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.full-width .card-header-tabs {
+   margin-right: -21px;
+   margin-left: -21px;
+}
+
+.full-width .nav-tabs .nav-item {
+   margin-bottom: -1px;
+   flex-grow: 1;
+   text-align: center;
+}
 .cls-selected{background-color:green;}
 .cls-ra{background-color:#fff;}
 .cls-rb{background-color:gray;}

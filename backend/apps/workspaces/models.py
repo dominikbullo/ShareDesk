@@ -62,10 +62,10 @@ class Room(models.Model):
 
 class Spot(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
+    enabled = models.BooleanField(default=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     row = models.IntegerField()
     column = models.IntegerField()
-    enabled = models.BooleanField(default=True)
     identifier = models.CharField(max_length=255)
 
     def __str__(self):
