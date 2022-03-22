@@ -49,9 +49,13 @@ export default class JwtService {
               this.isAlreadyFetchingAccessToken = false
 
               // Update accessToken in localStorage
+              console.log('new token')
+              console.log(r.data)
               this.setToken(r.data.access)
-              this.setRefreshToken(r.data.refreshToken)
 
+              if (r.data.refresh) {
+                this.setRefreshToken(r.data.refresh)
+              }
               this.onAccessTokenFetched(r.data.access)
             }, reason => {
               console.error(reason)

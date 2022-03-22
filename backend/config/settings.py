@@ -238,3 +238,8 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
 }
+# SIMPLE JWT
+# ------------------------------------------------------------------------------
+SIMPLE_JWT = {
+    'ROTATE_REFRESH_TOKENS': True,
+}
