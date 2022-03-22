@@ -57,6 +57,12 @@ export default function useIssuesList() {
       filterOptions: {
         enabled: true,
         placeholder: `${i18n.t('Search')} ${i18n.t('Status')}`,
+        filterDropdownItems: [
+          { value: 'submitted', text: 'Submitted' },
+          { value: 'open', text: 'Open' },
+          { value: 'in_progress', text: 'In progress' },
+          { value: 'resolved', text: 'Resolved' },
+        ],
       },
     },
     {
@@ -97,12 +103,11 @@ export default function useIssuesList() {
   }
 
   function resolveIssueStatusVariantText(status) {
-    // TODO translate?
     if (status === 'submitted') return i18n.t('Submitted')
     if (status === 'open') return i18n.t('Open')
     if (status === 'in_progress') return i18n.t('In progress')
     if (status === 'resolved') return i18n.t('Resolved')
-    return 'primary'
+    return 'No Status'
   }
 
   const resolveIssueStatusVariant = status => ({

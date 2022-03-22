@@ -1,0 +1,10 @@
+@import '@core/scss/vue/libs/vue-good-table.scss';
+
+.vgt-select {
+  background-color: transparent !important;
+  border-color: #404656 !important;;
+}
+
+.vgt-select option {
+  background-color: $theme-dark-card-bg !important;;
+}
