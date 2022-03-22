@@ -17,9 +17,12 @@
 
     <!-- table -->
     <vue-good-table
-      :columns="columns"
-      :rows="rows"
-      :rtl="direction"
+      :columns="tableColumns"
+      :rows="issuesList"
+      :sort-options="{
+        enabled: true,
+        initialSortBy: {field: 'status', type: 'asc'}
+      }"
       :search-options="{
         enabled: true,
         externalQuery: searchTerm }"
@@ -47,8 +50,8 @@
 
         <!-- Column: Status -->
         <span v-else-if="props.column.field === 'status'">
-          <b-badge :variant="statusVariant(props.row.status)">
-            {{ props.row.status }}
+          <b-badge :variant="`light-${resolveIssueStatusVariant(props.row.status).color}`">
+            {{ resolveIssueStatusVariant(props.row.status).text }}
           </b-badge>
         </span>
 
@@ -146,8 +149,12 @@
 import {
   BAvatar, BBadge, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
+// WARNING: VueGoodTable (3rd party - Not Vue 3 ready yet)
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
+import useIssuesList from '@/views/apps/workplace/issues-list/useIssuesList'
+import store from '@/store'
+import workspaceStoreModule from '../workspaceStoreModule'
 
 export default {
   components: {
@@ -164,89 +171,44 @@ export default {
   data() {
     return {
       pageLength: 10,
-      dir: false,
-      columns: [
-        {
-          label: 'Name',
-          field: 'fullName',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Search Name',
-          },
-        },
-        {
-          label: 'Email',
-          field: 'email',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Search Email',
-          },
-        },
-        {
-          label: 'Date',
-          field: 'startDate',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Search Date',
-          },
-        },
-        {
-          label: 'Salary',
-          field: 'salary',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Search Salary',
-          },
-        },
-        {
-          label: 'Status',
-          field: 'status',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Search Status',
-          },
-        },
-        {
-          label: 'Action',
-          field: 'action',
-        },
-      ],
-      rows: [],
       searchTerm: '',
     }
   },
-  computed: {
-    statusVariant() {
-      const statusColor = {
-        /* eslint-disable key-spacing */
-        booked: 'light-primary',
-        broken: 'light-warning',
-        free: 'light-success',
-        permanent: 'light-danger',
-        // broken: 'light-info',
-        /* eslint-enable key-spacing */
-      }
-
-      return status => statusColor[status]
-    },
-    direction() {
-      if (store.state.appConfig.isRTL) {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.dir = true
-        return this.dir
-      }
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.dir = false
-      return this.dir
-    },
-  },
   created() {
-    this.rows = [
-      { fullName: 'test1', email: 'test1@test.sk', status: 'booked' },
-      { fullName: 'test2', email: 'test2@test.sk', status: 'permanent' },
-      { fullName: 'test3', email: 'test3@test.sk', status: 'free' },
-      { fullName: 'test3', email: 'test3@test.sk', status: 'broken' },
-    ]
+    // This is needed because God Table not supporting Vue 3
+    this.fetchIssues()
+  },
+  setup() {
+    const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
+
+    // Register module
+    if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModule)
+
+    // UnRegister on leave
+    onUnmounted(() => {
+      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
+    })
+
+    const {
+      fetchIssues,
+      issuesList,
+      totalIssues,
+
+      tableColumns,
+
+      resolveIssueStatusVariant,
+    } = useIssuesList()
+
+    return {
+      fetchIssues,
+      issuesList,
+      totalIssues,
+
+      tableColumns,
+
+      // UI
+      resolveIssueStatusVariant,
+    }
   },
 }
 </script>

@@ -163,7 +163,7 @@ export default {
   data() {
     return {
       pageLength: 10,
-      dir: false,
+      test: '123',
       columns: [
         {
           label: 'Name',

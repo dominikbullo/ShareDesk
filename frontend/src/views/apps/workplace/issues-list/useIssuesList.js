@@ -1,10 +1,12 @@
-import { ref, watch, computed } from '@vue/composition-api'
-import { title } from '@core/utils/filter'
+import { ref } from '@vue/composition-api'
 
 // Notification
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
+
+// https://stackoverflow.com/questions/65831314/how-to-use-vue-i18n-translation-in-js-file
+import i18n from '@/libs/i18n'
 
 export default function useIssuesList() {
   // Use toast
@@ -14,64 +16,71 @@ export default function useIssuesList() {
 
   // Table Handlers
   const tableColumns = [
-    { key: 'subject', sortable: true },
-    { key: 'created_by', sortable: true },
-    { key: 'created_at', sortable: true },
-    { key: 'spot', sortable: true },
-    { key: 'status', sortable: true },
-    { key: 'actions' },
+    {
+      label: i18n.t('Subject'),
+      field: 'subject',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Subject')}`,
+      },
+    },
+    {
+      label: i18n.t('Spot'),
+      field: 'spot',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Spot')}`,
+      },
+    },
+    {
+      label: i18n.t('Description'),
+      field: 'description',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Description')}`,
+      },
+    },
+    {
+      label: i18n.t('Created at'),
+      field: 'created_at',
+      type: 'date',
+      dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSSSS\'Z\'',
+      dateOutputFormat: 'dd.MM.yyyy HH:mm',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Date')}`,
+      },
+    },
+    {
+      label: i18n.t('Status'),
+      field: 'status',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Status')}`,
+      },
+    },
+    {
+      label: i18n.t('Action'),
+      field: 'action',
+      sortable: false,
+    },
   ]
-  const perPage = ref(10)
-  const totalUsers = ref(0)
-  const currentPage = ref(1)
-  const perPageOptions = [10, 25, 50, 100]
-  const searchQuery = ref('')
-  const sortBy = ref('id')
-  const isSortDirDesc = ref(true)
-  const roleFilter = ref(null)
-  const planFilter = ref(null)
-  const statusFilter = ref(null)
 
-  const dataMeta = computed(() => {
-    const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
-    return {
-      from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
-      to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalUsers.value,
-    }
-  })
+  const totalIssues = ref(0)
+  const issuesList = ref([])
 
-  const refetchData = () => {
-    refUserListTable.value.refresh()
-  }
-
-  watch([currentPage, perPage, searchQuery, roleFilter, planFilter, statusFilter], () => {
-    refetchData()
-  })
-
-  const fetchIssues = (ctx, callback) => {
+  const fetchIssues = () => {
     store
-      .dispatch('app-workspace/fetchIssues', {
-        q: searchQuery.value,
-        perPage: perPage.value,
-        page: currentPage.value,
-        sortBy: sortBy.value,
-        sortDesc: isSortDirDesc.value,
-        role: roleFilter.value,
-        plan: planFilter.value,
-        status: statusFilter.value,
-      })
+      .dispatch('app-workspace/fetchIssues')
       .then(response => {
-        const users = response.data
-
-        callback(users)
-        totalUsers.value = users.length
+        issuesList.value = response.data
+        totalIssues.value = response.data.length
       })
       .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching users list',
+            title: 'Error fetching issues list',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
@@ -79,56 +88,36 @@ export default function useIssuesList() {
       })
   }
 
-  // *===============================================---*
-  // *--------- UI ---------------------------------------*
-  // *===============================================---*
-
-  const resolveUserRoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
-    if (role === 'author') return 'warning'
-    if (role === 'maintainer') return 'success'
-    if (role === 'editor') return 'info'
-    if (role === 'admin') return 'danger'
-    return 'primary'
-  }
-
-  const resolveUserRoleIcon = role => {
-    if (role === 'subscriber') return 'UserIcon'
-    if (role === 'author') return 'SettingsIcon'
-    if (role === 'maintainer') return 'DatabaseIcon'
-    if (role === 'editor') return 'Edit2Icon'
-    if (role === 'admin') return 'ServerIcon'
-    return 'UserIcon'
-  }
-
-  const resolveUserStatusVariant = status => {
-    if (status === 'open') return 'warning'
+  function resolveIssueStatusVariantColor(status) {
+    if (status === 'submitted') return 'warning'
+    if (status === 'open') return 'primary'
     if (status === 'in_progress') return 'success'
     if (status === 'resolved') return 'secondary'
     return 'primary'
   }
 
+  function resolveIssueStatusVariantText(status) {
+    // TODO translate?
+    if (status === 'submitted') return i18n.t('Submitted')
+    if (status === 'open') return i18n.t('Open')
+    if (status === 'in_progress') return i18n.t('In progress')
+    if (status === 'resolved') return i18n.t('Resolved')
+    return 'primary'
+  }
+
+  const resolveIssueStatusVariant = status => ({
+    color: resolveIssueStatusVariantColor(status),
+    text: resolveIssueStatusVariantText(status),
+  })
+
   return {
     fetchIssues,
+    issuesList,
+    totalIssues,
+
     tableColumns,
-    perPage,
-    currentPage,
-    totalUsers,
-    dataMeta,
-    perPageOptions,
-    searchQuery,
-    sortBy,
-    isSortDirDesc,
-    refUserListTable,
 
-    resolveUserRoleVariant,
-    resolveUserRoleIcon,
-    resolveUserStatusVariant,
-    refetchData,
-
-    // Extra Filters
-    roleFilter,
-    planFilter,
-    statusFilter,
+    // UI
+    resolveIssueStatusVariant,
   }
 }
