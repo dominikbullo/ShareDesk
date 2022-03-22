@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/dominikbullo/ShareDesk/compare/v0.1.0...v0.2.0) (2022-03-22)
+
+
+### Features
+
+* api support plural ([051a38c](https://github.com/dominikbullo/ShareDesk/commit/051a38c30e4cb5c67d36051cd4d1bb5905c9e2c2))
+* **backend:** Django filters ([e842a70](https://github.com/dominikbullo/ShareDesk/commit/e842a70927ae5d6232e01ed8c0aa53eb463b4d20))
+* **fe-users:** user list basics ([64b4a1f](https://github.com/dominikbullo/ShareDesk/commit/64b4a1f9a1eba99e468a36b0e1e1857987720ebf))
+* **frontend:** account settings basics ([6d7984a](https://github.com/dominikbullo/ShareDesk/commit/6d7984a9e2f1a288ef555632fd1fb5f5becd4364))
+* **frontend:** add issues and reservations files and folders structure ([f465539](https://github.com/dominikbullo/ShareDesk/commit/f4655399de30ff7fa1acb4cd87366dcbaac4bdd1))
+* **frontend:** anybody can create team now ([de1f12e](https://github.com/dominikbullo/ShareDesk/commit/de1f12e2b32d889bd4059c4d911cfa5fed67a1ae))
+* **frontend:** locales fix & basic layout ([35a82f4](https://github.com/dominikbullo/ShareDesk/commit/35a82f40994583593d74c4972d47444b4b0e59a8))
+* remove created_by fields for now and prepare teams view ([b61186c](https://github.com/dominikbullo/ShareDesk/commit/b61186c9666e48baa894dd1eee91547c919d2a0f))
+* **reservation:** Added Django Polymorphic to reservation for user/team ([e6a7f27](https://github.com/dominikbullo/ShareDesk/commit/e6a7f27fb38400773fdcc6f35296eedd0bc9f2f8))
+* **spot-issues:** Spot issue basic list on FE ([6fe08b3](https://github.com/dominikbullo/ShareDesk/commit/6fe08b340010e7f338d885da86d0585768a1f2c5))
+* **teams:** basic table copy from user ([819bb6a](https://github.com/dominikbullo/ShareDesk/commit/819bb6a68de2c7992fad6c758dea4c6e45176bd5))
+* **workspace:** Model strings methods ([8ab0741](https://github.com/dominikbullo/ShareDesk/commit/8ab0741d33afaa928f3c32d3b939bfbf5358c222))
+* **workspace:** Workspaces db more thinking ([9d1c5e6](https://github.com/dominikbullo/ShareDesk/commit/9d1c5e6ab53350ae02e7c4d99f2a8f87eebb6e70))
+* **workspace:** Workspaces with layouts kinda working ([a731101](https://github.com/dominikbullo/ShareDesk/commit/a7311016421c15a3ac23c9e668ec9ad1f3752ba2))
+
+
+### Bug Fixes
+
+* forgot migrations ([77ac406](https://github.com/dominikbullo/ShareDesk/commit/77ac4062c6d59de5420bd0c660a8aaed4cb9e3aa))
+
 ## [0.1.0](https://github.com/dominikbullo/ShareDesk/compare/v0.0.3...v0.1.0) (2022-03-12)
 
 
