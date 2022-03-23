@@ -113,9 +113,12 @@ export default function useReservationsList() {
   })
 
   watch([roomFilter], () => {
-    console.log('room filter change')
     fetchAllWorkspaces().then(() => {
       cleanFilters()
+      if (roomFilter.value === null) {
+        roomData.value = undefined
+        return
+      }
       store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
         .then(response => {
           roomData.value = response.data

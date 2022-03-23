@@ -10,10 +10,10 @@
       :room-options="roomsList"
     />
 
-    <b-card>
+    <b-card v-if="roomData">
       <b-card-header class="pb-50">
         <h5>
-          Filters
+          {{ $t("Select spot") }}
         </h5>
       </b-card-header>
       <b-row>
@@ -154,6 +154,43 @@
               </ul>
             </div>
           </div>
+          <!-- button -->
+          <b-button
+            v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+            variant="outline-primary"
+            @click="modalShow = !modalShow"
+          >
+            {{ $t("Book for user") }}
+          </b-button>
+
+          <b-button
+            v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+            class="ml-2"
+            variant="outline-primary"
+            @click="modalShow = !modalShow"
+          >
+            {{ $t("Book for team") }}
+
+          </b-button>
+
+          <!-- modal -->
+          <b-modal
+            v-model="modalShow"
+            centered
+            size="lg"
+            title="Vertically Centered"
+            :ok-title="$t('Book this spot')"
+          >
+            <b-card-text>
+              Bonbon caramels muffin.
+              Chocolate bar oat cake cookie pastry dragée pastry.
+              Carrot cake chocolate tootsie roll chocolate bar candy canes biscuit.
+              Gummies bonbon apple pie fruitcake icing biscuit apple pie jelly-o sweet roll.
+              Toffee sugar plum sugar plum jelly-o jujubes bonbon dessert carrot cake.
+              Cookie dessert tart muffin topping donut icing fruitcake. Sweet roll cotton candy dragée danish Candy canes chocolate bar cookie.
+              Gingerbread apple pie oat cake. Carrot cake fruitcake bear claw. Pastry gummi bears marshmallow jelly-o.
+            </b-card-text>
+          </b-modal>
         </b-col>
       </b-row>
     </b-card>
@@ -163,13 +200,15 @@
 <script>
 
 import {
-  BCard, BCardHeader, BCol, BRow,
+  BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow,
 } from 'bootstrap-vue'
 import ReservationsListFilters from '@/views/apps/reservation/reservation-list/ReservationsListFilters'
 import store from '@/store'
 import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
 import useReservationsList from '@/views/apps/reservation/reservation-list/useReservationList'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
+import BCardCode from '@core/components/b-card-code'
+import Ripple from 'vue-ripple-directive'
 
 export default {
   components: {
@@ -178,9 +217,16 @@ export default {
     BRow,
     BCardHeader,
     BCol,
+    BButton,
+    BModal,
+    BCardText,
+  },
+  directives: {
+    Ripple,
   },
   data() {
     return {
+      modalShow: false,
       errors: [],
       o: [],
       selectedSeat: null,
