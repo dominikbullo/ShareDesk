@@ -17,6 +17,7 @@
         </h5>
       </b-card-header>
       <b-row>
+        {{ roomData }}
         <b-col
           md="7"
           class="pt-5"
@@ -207,6 +208,7 @@ export default {
       workspacesList,
       floorsList,
       roomsList,
+      roomData,
 
       // Extra Filters
       dateFilter,
@@ -221,6 +223,7 @@ export default {
       workspacesList,
       floorsList,
       roomsList,
+      roomData,
 
       // Extra Filters
       dateFilter,

@@ -4,10 +4,13 @@ import { ref, watch } from '@vue/composition-api'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
+import router from '@/router'
 
 export default function useReservationsList() {
   // Use toast
   const toast = useToast()
+
+  const roomData = ref(null)
 
   const workspacesList = ref([])
   const floorsList = ref([])
@@ -21,12 +24,11 @@ export default function useReservationsList() {
   const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
 
   const fetchWorkspaces = () => new Promise((resolve, reject) => {
-    store
-      .dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchWorkspaces`, {
-        workspace: workspaceFilter.value,
-        floor: floorFilter.value,
-        room: roomFilter.value,
-      })
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchWorkspaces`, {
+      workspace: workspaceFilter.value,
+      floor: floorFilter.value,
+      room: roomFilter.value,
+    })
       .then(response => {
         workspacesList.value = response.data
         resolve(response.data)
@@ -45,12 +47,11 @@ export default function useReservationsList() {
   })
 
   const fetchFloors = (ctx, callback) => new Promise((resolve, reject) => {
-    store
-      .dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchFloors`, {
-        workspace: workspaceFilter.value,
-        floor: floorFilter.value,
-        room: roomFilter.value,
-      })
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchFloors`, {
+      workspace: workspaceFilter.value,
+      floor: floorFilter.value,
+      room: roomFilter.value,
+    })
       .then(response => {
         floorsList.value = response.data
         resolve(response.data)
@@ -69,12 +70,11 @@ export default function useReservationsList() {
   })
 
   const fetchRooms = (ctx, callback) => new Promise((resolve, reject) => {
-    store
-      .dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRooms`, {
-        workspace: workspaceFilter.value,
-        floor: floorFilter.value,
-        room: roomFilter.value,
-      })
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRooms`, {
+      workspace: workspaceFilter.value,
+      floor: floorFilter.value,
+      room: roomFilter.value,
+    })
       .then(response => {
         roomsList.value = response.data
         resolve(response.data)
@@ -106,9 +106,26 @@ export default function useReservationsList() {
 
   const fetchAllWorkspaces = () => Promise.all([fetchWorkspaces(), fetchFloors(), fetchRooms()])
 
-  watch([dateFilter, workspaceFilter, floorFilter, roomFilter], () => {
+  watch([dateFilter, workspaceFilter, floorFilter], () => {
     fetchAllWorkspaces().then(() => {
       cleanFilters()
+    })
+  })
+
+  watch([roomFilter], () => {
+    console.log('room filter change')
+    fetchAllWorkspaces().then(() => {
+      cleanFilters()
+      store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
+        .then(response => {
+          roomData.value = response.data
+        })
+        .catch(error => {
+          if (error.response.status === 404) {
+            roomData.value = undefined
+          }
+          console.error(error)
+        })
     })
   })
 
@@ -122,6 +139,7 @@ export default function useReservationsList() {
     workspacesList,
     floorsList,
     roomsList,
+    roomData,
 
     // Extra Filters
     dateFilter,

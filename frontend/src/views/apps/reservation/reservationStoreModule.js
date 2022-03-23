@@ -30,6 +30,14 @@ export default {
           .catch(error => reject(error))
       })
     },
+    fetchRoom(ctx, { id }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`/room/${id}`)
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
 
   },
 }
