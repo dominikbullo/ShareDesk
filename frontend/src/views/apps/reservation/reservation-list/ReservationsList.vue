@@ -204,10 +204,6 @@ export default {
     const {
       fetchAllWorkspaces,
 
-      fetchWorkspaces,
-      fetchFloors,
-      fetchRooms,
-
       workspacesList,
       floorsList,
       roomsList,
@@ -221,10 +217,6 @@ export default {
 
     return {
       fetchAllWorkspaces,
-
-      fetchWorkspaces,
-      fetchFloors,
-      fetchRooms,
 
       workspacesList,
       floorsList,

@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from apps.workspaces.models import Workspace, SpotIssue, Spot, Floor, Room
+from apps.workspaces.models import Workspace, SpotIssue, Spot, Floor, Room, RoomLayout
+
+
+class RoomLayoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoomLayout
+        fields = "__all__"
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
@@ -16,6 +22,18 @@ class FloorSerializer(serializers.ModelSerializer):
 
 
 class RoomSerializer(serializers.ModelSerializer):
+    layout = RoomLayoutSerializer()
+    spots = serializers.SerializerMethodField()
+    workspace = serializers.SerializerMethodField()
+
+    def get_workspace(self, obj):
+        return obj.floor.workspace.id
+
+    def get_spots(self, obj):
+        instances = Spot.objects.filter(room_id=obj.id)
+        serializer = SpotSerializer(instances, many=True)
+        return serializer.data
+
     class Meta:
         model = Room
         fields = "__all__"
