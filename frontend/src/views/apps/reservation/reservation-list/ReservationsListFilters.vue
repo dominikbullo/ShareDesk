@@ -15,7 +15,7 @@
           <label>{{ $t("Date") }}</label>
           <b-form-datepicker
             id="example-datepicker"
-            v-model="value"
+            v-model="test"
             :date-disabled-fn="dateDisabled"
             :start-weekday="1"
             class="mb-2"
@@ -29,11 +29,12 @@
         >
           <label>{{ $t("Building") }}</label>
           <v-select
-            :value="roleFilter"
-            :options="roleOptions"
+            :value="workspaceFilter"
+            :options="workspaceOptions"
             class="w-100"
-            :reduce="val => val.value"
-            @input="(val) => $emit('update:roleFilter', val)"
+            label="name"
+            :reduce="val => val.id"
+            @input="(val) => $emit('update:workspaceFilter', val)"
           />
         </b-col>
         <b-col
@@ -43,11 +44,12 @@
         >
           <label>{{ $t("Floor") }}</label>
           <v-select
-            :value="planFilter"
-            :options="planOptions"
+            :value="floorFilter"
+            :options="floorOptions"
             class="w-100"
-            :reduce="val => val.value"
-            @input="(val) => $emit('update:planFilter', val)"
+            label="name"
+            :reduce="val => val.id"
+            @input="(val) => $emit('update:floorFilter', val)"
           />
         </b-col>
         <b-col
@@ -57,11 +59,12 @@
         >
           <label>{{ $t("Room") }}</label>
           <v-select
-            :value="statusFilter"
-            :options="statusOptions"
+            :value="roomFilter"
+            :options="roomOptions"
             class="w-100"
-            :reduce="val => val.value"
-            @input="(val) => $emit('update:statusFilter', val)"
+            label="name"
+            :reduce="val => val.id"
+            @input="(val) => $emit('update:roomFilter', val)"
           />
         </b-col>
       </b-row>
@@ -86,30 +89,39 @@ export default {
     vSelect,
   },
   props: {
-    roleFilter: {
+    dateFilter: {
       type: [String, null],
       default: null,
     },
-    planFilter: {
-      type: [String, null],
+    workspaceFilter: {
+      type: [Number, null],
       default: null,
     },
-    statusFilter: {
-      type: [String, null],
+    floorFilter: {
+      type: [Number, null],
       default: null,
     },
-    roleOptions: {
+    roomFilter: {
+      type: [Number, null],
+      default: null,
+    },
+    workspaceOptions: {
       type: Array,
       required: true,
     },
-    planOptions: {
+    floorOptions: {
       type: Array,
       required: true,
     },
-    statusOptions: {
+    roomOptions: {
       type: Array,
       required: true,
     },
+  },
+  data() {
+    return {
+      test: '',
+    }
   },
   methods: {
     dateDisabled(ymd, date) {

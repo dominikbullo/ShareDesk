@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from apps.workspaces.api.views import WorkspaceViewSet, SpotIssueViewSet, SpotViewSet
+from apps.workspaces.api.views import WorkspaceViewSet, SpotIssueViewSet, SpotViewSet, RoomViewSet, FloorViewSet
 
 app_name = 'workspaces'
 
@@ -10,5 +10,7 @@ router.register(r"spots?", SpotViewSet, basename="spots")
 router.register(r"spots?-issues?", SpotIssueViewSet, basename="spot_issues")
 
 router.register(r"workspaces?", WorkspaceViewSet, basename="workspaces")
+router.register(r"floors?", FloorViewSet, basename="floors")
+router.register(r"rooms?", RoomViewSet, basename="rooms")
 
 urlpatterns = []

@@ -1,12 +1,13 @@
 <template>
   <div>
     <reservations-list-filters
-      :role-filter.sync="roleFilter"
-      :plan-filter.sync="planFilter"
-      :status-filter.sync="statusFilter"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      :status-options="statusOptions"
+      :date-filter.sync="dateFilter"
+      :workspace-filter.sync="workspaceFilter"
+      :floor-filter.sync="floorFilter"
+      :room-filter.sync="roomFilter"
+      :workspace-options="workspacesList"
+      :floor-options="floorsList"
+      :room-options="roomsList"
     />
 
     <b-card>
@@ -161,15 +162,20 @@
 <script>
 
 import {
-  BCard, BCol, BRow,
+  BCard, BCardHeader, BCol, BRow,
 } from 'bootstrap-vue'
-import ReservationsListFilters from '@/views/apps/reservation/ReservationsListFilters'
+import ReservationsListFilters from '@/views/apps/reservation/reservation-list/ReservationsListFilters'
+import store from '@/store'
+import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
+import useReservationsList from '@/views/apps/reservation/reservation-list/useReservationList'
+import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 
 export default {
   components: {
     ReservationsListFilters,
     BCard,
     BRow,
+    BCardHeader,
     BCol,
   },
   data() {
@@ -183,6 +189,56 @@ export default {
       country: 'id',
       countryOption: ['test', 'test2', 'test3'],
     }
+  },
+  setup() {
+    const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-workspace'
+
+    // Register module
+    if (!store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.registerModule(RESERVATIONS_APP_STORE_MODULE_NAME, reservationStoreModule)
+
+    // UnRegister on leave
+    onUnmounted(() => {
+      if (store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.unregisterModule(RESERVATIONS_APP_STORE_MODULE_NAME)
+    })
+
+    const {
+      fetchAllWorkspaces,
+
+      fetchWorkspaces,
+      fetchFloors,
+      fetchRooms,
+
+      workspacesList,
+      floorsList,
+      roomsList,
+
+      // Extra Filters
+      dateFilter,
+      workspaceFilter,
+      floorFilter,
+      roomFilter,
+    } = useReservationsList()
+
+    return {
+      fetchAllWorkspaces,
+
+      fetchWorkspaces,
+      fetchFloors,
+      fetchRooms,
+
+      workspacesList,
+      floorsList,
+      roomsList,
+
+      // Extra Filters
+      dateFilter,
+      workspaceFilter,
+      floorFilter,
+      roomFilter,
+    }
+  },
+  created() {
+    this.fetchAllWorkspaces()
   },
   mounted() {
     this.generateSeats()
