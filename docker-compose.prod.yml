@@ -8,8 +8,16 @@ services:
     image: "ghcr.io/dominikbullo/sharedesk_backend:${IMAGE_VERSION}"
     depends_on:
       - postgres
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+    command: /start.sh
+    entrypoint: /entrypoint.sh
     restart: on-failure
     env_file: .env
+    ports:
+      - "8080:8000"
 
   postgres:
     image: postgres
@@ -25,8 +33,8 @@ services:
     depends_on:
       - backend
     env_file: .env
-    expose:
-      - 80
+    ports:
+      - "80:8000"
     volumes:
       - ./backend/media/:/media/
       - ./backend/staticfiles/:/staticfiles/
