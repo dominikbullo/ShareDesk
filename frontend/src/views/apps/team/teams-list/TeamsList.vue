@@ -1,7 +1,7 @@
 <template>
   <div>
-    <user-list-add-new
-      :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
+    <team-list-add-new
+      :is-add-new-team-sidebar-active.sync="isAddNewTeamSidebarActive"
       @refetch-data="refetchData"
     />
 
@@ -45,7 +45,7 @@
               />
               <b-button
                 variant="primary"
-                @click="isAddNewUserSidebarActive = true"
+                @click="isAddNewTeamSidebarActive = true"
               >
                 <span class="text-nowrap">Add Team</span>
               </b-button>
@@ -56,9 +56,9 @@
       </div>
 
       <b-table
-        ref="refUserListTable"
+        ref="refTeamListTable"
         class="position-relative"
-        :items="fetchUsers"
+        :items="fetchTeams"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -68,50 +68,16 @@
         :sort-desc.sync="isSortDirDesc"
       >
 
-        <!-- Column: User -->
         <template #cell(name)="data">
           <b-media vertical-align="center">
-            <!--            <template #aside>-->
-            <!--              <b-avatar-->
-            <!--                size="32"-->
-            <!--                :src="data.item.avatar"-->
-            <!--                :text="avatarText(data.item.fullName)"-->
-            <!--                :variant="`light-${resolveUserRoleVariant(data.item.role)}`"-->
-            <!--                :to="{ name: 'apps-users-view', params: { id: data.item.id } }"-->
-            <!--              />-->
-            <!--            </template>-->
             <b-link
               :to="{ name: 'apps-teams-view', params: { id: data.item.id } }"
               class="font-weight-bold d-block text-nowrap"
             >
               {{ data.item.name }}
             </b-link>
-            <small class="text-muted">{{ data.item.name }}</small>
+            <!--            <small class="text-muted">{{ data.item.name }}</small>-->
           </b-media>
-        </template>
-
-        <!-- Column: Role -->
-        <template #cell(role)="data">
-          <div class="text-nowrap">
-            <feather-icon
-              :icon="resolveUserRoleIcon(data.item.role)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolveUserRoleVariant(data.item.role)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.role }}</span>
-          </div>
-        </template>
-
-        <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge
-            pill
-            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"
-            class="text-capitalize"
-          >
-            {{ data.item.status }}
-          </b-badge>
         </template>
 
         <!-- Column: Actions -->
@@ -129,12 +95,12 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'apps-teams-view', params: { id: data.item.id } }">
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
-            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'apps-teams-edit', params: { id: data.item.id } }">
               <feather-icon icon="EditIcon" />
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
@@ -168,7 +134,7 @@
 
             <b-pagination
               v-model="currentPage"
-              :total-rows="totalUsers"
+              :total-rows="totalTeams"
               :per-page="perPage"
               first-number
               last-number
@@ -207,12 +173,12 @@ import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
 import store from '@/store'
 import useTeamsList from './useTeamsList'
-import userStoreModule from '../teamStoreModule'
-import UserListAddNew from './TeamListAddNew.vue'
+import teamStoreModule from '../teamStoreModule'
+import TeamListAddNew from './TeamListAddNew.vue'
 
 export default {
   components: {
-    UserListAddNew,
+    TeamListAddNew,
 
     BCard,
     BRow,
@@ -234,27 +200,27 @@ export default {
     const TEAM_APP_STORE_MODULE_NAME = 'app-team'
 
     // Register module
-    if (!store.hasModule(TEAM_APP_STORE_MODULE_NAME)) store.registerModule(TEAM_APP_STORE_MODULE_NAME, userStoreModule)
+    if (!store.hasModule(TEAM_APP_STORE_MODULE_NAME)) store.registerModule(TEAM_APP_STORE_MODULE_NAME, teamStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(TEAM_APP_STORE_MODULE_NAME)) store.unregisterModule(TEAM_APP_STORE_MODULE_NAME)
     })
 
-    const isAddNewUserSidebarActive = ref(false)
+    const isAddNewTeamSidebarActive = ref(false)
 
     const {
-      fetchUsers,
+      fetchTeams,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalTeams,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refTeamListTable,
       refetchData,
 
     } = useTeamsList()
@@ -262,19 +228,19 @@ export default {
     return {
 
       // Sidebar
-      isAddNewUserSidebarActive,
+      isAddNewTeamSidebarActive,
 
-      fetchUsers,
+      fetchTeams,
       tableColumns,
       perPage,
       currentPage,
-      totalUsers,
+      totalTeams,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      refUserListTable,
+      refTeamListTable,
       refetchData,
     }
   },

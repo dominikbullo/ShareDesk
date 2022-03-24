@@ -11,7 +11,7 @@ export default function useTeamsList() {
   // Use toast
   const toast = useToast()
 
-  const refUserListTable = ref(null)
+  const refTeamListTable = ref(null)
 
   // Table Handlers
   const tableColumns = [
@@ -35,7 +35,7 @@ export default function useTeamsList() {
     { key: 'actions' },
   ]
   const perPage = ref(10)
-  const totalUsers = ref(0)
+  const totalTeams = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [5, 10, 25, 50, 100]
   const searchQuery = ref('')
@@ -46,23 +46,23 @@ export default function useTeamsList() {
   const statusFilter = ref(null)
 
   const dataMeta = computed(() => {
-    const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
+    const localItemsCount = refTeamListTable.value ? refTeamListTable.value.localItems.length : 0
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalUsers.value,
+      of: totalTeams.value,
     }
   })
 
   const refetchData = () => {
-    refUserListTable.value.refresh()
+    refTeamListTable.value.refresh()
   }
 
   watch([currentPage, perPage, searchQuery, roleFilter, planFilter, statusFilter], () => {
     refetchData()
   })
 
-  const fetchUsers = (ctx, callback) => {
+  const fetchTeams = (ctx, callback) => {
     store
       .dispatch('app-team/fetchTeams', {
         search: searchQuery.value,
@@ -73,7 +73,7 @@ export default function useTeamsList() {
       .then(response => {
         const users = response.data.results
         callback(users)
-        totalUsers.value = response.data.count
+        totalTeams.value = response.data.count
       })
       .catch(() => {
         toast({
@@ -88,19 +88,19 @@ export default function useTeamsList() {
   }
 
   return {
-    fetchUsers,
+    fetchTeams,
 
     tableColumns,
     perPage,
     currentPage,
-    totalUsers,
+    totalTeams,
     dataMeta,
     perPageOptions,
     searchQuery,
     sortBy,
     isSortDirDesc,
 
-    refUserListTable,
+    refTeamListTable,
 
     refetchData,
   }
