@@ -94,12 +94,7 @@
             >
               {{ data.item.full_name }}
             </b-link>
-            <small
-              v-if="data.item.teams.length>0"
-              class="text-muted"
-            >
-              {{ data.item.teams[0].name }}
-            </small>
+            <small class="text-muted"> {{ data.item.email }} </small>
           </b-media>
         </template>
 
@@ -148,9 +143,10 @@
               />
             </template>
 
-            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.id } }">
               <feather-icon icon="UsersIcon" />
               <span class="align-middle ml-50">{{ $t("Add team") }}</span>
+              <!-- <span class="align-middle ml-50">{{ `${$t("Add")}  ${$t("Team")}` }}</span>-->
             </b-dropdown-item>
 
             <b-dropdown-divider />

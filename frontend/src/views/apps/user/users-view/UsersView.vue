@@ -58,7 +58,6 @@
       </b-row>
 
     </template>
-
   </div>
 </template>
 
@@ -102,8 +101,13 @@ export default {
       if (store.hasModule(USER_APP_STORE_MODULE_NAME)) store.unregisterModule(USER_APP_STORE_MODULE_NAME)
     })
 
+    // router.currentRoute.params.id3
+    // console.log($route.params.id)
+    console.log(router.currentRoute.params)
     store.dispatch('app-user/fetchUser', { id: router.currentRoute.params.id })
       .then(response => {
+        console.log('response after fetch user')
+        console.log(response)
         userData.value = response.data
       })
       .catch(error => {
