@@ -74,13 +74,13 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-  push_frontend_to_registry:
+  push_nginx_to_registry:
     name: build & push frontend
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     env:
-      IMAGE_NAME: sharedesk_frontend
+      IMAGE_NAME: sharedesk_nginx
 
     steps:
       - name: Check out the repo
