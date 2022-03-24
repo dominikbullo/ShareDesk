@@ -10,37 +10,37 @@
         class="d-flex justify-content-between flex-column"
       >
         <!-- User Avatar & Action Buttons -->
-        <div class="d-flex justify-content-start">
-          <b-avatar
-            :src="userData.avatar"
-            :text="avatarText(userData.fullName)"
-            :variant="`light-${resolveUserRoleVariant(userData.role)}`"
-            size="104px"
-            rounded
-          />
-          <div class="d-flex flex-column ml-1">
-            <div class="mb-1">
-              <h4 class="mb-0">
-                {{ userData.fullName }}
-              </h4>
-              <span class="card-text">{{ userData.email }}</span>
-            </div>
-            <div class="d-flex flex-wrap">
-              <b-button
-                :to="{ name: 'apps-users-edit', params: { id: userData.id } }"
-                variant="primary"
-              >
-                Edit
-              </b-button>
-              <b-button
-                variant="outline-danger"
-                class="ml-1"
-              >
-                Delete
-              </b-button>
-            </div>
-          </div>
-        </div>
+        <!--        <div class="d-flex justify-content-start">-->
+        <!--          <b-avatar-->
+        <!--            :src="userData.avatar"-->
+        <!--            :text="avatarText(userData.fullName)"-->
+        <!--            :variant="`light-${resolveUserRoleVariant(userData.role)}`"-->
+        <!--            size="104px"-->
+        <!--            rounded-->
+        <!--          />-->
+        <!--          <div class="d-flex flex-column ml-1">-->
+        <!--            <div class="mb-1">-->
+        <!--              <h4 class="mb-0">-->
+        <!--                {{ userData.fullName }}-->
+        <!--              </h4>-->
+        <!--              <span class="card-text">{{ userData.email }}</span>-->
+        <!--            </div>-->
+        <!--            <div class="d-flex flex-wrap">-->
+        <!--              <b-button-->
+        <!--                :to="{ name: 'apps-users-edit', params: { id: userData.id } }"-->
+        <!--                variant="primary"-->
+        <!--              >-->
+        <!--                Edit-->
+        <!--              </b-button>-->
+        <!--              <b-button-->
+        <!--                variant="outline-danger"-->
+        <!--                class="ml-1"-->
+        <!--              >-->
+        <!--                Delete-->
+        <!--              </b-button>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
 
         <!-- User Stats -->
         <div class="d-flex align-items-center mt-2">
@@ -159,7 +159,6 @@ import {
   BCard, BButton, BAvatar, BRow, BCol,
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
-import useTeamsList from '../users-list/useTeamsList'
 
 export default {
   components: {
@@ -172,10 +171,8 @@ export default {
     },
   },
   setup() {
-    const { resolveUserRoleVariant } = useUsersList()
     return {
       avatarText,
-      resolveUserRoleVariant,
     }
   },
 }
