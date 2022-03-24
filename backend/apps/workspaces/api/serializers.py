@@ -30,9 +30,7 @@ class RoomSerializer(serializers.ModelSerializer):
         return obj.floor.workspace.id
 
     def get_spots(self, obj):
-        instances = Spot.objects.filter(room_id=obj.id)
-        serializer = SpotSerializer(instances, many=True)
-        return serializer.data
+        return SpotSerializer(Spot.objects.filter(room_id=obj.id), many=True).data
 
     class Meta:
         model = Room

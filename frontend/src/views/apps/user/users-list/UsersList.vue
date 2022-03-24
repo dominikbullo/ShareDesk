@@ -134,7 +134,6 @@
           <b-dropdown
             variant="link"
             no-caret
-            :right="$store.state.appConfig.isRTL"
           >
 
             <template #button-content>

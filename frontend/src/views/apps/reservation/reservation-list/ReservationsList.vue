@@ -231,11 +231,7 @@ export default {
       errors: [],
       o: [],
       selectedSeat: null,
-      // rows: 8,
-      // cols: 12,
       seats: [],
-      country: 'id',
-      countryOption: ['test', 'test2', 'test3'],
     }
   },
   computed: {

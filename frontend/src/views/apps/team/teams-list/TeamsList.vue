@@ -1,10 +1,7 @@
 <template>
-
   <div>
     <user-list-add-new
       :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
       @refetch-data="refetchData"
     />
 
@@ -28,7 +25,6 @@
             <label>Show</label>
             <v-select
               v-model="perPage"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
               :options="perPageOptions"
               :clearable="false"
               class="per-page-selector d-inline-block mx-50"
@@ -209,7 +205,6 @@ import {
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
-import { avatarText } from '@core/utils/filter'
 import store from '@/store'
 import useTeamsList from './useTeamsList'
 import userStoreModule from '../teamStoreModule'
@@ -248,27 +243,6 @@ export default {
 
     const isAddNewUserSidebarActive = ref(false)
 
-    const roleOptions = [
-      { label: 'Admin', value: 'admin' },
-      { label: 'Author', value: 'author' },
-      { label: 'Editor', value: 'editor' },
-      { label: 'Maintainer', value: 'maintainer' },
-      { label: 'Subscriber', value: 'subscriber' },
-    ]
-
-    const planOptions = [
-      { label: 'Basic', value: 'basic' },
-      { label: 'Company', value: 'company' },
-      { label: 'Enterprise', value: 'enterprise' },
-      { label: 'Team', value: 'team' },
-    ]
-
-    const statusOptions = [
-      { label: 'Pending', value: 'pending' },
-      { label: 'Active', value: 'active' },
-      { label: 'Inactive', value: 'inactive' },
-    ]
-
     const {
       fetchUsers,
       tableColumns,
@@ -283,15 +257,6 @@ export default {
       refUserListTable,
       refetchData,
 
-      // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
-      resolveUserStatusVariant,
-
-      // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
     } = useTeamsList()
 
     return {
@@ -311,23 +276,6 @@ export default {
       isSortDirDesc,
       refUserListTable,
       refetchData,
-
-      // Filter
-      avatarText,
-
-      // UI
-      resolveUserRoleVariant,
-      resolveUserRoleIcon,
-      resolveUserStatusVariant,
-
-      roleOptions,
-      planOptions,
-      statusOptions,
-
-      // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
     }
   },
 }

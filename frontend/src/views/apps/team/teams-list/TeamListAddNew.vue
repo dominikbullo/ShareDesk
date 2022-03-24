@@ -295,14 +295,6 @@ export default {
       type: Boolean,
       required: true,
     },
-    roleOptions: {
-      type: Array,
-      required: true,
-    },
-    planOptions: {
-      type: Array,
-      required: true,
-    },
   },
   data() {
     return {
