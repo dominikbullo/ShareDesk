@@ -18,16 +18,17 @@
       </b-card-header>
       <b-row>
         {{ roomData }}
+        {{ roomLayoutData }}
         <b-col
           md="7"
           class="pt-5"
         >
-          <div>
+          <div v-if="roomLayoutData">
             <table>
               <tbody>
-                <tr v-for="idxr, r in rows">
+                <tr v-for="idxr, r in roomLayoutData.rows">
                   <td
-                    v-for="idxc, c in cols"
+                    v-for="idxc, c in roomLayoutData.columns"
                     class="pl-2"
                     style="width: 50px;"
                   >
@@ -204,7 +205,7 @@ import {
 } from 'bootstrap-vue'
 import ReservationsListFilters from '@/views/apps/reservation/reservation-list/ReservationsListFilters'
 import store from '@/store'
-import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
+import { onUnmounted, ref, watch } from '@vue/composition-api/dist/vue-composition-api'
 import useReservationsList from '@/views/apps/reservation/reservation-list/useReservationList'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 import BCardCode from '@core/components/b-card-code'
@@ -230,12 +231,20 @@ export default {
       errors: [],
       o: [],
       selectedSeat: null,
-      rows: 8,
-      cols: 12,
+      // rows: 8,
+      // cols: 12,
       seats: [],
       country: 'id',
       countryOption: ['test', 'test2', 'test3'],
     }
+  },
+  computed: {
+    rows() {
+      return this.roomLayoutData.rows
+    },
+    cols() {
+      return this.roomLayoutData.columns
+    },
   },
   setup() {
     const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-workspace'
@@ -254,7 +263,9 @@ export default {
       workspacesList,
       floorsList,
       roomsList,
+
       roomData,
+      roomLayoutData,
 
       // Extra Filters
       dateFilter,
@@ -269,7 +280,9 @@ export default {
       workspacesList,
       floorsList,
       roomsList,
+
       roomData,
+      roomLayoutData,
 
       // Extra Filters
       dateFilter,
@@ -278,11 +291,17 @@ export default {
       roomFilter,
     }
   },
+  watch: {
+    roomData(val) {
+      console.log('room data change')
+    },
+    roomLayoutData(val) {
+      console.log('room layout data change')
+      this.generateSeats(val.rows, val.columns)
+    },
+  },
   created() {
     this.fetchAllWorkspaces()
-  },
-  mounted() {
-    this.generateSeats()
   },
   methods: {
     getSeat(r, c) {
@@ -293,9 +312,9 @@ export default {
       }
       return null
     },
-    generateSeats() {
-      for (let y = 1; y <= this.rows; ++y) {
-        for (let x = 1; x <= this.cols; ++x) {
+    generateSeats(r, c) {
+      for (let y = 1; y <= r; ++y) {
+        for (let x = 1; x <= c; ++x) {
           if (!this.isAisle(y, x)) {
             this.seats.push({
               position: { r: y, c: x },

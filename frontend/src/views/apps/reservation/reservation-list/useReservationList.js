@@ -4,13 +4,13 @@ import { ref, watch } from '@vue/composition-api'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
-import router from '@/router'
 
 export default function useReservationsList() {
   // Use toast
   const toast = useToast()
 
   const roomData = ref(null)
+  const roomLayoutData = ref(null)
 
   const workspacesList = ref([])
   const floorsList = ref([])
@@ -42,11 +42,12 @@ export default function useReservationsList() {
             variant: 'danger',
           },
         })
+        workspacesList.value = []
         reject(err)
       })
   })
 
-  const fetchFloors = (ctx, callback) => new Promise((resolve, reject) => {
+  const fetchFloors = () => new Promise((resolve, reject) => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchFloors`, {
       workspace: workspaceFilter.value,
       floor: floorFilter.value,
@@ -65,11 +66,12 @@ export default function useReservationsList() {
             variant: 'danger',
           },
         })
+        floorsList.value = []
         reject(err)
       })
   })
 
-  const fetchRooms = (ctx, callback) => new Promise((resolve, reject) => {
+  const fetchRooms = () => new Promise((resolve, reject) => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRooms`, {
       workspace: workspaceFilter.value,
       floor: floorFilter.value,
@@ -84,6 +86,44 @@ export default function useReservationsList() {
           component: ToastificationContent,
           props: {
             title: 'Error fetching rooms',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
+        })
+        roomsList.value = []
+        reject(err)
+      })
+  })
+  const fetchRoom = () => new Promise((resolve, reject) => {
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
+      .then(response => {
+        roomData.value = response.data
+        resolve(response)
+      })
+      .catch(err => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: `Error fetching room ${roomFilter.value}`,
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
+        })
+        roomData.value = []
+        reject(err)
+      })
+  })
+
+  const fetchLayout = id => new Promise((resolve, reject) => {
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomLayout`, { id })
+      .then(response => {
+        roomLayoutData.value = response.data
+      })
+      .catch(err => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: `Error fetching layout ${roomFilter.value}`,
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
@@ -119,16 +159,9 @@ export default function useReservationsList() {
         roomData.value = undefined
         return
       }
-      store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
-        .then(response => {
-          roomData.value = response.data
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            roomData.value = undefined
-          }
-          console.error(error)
-        })
+      fetchRoom().then(res => {
+        fetchLayout(res.data.layout.id)
+      })
     })
   })
 
@@ -142,7 +175,9 @@ export default function useReservationsList() {
     workspacesList,
     floorsList,
     roomsList,
+
     roomData,
+    roomLayoutData,
 
     // Extra Filters
     dateFilter,
