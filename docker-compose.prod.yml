@@ -1,0 +1,55 @@
+version: '3.3'
+
+volumes:
+  postgres_data: { }
+
+services:
+  backend:
+    image: "ghcr.io/dominikbullo/sharedesk_backend:${IMAGE_VERSION}"
+    depends_on:
+      - postgres
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+    command: /start.sh
+    entrypoint: /entrypoint.sh
+    restart: on-failure
+    env_file: .env
+    ports:
+      - "8080:8000"
+
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # persist data even if container shuts down
+    expose:
+      - ${DB_PORT} # Publishes port to other containers but NOT to host machine
+    command: -p ${DB_PORT}
+    env_file: .env
+
+  nginx:
+    image: "ghcr.io/dominikbullo/sharedesk_nginx:${IMAGE_VERSION}"
+    depends_on:
+      - backend
+    env_file: .env
+    ports:
+      - "80:8000"
+    volumes:
+      - ./backend/media/:/media/
+      - ./backend/staticfiles/:/staticfiles/
+      - ./nginx/prod.conf:/etc/nginx/nginx.conf:ro
+    environment:
+      VIRTUAL_HOST: ${DOMAIN}
+      LETSENCRYPT_HOST: ${DOMAIN}
+      LETSENCRYPT_EMAIL: ${ADMIN_EMAIL}
+
+
+  backups:
+    image: prodrigestivill/postgres-backup-local
+    restart: on-failure
+    depends_on:
+      - postgres
+    volumes:
+      - /tmp/backups/:/backups/
+

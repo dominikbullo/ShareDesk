@@ -1,4 +1,4 @@
-name: Deploy to staging server
+name: Deploy to production server
 
 on:
   workflow_run:
@@ -12,19 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to staging server
+      - name: Deploy to production server
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: |
-            cd ${{ secrets.STAGE_PROJECT_DIR }} &&\
+            cd ${{ secrets.PROJECT_DIR }} &&\
             git reset --hard HEAD &&\
-            git pull origin develop &&\
-            echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin &&\
+            git pull origin master &&\
+            echo "${{ secrets.SHAREDESK_GITHUB_PACKAGE_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin &&\
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull &&\
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml build &&\
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml down &&\
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
           host: ${{ secrets.HOST }}
           username: ${{ secrets.HOST_USERNAME }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          privateKey: ${{ secrets.PRIVATE_KEY}}
+          password: ${{ secrets.HOST_PASSWORD }}
