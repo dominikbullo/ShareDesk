@@ -5,6 +5,7 @@ import { title } from '@core/utils/filter'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
+import { formatDate } from '@/utils/filter'
 
 export default function useUsersList() {
   // Use toast
@@ -16,19 +17,25 @@ export default function useUsersList() {
   const tableColumns = [
     { key: 'user', sortable: true },
     { key: 'email', sortable: true },
-    { key: 'user_role', sortable: true },
+    { key: 'role', sortable: true },
     {
       key: 'registered_at',
       label: 'Register',
       sortable: true,
+      formatter: value => formatDate(value, 'shortWithTime'),
     },
-    { key: 'status', sortable: true },
+    {
+      key: 'teams',
+      label: 'Teams',
+      sortable: true,
+    },
+    // { key: 'status', sortable: true },
     { key: 'actions' },
   ]
   const perPage = ref(10)
   const totalUsers = ref(0)
   const currentPage = ref(1)
-  const perPageOptions = [10, 25, 50, 100]
+  const perPageOptions = [5, 10, 25, 50, 100]
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
@@ -56,20 +63,19 @@ export default function useUsersList() {
   const fetchUsers = (ctx, callback) => {
     store
       .dispatch('app-user/fetchUsers', {
-        q: searchQuery.value,
+        search: searchQuery.value,
         perPage: perPage.value,
         page: currentPage.value,
-        sortBy: sortBy.value,
-        sortDesc: isSortDirDesc.value,
+        ordering: isSortDirDesc.value ? sortBy.value : `-${sortBy.value}`,
         role: roleFilter.value,
-        plan: planFilter.value,
-        status: statusFilter.value,
+        // plan: planFilter.value,
+        // status: statusFilter.value,
       })
       .then(response => {
-        const users = response.data
+        const users = response.data.results
 
         callback(users)
-        totalUsers.value = users.length
+        totalUsers.value = response.data.count
       })
       .catch(() => {
         toast({
@@ -88,19 +94,11 @@ export default function useUsersList() {
   // *===============================================---*
 
   const resolveUserRoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
-    if (role === 'author') return 'warning'
-    if (role === 'maintainer') return 'success'
-    if (role === 'editor') return 'info'
     if (role === 'admin') return 'danger'
     return 'primary'
   }
 
   const resolveUserRoleIcon = role => {
-    if (role === 'subscriber') return 'UserIcon'
-    if (role === 'author') return 'SettingsIcon'
-    if (role === 'maintainer') return 'DatabaseIcon'
-    if (role === 'editor') return 'Edit2Icon'
     if (role === 'admin') return 'ServerIcon'
     return 'UserIcon'
   }

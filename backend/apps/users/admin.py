@@ -17,7 +17,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = [
         ['Auth', {'fields': ['email', 'password']}],
         ['Personal info', {'fields': ['last_name', 'first_name', 'avatar']}],
-        ['Work information', {'fields': ['user_role', 'teams', ]}],
+        ['Work information', {'fields': ['role', 'teams', ]}],
         ['Settings', {'fields': ['is_admin', 'is_active', 'is_staff', 'is_superuser']}],
         ['Important dates', {'fields': ['last_login', 'registered_at']}],
     ]

@@ -1,5 +1,3 @@
-from django_filters import rest_framework as django_filters
-
 from rest_framework import viewsets, filters, pagination
 from rest_framework.settings import api_settings
 

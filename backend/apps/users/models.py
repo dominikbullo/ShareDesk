@@ -74,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name='Registered at',
         auto_now_add=timezone.now)
 
-    user_role = models.CharField(max_length=10, choices=UserTypeChoices.choices, default=UserTypeChoices.EMPLOYEE)
+    role = models.CharField(max_length=10, choices=UserTypeChoices.choices, default=UserTypeChoices.EMPLOYEE)
     teams = models.ManyToManyField('teams.Team', blank=True)
 
     # Fields settings

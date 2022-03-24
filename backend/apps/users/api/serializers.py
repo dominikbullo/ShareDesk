@@ -2,22 +2,20 @@ from rest_framework import serializers
 
 from django.conf import settings
 
+from apps.teams.api.serializers import TeamSerializer
 from apps.users.models import User
 from core.choices import UserTypeChoices
 
 
 class UserSerializer(serializers.ModelSerializer):
-    registered_at = serializers.DateTimeField(
-        format='%H:%M %d.%m.%Y', read_only=True)
-
     avatar = serializers.SerializerMethodField(read_only=True)
     full_name = serializers.SerializerMethodField(read_only=True)
     short_name = serializers.SerializerMethodField(read_only=True)
-    user_role = serializers.ChoiceField(choices=UserTypeChoices.choices, read_only=True)
+    role = serializers.ChoiceField(choices=UserTypeChoices.choices, read_only=True)
+    teams = TeamSerializer(many=True, read_only=True)
 
     def get_avatar(self, obj):
-        return obj.avatar.url if obj.avatar else settings.STATIC_URL + \
-                                                 'images/default_avatar.png'
+        return obj.avatar.url if obj.avatar else settings.STATIC_URL + 'images/default_avatar.png'
 
     def get_full_name(self, obj):
         return obj.full_name
@@ -33,7 +31,9 @@ class UserSerializer(serializers.ModelSerializer):
             'full_name',
             'short_name',
             'registered_at',
-            'user_role']
+            'role',
+            'teams',
+        ]
 
 
 class UserWriteSerializer(serializers.ModelSerializer):

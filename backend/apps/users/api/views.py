@@ -5,10 +5,11 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, filters, pagination, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -16,9 +17,21 @@ from apps.users.models import User
 from apps.users.api.serializers import UserSerializer, UserWriteSerializer
 
 
+# https://www.sankalpjonna.com/learn-django/pagination-made-easy-with-django-rest-framework
+class UserViewSetPagination(pagination.PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'perPage'
+    page_query_param = 'page'
+
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = UserViewSetPagination
+    filter_backends = api_settings.DEFAULT_FILTER_BACKENDS + [filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ["email", "first_name", "last_name", "role"]
+    filterset_fields = ["email", "first_name", "last_name", "role"]
+    search_fields = ["email", "first_name", "last_name", "role"]
     permission_classes = []
 
     def get_serializer_class(self):

@@ -2,13 +2,6 @@
 
   <div>
 
-    <user-list-add-new
-      :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      @refetch-data="refetchData"
-    />
-
     <!-- Filters -->
     <users-list-filters
       :role-filter.sync="roleFilter"
@@ -90,7 +83,7 @@
               <b-avatar
                 size="32"
                 :src="data.item.avatar"
-                :text="avatarText(data.item.fullName)"
+                :text="avatarText(data.item.full_name)"
                 :variant="`light-${resolveUserRoleVariant(data.item.role)}`"
                 :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
               />
@@ -99,9 +92,14 @@
               :to="{ name: 'apps-users-view', params: { id: data.item.id } }"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.fullName }}
+              {{ data.item.full_name }}
             </b-link>
-            <small class="text-muted">@{{ data.item.username }}</small>
+            <small
+              v-if="data.item.teams.length>0"
+              class="text-muted"
+            >
+              {{ data.item.teams[0].name }}
+            </small>
           </b-media>
         </template>
 
@@ -118,15 +116,21 @@
           </div>
         </template>
 
-        <!-- Column: Status -->
-        <template #cell(status)="data">
-          <b-badge
-            pill
-            :variant="`light-${resolveUserStatusVariant(data.item.status)}`"
-            class="text-capitalize"
-          >
-            {{ data.item.status }}
-          </b-badge>
+        <template #cell(teams)="data">
+          <ul v-if="data.item.teams.length>0">
+            <li v-for="item in data.item.teams">
+              <b-link
+                :to="{ name: 'apps-teams-view', params: { id: item.id } }"
+                class="font-weight-bold d-block text-nowrap"
+              >
+                {{ item.name }}
+              </b-link>
+            </li>
+          </ul>
+          <p v-else>
+            {{ $t("No team") }}
+          </p>
+
         </template>
 
         <!-- Column: Actions -->
@@ -143,9 +147,17 @@
                 class="align-middle text-body"
               />
             </template>
+
+            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
+              <feather-icon icon="UsersIcon" />
+              <span class="align-middle ml-50">{{ $t("Add team") }}</span>
+            </b-dropdown-item>
+
+            <b-dropdown-divider />
+
             <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: data.item.id } }">
               <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">Details</span>
+              <span class="align-middle ml-50">{{ $tc("Detail", 2) }}</span>
             </b-dropdown-item>
 
             <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
@@ -215,7 +227,7 @@
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
-  BBadge, BDropdown, BDropdownItem, BPagination,
+  BBadge, BDropdown, BDropdownItem, BPagination, BDropdownDivider,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
@@ -242,6 +254,7 @@ export default {
     BLink,
     BBadge,
     BDropdown,
+    BDropdownDivider,
     BDropdownItem,
     BPagination,
 
@@ -262,10 +275,7 @@ export default {
 
     const roleOptions = [
       { label: 'Admin', value: 'admin' },
-      { label: 'Author', value: 'author' },
-      { label: 'Editor', value: 'editor' },
-      { label: 'Maintainer', value: 'maintainer' },
-      { label: 'Subscriber', value: 'subscriber' },
+      { label: 'Employee', value: 'employee' },
     ]
 
     const planOptions = [

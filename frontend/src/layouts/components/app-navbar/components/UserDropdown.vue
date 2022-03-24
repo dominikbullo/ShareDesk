@@ -36,7 +36,7 @@
         icon="UserIcon"
         class="mr-50"
       />
-      <span>Moje rezervácie</span>
+      <span>{{ $tc('My reservation', 2) }}</span>
     </b-dropdown-item>
 
     <b-dropdown-divider />

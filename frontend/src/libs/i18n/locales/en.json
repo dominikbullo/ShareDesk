@@ -16,6 +16,8 @@
       "action": "Action"
     }
   },
+  "My reservation": "My reservation | My reservations",
+  "Detail": "Detail | Details",
   "UI Elements": "UI Elements",
   "Forms & Tables": "Forms & Tables",
   "Pages": "Pages",
@@ -111,7 +113,6 @@
   "Pricing": "Pricing",
   "Blog": "Blog",
   "List": "List",
-  "Detail": "Detail",
   "Edit": "Edit",
   "Search": "Search",
   "Menu Levels": "Menu Levels",
