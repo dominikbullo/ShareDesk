@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/dominikbullo/ShareDesk/compare/v0.2.0...v0.2.1) (2022-03-24)
+
+
+### Features
+
+* **issues-list:** issue list now showing issues added by users using good table ([5999e20](https://github.com/dominikbullo/ShareDesk/commit/5999e201b5b97746d58ad13d339d86bb98510822))
+* **modal:** testing reservation modal layouts and functionality ([b84fed3](https://github.com/dominikbullo/ShareDesk/commit/b84fed39eeb7f9cdfc5403dd6386230924e25e55))
+* **reservation:** FE get data from BE ([4768b0b](https://github.com/dominikbullo/ShareDesk/commit/4768b0bbc91af7da996a914d0be3fc00bfbcbe8a))
+* **reservation:** reservation filter added  - but not working ([7a30512](https://github.com/dominikbullo/ShareDesk/commit/7a30512694a000c1687de14fc93daef3650a0890))
+* **reservation:** room data on FE ([a3205f3](https://github.com/dominikbullo/ShareDesk/commit/a3205f337987c01fba91b6ab88787ed9369464cf))
+* **seats:** generating seats on FE base od layout ([c38c3fa](https://github.com/dominikbullo/ShareDesk/commit/c38c3fad1e5e2654507613d9588e1c2f9ae78141))
+* **team-list:** Team list working with bootstrap tables (ordering & filters on server) ([5c92296](https://github.com/dominikbullo/ShareDesk/commit/5c922960405fe8df37329ecbdacdf1314ffaaff9))
+* **users-list:** Team list working with bootstrap tables (ordering/filters/search on server) ([3d1fc3e](https://github.com/dominikbullo/ShareDesk/commit/3d1fc3e174981a57e49cd5b2cbb2ae8395274820))
+* **users-list:** User list & user detail ([bc7783e](https://github.com/dominikbullo/ShareDesk/commit/bc7783ea618a6bad916bde6ca23c7a533d6c6345))
+* **workspace:** filtrovanie miestnosti aj podľa workspace ([ec7f361](https://github.com/dominikbullo/ShareDesk/commit/ec7f361e75685cff265ecf36bc37afc8ba1f881e))
+
+
+### Bug Fixes
+
+* **auth:** token refres now working correctly ([33d5e1f](https://github.com/dominikbullo/ShareDesk/commit/33d5e1fa5870c30dea683e378f143fde81d119a3))
+
 ## [0.2.0](https://github.com/dominikbullo/ShareDesk/compare/v0.1.0...v0.2.0) (2022-03-22)
 
 
