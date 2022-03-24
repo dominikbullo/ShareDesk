@@ -1,7 +1,7 @@
 <template>
   <b-sidebar
-    id="add-new-user-sidebar"
-    :visible="isAddNewUserSidebarActive"
+    id="add-new-team-sidebar"
+    :visible="isAddNewTeamSidebarActive"
     bg-variant="white"
     sidebar-class="sidebar-lg"
     shadow
@@ -9,7 +9,7 @@
     no-header
     right
     @hidden="resetForm"
-    @change="(val) => $emit('update:is-add-new-user-sidebar-active', val)"
+    @change="(val) => $emit('update:is-add-new-team-sidebar-active', val)"
   >
     <template #default="{ hide }">
       <!-- Header -->
@@ -39,14 +39,6 @@
           @reset.prevent="resetForm"
         >
 
-          <!--          <v-select-->
-          <!--            v-model="selected"-->
-          <!--            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
-          <!--            multiple-->
-          <!--            label="title"-->
-          <!--            :options="option"-->
-          <!--          />-->
-
           <!-- Team Name -->
           <validation-provider
             #default="validationContext"
@@ -59,7 +51,7 @@
             >
               <b-form-input
                 id="team-name"
-                v-model="userData.name"
+                v-model="teamData.name"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim
@@ -71,165 +63,6 @@
               </b-form-invalid-feedback>
             </b-form-group>
           </validation-provider>
-
-          <!--          &lt;!&ndash; Username &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="Username"-->
-          <!--            rules="required|alpha-num"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="Username"-->
-          <!--              label-for="username"-->
-          <!--            >-->
-          <!--              <b-form-input-->
-          <!--                id="username"-->
-          <!--                v-model="userData.username"-->
-          <!--                :state="getValidationState(validationContext)"-->
-          <!--                trim-->
-          <!--              />-->
-
-          <!--              <b-form-invalid-feedback>-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
-
-          <!--          &lt;!&ndash; Email &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="Email"-->
-          <!--            rules="required|email"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="Email"-->
-          <!--              label-for="email"-->
-          <!--            >-->
-          <!--              <b-form-input-->
-          <!--                id="email"-->
-          <!--                v-model="userData.email"-->
-          <!--                :state="getValidationState(validationContext)"-->
-          <!--                trim-->
-          <!--              />-->
-
-          <!--              <b-form-invalid-feedback>-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
-
-          <!--          &lt;!&ndash; Company &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="Contact"-->
-          <!--            rules="required"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="Contact"-->
-          <!--              label-for="contact"-->
-          <!--            >-->
-          <!--              <b-form-input-->
-          <!--                id="contact"-->
-          <!--                v-model="userData.contact"-->
-          <!--                :state="getValidationState(validationContext)"-->
-          <!--                trim-->
-          <!--              />-->
-
-          <!--              <b-form-invalid-feedback>-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
-
-          <!--          &lt;!&ndash; Company &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="Company"-->
-          <!--            rules="required"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="Company"-->
-          <!--              label-for="company"-->
-          <!--            >-->
-          <!--              <b-form-input-->
-          <!--                id="company"-->
-          <!--                v-model="userData.company"-->
-          <!--                :state="getValidationState(validationContext)"-->
-          <!--                trim-->
-          <!--              />-->
-
-          <!--              <b-form-invalid-feedback>-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
-
-          <!--          &lt;!&ndash; Country &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="Country"-->
-          <!--            rules="required"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="Country"-->
-          <!--              label-for="country"-->
-          <!--              :state="getValidationState(validationContext)"-->
-          <!--            >-->
-          <!--              <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
-
-          <!--          &lt;!&ndash; User Role &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="User Role"-->
-          <!--            rules="required"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="User Role"-->
-          <!--              label-for="user-role"-->
-          <!--              :state="getValidationState(validationContext)"-->
-          <!--            >-->
-          <!--              <v-select-->
-          <!--                v-model="userData.role"-->
-          <!--                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
-          <!--                :options="roleOptions"-->
-          <!--                :reduce="val => val.value"-->
-          <!--                :clearable="false"-->
-          <!--                input-id="user-role"-->
-          <!--              />-->
-          <!--              <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
-
-          <!--          &lt;!&ndash; Plan &ndash;&gt;-->
-          <!--          <validation-provider-->
-          <!--            #default="validationContext"-->
-          <!--            name="Plan"-->
-          <!--            rules="required"-->
-          <!--          >-->
-          <!--            <b-form-group-->
-          <!--              label="Plan"-->
-          <!--              label-for="plan"-->
-          <!--              :state="getValidationState(validationContext)"-->
-          <!--            >-->
-          <!--              <v-select-->
-          <!--                v-model="userData.currentPlan"-->
-          <!--                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"-->
-          <!--                :options="planOptions"-->
-          <!--                :reduce="val => val.value"-->
-          <!--                :clearable="false"-->
-          <!--                input-id="plan"-->
-          <!--              />-->
-          <!--              <b-form-invalid-feedback :state="getValidationState(validationContext)">-->
-          <!--                {{ validationContext.errors[0] }}-->
-          <!--              </b-form-invalid-feedback>-->
-          <!--            </b-form-group>-->
-          <!--          </validation-provider>-->
 
           <!-- Form Actions -->
           <div class="d-flex mt-2">
@@ -287,11 +120,11 @@ export default {
     Ripple,
   },
   model: {
-    prop: 'isAddNewUserSidebarActive',
-    event: 'update:is-add-new-user-sidebar-active',
+    prop: 'isAddNewTeamSidebarActive',
+    event: 'update:is-add-new-team-sidebar-active',
   },
   props: {
-    isAddNewUserSidebarActive: {
+    isAddNewTeamSidebarActive: {
       type: Boolean,
       required: true,
     },
@@ -304,20 +137,20 @@ export default {
     }
   },
   setup(props, { emit }) {
-    const blankUserData = {
+    const blankTeamData = {
       name: '',
     }
 
-    const userData = ref(JSON.parse(JSON.stringify(blankUserData)))
-    const resetuserData = () => {
-      userData.value = JSON.parse(JSON.stringify(blankUserData))
+    const teamData = ref(JSON.parse(JSON.stringify(blankTeamData)))
+    const resetteamData = () => {
+      teamData.value = JSON.parse(JSON.stringify(blankTeamData))
     }
 
     const onSubmit = () => {
-      store.dispatch('app-team/addTeam', userData.value)
+      store.dispatch('app-team/addTeam', teamData.value)
         .then(() => {
           emit('refetch-data')
-          emit('update:is-add-new-user-sidebar-active', false)
+          emit('update:is-add-new-team-sidebar-active', false)
         })
     }
 
@@ -325,10 +158,10 @@ export default {
       refFormObserver,
       getValidationState,
       resetForm,
-    } = formValidation(resetuserData)
+    } = formValidation(resetteamData)
 
     return {
-      userData,
+      teamData,
       onSubmit,
 
       refFormObserver,
@@ -341,10 +174,4 @@ export default {
 
 <style lang="scss">
 @import '@core/scss/vue/libs/vue-select.scss';
-
-#add-new-user-sidebar {
-  .vs__dropdown-menu {
-    max-height: 200px !important;
-  }
-}
 </style>

@@ -9,38 +9,30 @@
         xl="6"
         class="d-flex justify-content-between flex-column"
       >
-        <!-- User Avatar & Action Buttons -->
-        <!--        <div class="d-flex justify-content-start">-->
-        <!--          <b-avatar-->
-        <!--            :src="userData.avatar"-->
-        <!--            :text="avatarText(userData.fullName)"-->
-        <!--            :variant="`light-${resolveUserRoleVariant(userData.role)}`"-->
-        <!--            size="104px"-->
-        <!--            rounded-->
-        <!--          />-->
-        <!--          <div class="d-flex flex-column ml-1">-->
-        <!--            <div class="mb-1">-->
-        <!--              <h4 class="mb-0">-->
-        <!--                {{ userData.fullName }}-->
-        <!--              </h4>-->
-        <!--              <span class="card-text">{{ userData.email }}</span>-->
-        <!--            </div>-->
-        <!--            <div class="d-flex flex-wrap">-->
-        <!--              <b-button-->
-        <!--                :to="{ name: 'apps-users-edit', params: { id: userData.id } }"-->
-        <!--                variant="primary"-->
-        <!--              >-->
-        <!--                Edit-->
-        <!--              </b-button>-->
-        <!--              <b-button-->
-        <!--                variant="outline-danger"-->
-        <!--                class="ml-1"-->
-        <!--              >-->
-        <!--                Delete-->
-        <!--              </b-button>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
+        <div class="d-flex justify-content-start">
+          <div class="d-flex flex-column ml-1">
+            <div class="mb-1">
+              <h4 class="mb-0">
+                {{ teamData.name }}
+              </h4>
+              <span class="card-text">{{ teamData.email }}</span>
+            </div>
+            <div class="d-flex flex-wrap">
+              <b-button
+                :to="{ name: 'apps-users-edit', params: { id: teamData.id } }"
+                variant="primary"
+              >
+                Edit
+              </b-button>
+              <b-button
+                variant="outline-danger"
+                class="ml-1"
+              >
+                Delete
+              </b-button>
+            </div>
+          </div>
+        </div>
 
         <!-- User Stats -->
         <div class="d-flex align-items-center mt-2">
@@ -97,7 +89,7 @@
               <span class="font-weight-bold">Username</span>
             </th>
             <td class="pb-50">
-              {{ userData.username }}
+              {{ teamData.username }}
             </td>
           </tr>
           <tr>
@@ -109,7 +101,7 @@
               <span class="font-weight-bold">Status</span>
             </th>
             <td class="pb-50 text-capitalize">
-              {{ userData.status }}
+              {{ teamData.status }}
             </td>
           </tr>
           <tr>
@@ -121,7 +113,7 @@
               <span class="font-weight-bold">Role</span>
             </th>
             <td class="pb-50 text-capitalize">
-              {{ userData.role }}
+              {{ teamData.role }}
             </td>
           </tr>
           <tr>
@@ -133,7 +125,7 @@
               <span class="font-weight-bold">Country</span>
             </th>
             <td class="pb-50">
-              {{ userData.country }}
+              {{ teamData.country }}
             </td>
           </tr>
           <tr>
@@ -145,7 +137,7 @@
               <span class="font-weight-bold">Contact</span>
             </th>
             <td>
-              {{ userData.contact }}
+              {{ teamData.contact }}
             </td>
           </tr>
         </table>
@@ -165,7 +157,7 @@ export default {
     BCard, BButton, BRow, BCol, BAvatar,
   },
   props: {
-    userData: {
+    teamData: {
       type: Object,
       required: true,
     },

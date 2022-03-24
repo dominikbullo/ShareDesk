@@ -70,10 +70,10 @@ import {
   BRow, BCol, BAlert, BLink,
 } from 'bootstrap-vue'
 import teamStoreModule from '@/views/apps/team/teamStoreModule'
-import TeamViewTeamInfoCard from './TeamViewTeamInfoCard'
-import TeamViewTeamPlanCard from './TeamViewTeamPlanCard'
-import TeamViewTeamTimelineCard from './TeamViewTeamInfoCard'
-import TeamViewTeamPermissionsCard from './TeamViewTeamInfoCard'
+import TeamViewTeamInfoCard from './TeamViewTeamInfoCard.vue'
+import TeamViewTeamPlanCard from './TeamViewTeamPlanCard.vue'
+import TeamViewTeamTimelineCard from './TeamViewTeamTimelineCard.vue'
+import TeamViewTeamPermissionsCard from './TeamViewTeamPermissionsCard.vue'
 
 export default {
   components: {
