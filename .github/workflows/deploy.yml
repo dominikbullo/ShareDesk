@@ -13,27 +13,28 @@ jobs:
 
     steps:
       - name: Prepare production server
-        uses: garygrossgarten/github-action-ssh@release
+        uses: appleboy/ssh-action@v0.1.4
         with:
-          command: |
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          script: |
             cd ${{ secrets.PROJECT_DIR }} &&\
             git fetch --all &&\
             git reset --hard origin/master  &&\
             git pull origin master &&\
             echo "${{ secrets.SHAREDESK_GITHUB_PACKAGE_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin &&\
             cp docker-compose.prod.yml docker-compose.override.yml
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.HOST_USERNAME }}
-          password: ${{ secrets.HOST_PASSWORD }}
 
 
       - name: Pull & recreate containers on production server
-        uses: garygrossgarten/github-action-ssh@release
+        uses: appleboy/ssh-action@v0.1.4
         with:
-          command: |
-            docker-compose -f docker-compose.prod.yml pull &&\
-            docker-compose -f docker-compose.prod.yml down &&\
-            docker-compose -f docker-compose.prod.yml up -d
           host: ${{ secrets.HOST }}
           username: ${{ secrets.HOST_USERNAME }}
           password: ${{ secrets.HOST_PASSWORD }}
+          script: |
+            cd ${{ secrets.PROJECT_DIR }} &&\
+            docker-compose -f docker-compose.prod.yml pull &&\
+            docker-compose -f docker-compose.prod.yml down &&\
+            docker-compose -f docker-compose.prod.yml up -d

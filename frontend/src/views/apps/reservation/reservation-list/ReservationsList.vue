@@ -217,14 +217,13 @@
 import {
   BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow,
 } from 'bootstrap-vue'
-import ReservationsListFilters from '@/views/apps/reservation/reservation-list/ReservationsListFilters'
 import store from '@/store'
-import { onUnmounted, ref, watch } from '@vue/composition-api/dist/vue-composition-api'
+import Ripple from 'vue-ripple-directive'
+import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
+import { compareStringNoCaseSensitive } from '@/utils/utils'
 import useReservationsList from '@/views/apps/reservation/reservation-list/useReservationList'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
-import BCardCode from '@core/components/b-card-code'
-import Ripple from 'vue-ripple-directive'
-import { compareStringNoCaseSensitive } from '@/utils/utils'
+import ReservationsListFilters from '@/views/apps/reservation/reservation-list/ReservationsListFilters.vue'
 
 export default {
   components: {

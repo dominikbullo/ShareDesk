@@ -24,21 +24,8 @@
     <template v-if="teamData">
       <!-- First Row -->
       <b-row>
-        <b-col
-          cols="12"
-          xl="9"
-          lg="8"
-          md="7"
-        >
+        <b-col>
           <team-view-team-info-card :team-data="teamData" />
-        </b-col>
-        <b-col
-          cols="12"
-          md="5"
-          xl="3"
-          lg="4"
-        >
-          <team-view-team-plan-card />
         </b-col>
       </b-row>
 
