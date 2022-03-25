@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Alert: No item found -->
     <b-alert
       variant="danger"
@@ -46,6 +45,9 @@
 
     </template>
 
+    <user-list
+      :team-filter-prop.sync="this.$router.currentRoute.params.id"
+    />
   </div>
 </template>
 
@@ -57,8 +59,8 @@ import {
   BRow, BCol, BAlert, BLink,
 } from 'bootstrap-vue'
 import teamStoreModule from '@/views/apps/team/teamStoreModule'
+import UserList from '@/views/apps/user/users-list/UsersList.vue'
 import TeamViewTeamInfoCard from './TeamViewTeamInfoCard.vue'
-import TeamViewTeamPlanCard from './TeamViewTeamPlanCard.vue'
 import TeamViewTeamTimelineCard from './TeamViewTeamTimelineCard.vue'
 import TeamViewTeamPermissionsCard from './TeamViewTeamPermissionsCard.vue'
 
@@ -71,10 +73,18 @@ export default {
 
     // Local Components
     TeamViewTeamInfoCard,
-    TeamViewTeamPlanCard,
     TeamViewTeamTimelineCard,
     TeamViewTeamPermissionsCard,
 
+    UserList,
+  },
+  data() {
+    return { teamID: this.$router.currentRoute.params.id }
+  },
+  watch: {
+    $route() {
+      this.$router.go()
+    },
   },
   setup() {
     const teamData = ref(null)

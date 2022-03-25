@@ -51,12 +51,12 @@
                 class="d-inline-block mr-1"
                 placeholder="Search..."
               />
-              <b-button
-                variant="primary"
-                @click="isAddNewUserSidebarActive = true"
-              >
-                <span class="text-nowrap">Add User</span>
-              </b-button>
+              <!--              <b-button-->
+              <!--                variant="primary"-->
+              <!--                @click="isAddNewUserSidebarActive = true"-->
+              <!--              >-->
+              <!--                <span class="text-nowrap">Add User</span>-->
+              <!--              </b-button>-->
             </div>
           </b-col>
         </b-row>
@@ -223,7 +223,7 @@
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
-  BBadge, BDropdown, BDropdownItem, BPagination, BDropdownDivider,
+  BDropdown, BDropdownItem, BPagination, BDropdownDivider,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
@@ -232,12 +232,10 @@ import store from '@/store'
 import UsersListFilters from './UsersListFilters.vue'
 import useUsersList from './useUsersList'
 import userStoreModule from '../userStoreModule'
-import UserListAddNew from './UserListAddNew.vue'
 
 export default {
   components: {
     UsersListFilters,
-    UserListAddNew,
 
     BCard,
     BRow,
@@ -248,13 +246,23 @@ export default {
     BMedia,
     BAvatar,
     BLink,
-    BBadge,
     BDropdown,
     BDropdownDivider,
     BDropdownItem,
     BPagination,
 
     vSelect,
+  },
+  props: {
+    teamFilterProp: {
+      type: [String, Number, null],
+      default: null,
+      required: false,
+    },
+  },
+  created() {
+    // Filter team if you have prop
+    if (this.teamFilterProp) this.teamFilter = this.teamFilterProp
   },
   setup() {
     const USER_APP_STORE_MODULE_NAME = 'app-user'
@@ -282,9 +290,9 @@ export default {
     ]
 
     const statusOptions = [
-      { label: 'Pending', value: 'pending' },
-      { label: 'Active', value: 'active' },
-      { label: 'Inactive', value: 'inactive' },
+      { label: 'Pending', value: '6' },
+      { label: 'Active', value: '8' },
+      { label: 'Inactive', value: '255' },
     ]
 
     const {
@@ -310,6 +318,7 @@ export default {
       roleFilter,
       planFilter,
       statusFilter,
+      teamFilter,
     } = useUsersList()
 
     return {
@@ -346,6 +355,7 @@ export default {
       roleFilter,
       planFilter,
       statusFilter,
+      teamFilter,
     }
   },
 }

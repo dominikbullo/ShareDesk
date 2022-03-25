@@ -30,8 +30,8 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = UserViewSetPagination
     filter_backends = api_settings.DEFAULT_FILTER_BACKENDS + [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ["email", "first_name", "last_name", "role"]
-    filterset_fields = ["email", "first_name", "last_name", "role"]
-    search_fields = ["email", "first_name", "last_name", "role"]
+    filterset_fields = ["email", "first_name", "last_name", "role", "teams"]
+    search_fields = ["email", "first_name", "last_name", "role", "teams"]
     permission_classes = []
 
     def get_serializer_class(self):

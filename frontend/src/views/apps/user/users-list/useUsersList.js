@@ -1,5 +1,4 @@
 import { ref, watch, computed } from '@vue/composition-api'
-import { title } from '@core/utils/filter'
 
 // Notification
 import { useToast } from 'vue-toastification/composition'
@@ -40,6 +39,7 @@ export default function useUsersList() {
   const roleFilter = ref(null)
   const planFilter = ref(null)
   const statusFilter = ref(null)
+  const teamFilter = ref(null)
 
   const dataMeta = computed(() => {
     const localItemsCount = refUserListTable.value ? refUserListTable.value.localItems.length : 0
@@ -66,6 +66,7 @@ export default function useUsersList() {
         page: currentPage.value,
         ordering: isSortDirDesc.value ? sortBy.value : `-${sortBy.value}`,
         role: roleFilter.value,
+        teams: teamFilter.value,
         // plan: planFilter.value,
         // status: statusFilter.value,
       })
@@ -130,5 +131,6 @@ export default function useUsersList() {
     roleFilter,
     planFilter,
     statusFilter,
+    teamFilter,
   }
 }
