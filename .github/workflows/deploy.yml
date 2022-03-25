@@ -22,6 +22,10 @@ jobs:
             git pull origin master &&\
             echo "${{ secrets.SHAREDESK_GITHUB_PACKAGE_TOKEN }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin &&\
             cp docker-compose.prod.yml docker-compose.override.yml
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+
 
       - name: Pull & recreate containers on production server
         uses: garygrossgarten/github-action-ssh@release
