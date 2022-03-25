@@ -36,5 +36,5 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_DIR }} &&\
             docker-compose -f docker-compose.prod.yml pull &&\
-            docker-compose -f docker-compose.prod.yml down &&\
-            docker-compose -f docker-compose.prod.yml up -d
+            docker-compose -f docker-compose.prod.yml up -d --build backend --force-recreate &&\
+            docker-compose -f docker-compose.prod.yml up -d --build nginx --force-recreate
