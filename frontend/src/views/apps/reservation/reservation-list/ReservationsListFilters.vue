@@ -15,11 +15,12 @@
           <label>{{ $t("Date") }}</label>
           <b-form-datepicker
             id="example-datepicker"
-            v-model="test"
+            :value="dateFilter"
             :date-disabled-fn="dateDisabled"
             :start-weekday="1"
             class="mb-2"
             nav-prev-year="disabled"
+            @input="(val) => $emit('update:dateFilter', val)"
           />
         </b-col>
         <b-col

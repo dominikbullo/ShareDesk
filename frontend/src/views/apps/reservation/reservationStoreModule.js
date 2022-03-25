@@ -38,14 +38,13 @@ export default {
           .catch(error => reject(error))
       })
     },
-    fetchRoomLayout(ctx, { id }) {
+    fetchRoomSpots(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/room-layout/${id}`)
+          .get('/reservations/', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
     },
-
   },
 }

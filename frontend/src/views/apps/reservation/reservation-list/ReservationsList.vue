@@ -19,6 +19,7 @@
       <b-row>
         <!--        <pre>{{ roomData }}</pre>-->
         <pre>{{ roomData.spots }}</pre>
+        <pre>{{ roomSpotsReservationsData }}</pre>
         <pre>{{ roomData.layout }}</pre>
         <b-col
           md="7"
@@ -243,7 +244,8 @@ export default {
       return this.roomData.layout.columns
     },
     spots() {
-      return this.roomData.spots
+      // Toto nepotrebujem ako všetky ale rovno ich potrebujem mať vyfiltrovane podľa params
+      return this.roomSpotsData
     },
   },
   setup() {
@@ -265,6 +267,7 @@ export default {
       roomsList,
 
       roomData,
+      roomSpotsReservationsData,
 
       // Extra Filters
       dateFilter,
@@ -281,6 +284,7 @@ export default {
       roomsList,
 
       roomData,
+      roomSpotsReservationsData,
 
       // Extra Filters
       dateFilter,

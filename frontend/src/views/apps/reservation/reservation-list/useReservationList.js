@@ -4,12 +4,14 @@ import { ref, watch } from '@vue/composition-api'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
+import { addDayToDate } from '@/utils/utils'
 
 export default function useReservationsList() {
   // Use toast
   const toast = useToast()
 
   const roomData = ref(null)
+  const roomSpotsReservationsData = ref(null)
 
   const workspacesList = ref([])
   const floorsList = ref([])
@@ -110,6 +112,27 @@ export default function useReservationsList() {
         roomData.value = []
       })
   }
+  const fetchRoomSpots = () => {
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
+      room: roomFilter.value,
+      reservation_start: dateFilter.value,
+      reservation_end: addDayToDate(dateFilter.value, 1).toISOString(),
+    })
+      .then(response => {
+        roomSpotsReservationsData.value = response.data
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: `Error fetching room ${roomFilter.value} spots data`,
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
+        })
+        roomData.value = []
+      })
+  }
 
   function cleanFilters() {
     if (!roomsList.value.some(data => data.id === roomFilter.value)) {
@@ -125,13 +148,13 @@ export default function useReservationsList() {
 
   const fetchAllWorkspaces = () => Promise.all([fetchWorkspaces(), fetchFloors(), fetchRooms()])
 
-  watch([dateFilter, workspaceFilter, floorFilter], () => {
+  watch([workspaceFilter, floorFilter], () => {
     fetchAllWorkspaces().then(() => {
       cleanFilters()
     })
   })
 
-  watch([roomFilter], () => {
+  watch([dateFilter, roomFilter], () => {
     fetchAllWorkspaces().then(() => {
       cleanFilters()
       if (roomFilter.value === null) {
@@ -139,6 +162,7 @@ export default function useReservationsList() {
         return
       }
       fetchRoom()
+      fetchRoomSpots()
     })
   })
 
@@ -154,6 +178,7 @@ export default function useReservationsList() {
     roomsList,
 
     roomData,
+    roomSpotsReservationsData,
 
     // Extra Filters
     dateFilter,
