@@ -130,7 +130,7 @@ export default function useReservationsList() {
             variant: 'danger',
           },
         })
-        roomData.value = []
+        roomSpotsReservationsData.value = []
       })
   }
 
@@ -158,7 +158,7 @@ export default function useReservationsList() {
     fetchAllWorkspaces().then(() => {
       cleanFilters()
       if (roomFilter.value === null) {
-        roomData.value = undefined
+        roomData.value = null
         return
       }
       fetchRoom()

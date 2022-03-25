@@ -10,17 +10,13 @@
       :room-options="roomsList"
     />
 
-    <b-card v-if="roomData">
+    <b-card v-if="roomData && dateFilter && dateFilter !== null">
       <b-card-header class="pb-50">
         <h5>
           {{ $t("Select spot") }}
         </h5>
       </b-card-header>
       <b-row>
-        <!--        <pre>{{ roomData }}</pre>-->
-        <pre>{{ roomData.spots }}</pre>
-        <pre>{{ roomSpotsReservationsData }}</pre>
-        <pre>{{ roomData.layout }}</pre>
         <b-col
           md="7"
           class="pt-5"
@@ -34,8 +30,8 @@
                     class="pl-2"
                     style="width: 50px;"
                   >
-                    <!--                      v-if="!isEnabled(idxr, idxc)"-->
                     <div
+                      v-if="isEnabled(idxr, idxc)"
                       :class="classifier(idxr, idxc)"
                       style="width: 30px; height: 30px; border: 1px solid black;"
                       @click="onSeatSelected(idxr, idxc)"
@@ -197,6 +193,22 @@
         </b-col>
       </b-row>
     </b-card>
+
+    <b-row v-if="roomData">
+      <!-- Spots pre zistenie, či je ten spot disabled alebo nie, resp pre layout-->
+      <!--        <pre>{{ roomData }}</pre>-->
+      <!-- roomSpotsReservationsData pre viac info o mieste + je ho classifier -->
+      <!--        <pre>{{ roomSpotsReservationsData }}</pre>-->
+      <b-col>
+        <pre>{{ spots }}</pre>
+      </b-col>
+      <b-col>
+        <pre>{{ reservations }}</pre>
+      </b-col>
+      <b-col>
+        <pre>{{ seats }}</pre>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -212,6 +224,7 @@ import useReservationsList from '@/views/apps/reservation/reservation-list/useRe
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 import BCardCode from '@core/components/b-card-code'
 import Ripple from 'vue-ripple-directive'
+import { compareStringNoCaseSensitive } from '@/utils/utils'
 
 export default {
   components: {
@@ -244,8 +257,10 @@ export default {
       return this.roomData.layout.columns
     },
     spots() {
-      // Toto nepotrebujem ako všetky ale rovno ich potrebujem mať vyfiltrovane podľa params
-      return this.roomSpotsData
+      return this.roomData.spots
+    },
+    reservations() {
+      return this.roomSpotsReservationsData
     },
   },
   setup() {
@@ -277,6 +292,18 @@ export default {
     } = useReservationsList()
 
     return {
+      seatStatusString: {
+        booked: {
+          team: 'TB',
+          user: 'UB',
+          permanent: 'PB',
+          default: 'DB',
+        },
+        available: {
+          full: 'FA',
+          partial: 'PA',
+        },
+      },
       fetchAllWorkspaces,
 
       workspacesList,
@@ -296,7 +323,11 @@ export default {
   watch: {
     roomData(val) {
       // Generate seats on room data change
-      this.generateSeats(val.layout.rows, val.layout.columns)
+      if (this.roomData) this.generateSeats(val.layout.rows, val.layout.columns)
+    },
+    roomSpotsReservationsData() {
+      // Generate seats on room roomSpotsReservationsData change
+      if (this.roomData) this.generateSeats(this.roomData.layout.rows, this.roomData.layout.columns)
     },
   },
   created() {
@@ -311,21 +342,34 @@ export default {
       }
       return null
     },
+    isEnabled(r, c) {
+      const seat = this.getSeatFromData(r, c)
+      return seat ? seat.enabled : true
+    },
+    resolveSeatStatusVariant(seatReservationList) {
+      // TODO better decisions and statuses for example by dates, or multiple events
+      const seatReservation = seatReservationList[0]
+
+      if (seatReservation.permanent) return this.seatStatusString.booked.permanent
+      if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'UserSpotReservation')) return this.seatStatusString.booked.user
+      if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'TeamSpotReservation')) return this.seatStatusString.booked.team
+      return this.seatStatusString.booked.default
+    },
     generateSeats(r, c) {
+      this.seats = []
       for (let y = 1; y <= r; ++y) {
         for (let x = 1; x <= c; ++x) {
-          if (this.isInData(y, x)) {
-            // TODO: selecting first one -> resolve if conflict
-            const seat = this.getSeatFromData(y, x)[0]
-            console.log(seat)
+          const seatReservation = this.getSeatReservationFromData(y, x)
+          if (seatReservation.length > 0) {
+            // TODO: show correct status
             this.seats.push({
-              position: { r: seat.row, c: seat.column },
-              status: seat.status,
+              position: { r: y, c: x },
+              status: this.resolveSeatStatusVariant(seatReservation),
             })
           } else {
             this.seats.push({
               position: { r: y, c: x },
-              status: 'RA',
+              status: this.seatStatusString.available.full,
             })
           }
         }
@@ -333,44 +377,24 @@ export default {
     },
     classifier(r, c) {
       const seat = this.getSeat(r, c)
-      // console.log(seat.position.r)
-      // console.log(seat.position.c)
-      // if (this.selectedSeat) {
-      //   console.log(this.selectedSeat.position.r)
-      //   console.log(this.selectedSeat.position.c)
-      //   console.log(this.selectedSeat.status)
-      // }
-      // console.log(this.selectedSeat)
       if (seat != null) {
         if (this.selectedSeat != seat) {
-          switch (seat.status) {
-            case 'RA':
-              return 'cls-ra'
-            case 'RB':
-              return 'cls-rb'
-            case 'FA':
-              return 'cls-fa'
-            case 'FB':
-              return 'cls-fb'
-            case 'MA':
-              return 'cls-ma'
-            case 'MB':
-              return 'cls-mb'
-            default:
-              return 'cls-ra'
-          }
+          return seat.status ? `cls-${seat.status.toLowerCase()}` : 'cls-fa'
         }
         return 'cls-selected'
       }
     },
     getSeatFromData(r, c) {
-      // "enabled": true,
-      // "row": 1,
-      // "column": 1,
-      return this.spots.filter(spot => (spot.row === r && spot.column === c && spot.enabled === true))
+      return this.spots.filter(spot => (spot.row === r && spot.column === c))[0]
     },
-    isInData(r, c) {
-      return this.getSeatFromData(r, c).length > 0
+    getSeatReservationFromData(r, c) {
+      return this.roomSpotsReservationsData.filter(item => (item.spot.row === r && item.spot.column === c))
+    },
+    isInReservationData(r, c) {
+      return this.roomSpotsReservationsData.filter(reservation => (reservation.spot.row === r && reservation.spot.column === c) > 0)
+    },
+    isInSeatData(r, c) {
+      return this.spots.filter(spot => (spot.row === r && spot.column === c)) > 0
     },
     onSeatSelected(r, c) {
       if (this.selectedSeat == this.getSeat(r, c)) {
@@ -401,6 +425,12 @@ export default {
 </script>
 
 <style lang="scss">
+// Core variables and mixins
+@import '~@core/scss/base/bootstrap-extended/include';
+// Overrides user variable
+@import '~@core/scss/base/components/include';
+// good table variable override to change the color of table
+
 .full-width .card-header-tabs {
    margin-right: -21px;
    margin-left: -21px;
@@ -411,11 +441,11 @@ export default {
    flex-grow: 1;
    text-align: center;
 }
-.cls-selected{background-color:green;}
-.cls-ra{background-color:#fff;}
-.cls-rb{background-color:gray;}
-.cls-fa{background-color:#fff; border: 2px solid pink !important;}
-.cls-fb{background-color:pink;}
-.cls-ma{background-color:#fff;border: 2px solid royalblue !important;}
-.cls-mb{background-color:royalblue;}
+.cls-selected{background-color:$success}
+.cls-tb{background-color: $secondary}
+.cls-ub{background-color:$secondary; border: 2px solid $primary !important;}
+.cls-pb{background-color:$danger}
+.cls-db{background-color:$secondary}
+.cls-fa{background-color:$light;}
+.cls-pa{background-color:$light;border: 2px solid $warning !important;}
 </style>

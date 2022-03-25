@@ -14,6 +14,22 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 
 class SpotReservationSerializer(serializers.ModelSerializer):
+    # status = serializers.SerializerMethodField()
+    #
+    # def get_status(self, obj):
+    #     request_query = self.context.get('request').query_params
+    #     reservation_start = request_query.get('reservation_start', None)
+    #     reservation_end = request_query.get('reservation_end', None)
+    #
+    #     if obj.permanent:
+    #         return SpotStatusChoices.BOOKED_PERMANENTLY
+    #
+    #     if not (reservation_start and reservation_end):
+    #         return None
+    #
+    #     if isinstance(obj, TeamSpotReservation):
+    #         return SpotStatusChoices.BOOKED_FOR_TEAM
+    #     return SpotStatusChoices.BOOKED_FOR_USER
 
     def to_representation(self, instance):
         self.fields["reservation"] = ReservationSerializer(read_only=True)
@@ -50,6 +66,3 @@ class EventPolymorphicSerializer(PolymorphicSerializer):
         UserSpotReservation: SpotReservationByUserSerializer,
         TeamSpotReservation: SpotReservationByTeamSerializer,
     }
-
-    def to_resource_type(self, model_or_instance):
-        return model_or_instance._meta.object_name.lower()

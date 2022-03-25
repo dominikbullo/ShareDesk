@@ -7,7 +7,7 @@ from apps.workspaces.models import Room
 
 
 class ReservationFilter(django_filters.FilterSet):
-    workspace = django_filters.ModelChoiceFilter(
+    room = django_filters.ModelChoiceFilter(
         label='Room',
         empty_label='All rooms',
         queryset=Room.objects.all(),
