@@ -17,23 +17,24 @@
         </h5>
       </b-card-header>
       <b-row>
-        {{ roomData }}
-        {{ roomLayoutData }}
+        <!--        <pre>{{ roomData }}</pre>-->
+        <pre>{{ roomData.spots }}</pre>
+        <pre>{{ roomData.layout }}</pre>
         <b-col
           md="7"
           class="pt-5"
         >
-          <div v-if="roomLayoutData">
+          <div v-if="roomData.layout">
             <table>
               <tbody>
-                <tr v-for="idxr, r in roomLayoutData.rows">
+                <tr v-for="idxr, r in roomData.layout.rows">
                   <td
-                    v-for="idxc, c in roomLayoutData.columns"
+                    v-for="idxc, c in roomData.layout.columns"
                     class="pl-2"
                     style="width: 50px;"
                   >
+                    <!--                      v-if="!isEnabled(idxr, idxc)"-->
                     <div
-                      v-if="!isAisle(idxr, idxc)"
                       :class="classifier(idxr, idxc)"
                       style="width: 30px; height: 30px; border: 1px solid black;"
                       @click="onSeatSelected(idxr, idxc)"
@@ -236,10 +237,13 @@ export default {
   },
   computed: {
     rows() {
-      return this.roomLayoutData.rows
+      return this.roomData.layout.rows
     },
     cols() {
-      return this.roomLayoutData.columns
+      return this.roomData.layout.columns
+    },
+    spots() {
+      return this.roomData.spots
     },
   },
   setup() {
@@ -261,7 +265,6 @@ export default {
       roomsList,
 
       roomData,
-      roomLayoutData,
 
       // Extra Filters
       dateFilter,
@@ -278,7 +281,6 @@ export default {
       roomsList,
 
       roomData,
-      roomLayoutData,
 
       // Extra Filters
       dateFilter,
@@ -289,11 +291,8 @@ export default {
   },
   watch: {
     roomData(val) {
-      console.log('room data change')
-    },
-    roomLayoutData(val) {
-      console.log('room layout data change')
-      this.generateSeats(val.rows, val.columns)
+      // Generate seats on room data change
+      this.generateSeats(val.layout.rows, val.layout.columns)
     },
   },
   created() {
@@ -311,7 +310,15 @@ export default {
     generateSeats(r, c) {
       for (let y = 1; y <= r; ++y) {
         for (let x = 1; x <= c; ++x) {
-          if (!this.isAisle(y, x)) {
+          if (this.isInData(y, x)) {
+            // TODO: selecting first one -> resolve if conflict
+            const seat = this.getSeatFromData(y, x)[0]
+            console.log(seat)
+            this.seats.push({
+              position: { r: seat.row, c: seat.column },
+              status: seat.status,
+            })
+          } else {
             this.seats.push({
               position: { r: y, c: x },
               status: 'RA',
@@ -322,6 +329,14 @@ export default {
     },
     classifier(r, c) {
       const seat = this.getSeat(r, c)
+      // console.log(seat.position.r)
+      // console.log(seat.position.c)
+      // if (this.selectedSeat) {
+      //   console.log(this.selectedSeat.position.r)
+      //   console.log(this.selectedSeat.position.c)
+      //   console.log(this.selectedSeat.status)
+      // }
+      // console.log(this.selectedSeat)
       if (seat != null) {
         if (this.selectedSeat != seat) {
           switch (seat.status) {
@@ -344,15 +359,14 @@ export default {
         return 'cls-selected'
       }
     },
-    isAisle(r, c) {
-      // TODO: showing grid like this
-      return false
-      if (r == 3) {
-        if (c >= 1 && c <= 11) {
-          return true
-        }
-      }
-      return false
+    getSeatFromData(r, c) {
+      // "enabled": true,
+      // "row": 1,
+      // "column": 1,
+      return this.spots.filter(spot => (spot.row === r && spot.column === c && spot.enabled === true))
+    },
+    isInData(r, c) {
+      return this.getSeatFromData(r, c).length > 0
     },
     onSeatSelected(r, c) {
       if (this.selectedSeat == this.getSeat(r, c)) {

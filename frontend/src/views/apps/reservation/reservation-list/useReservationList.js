@@ -10,7 +10,6 @@ export default function useReservationsList() {
   const toast = useToast()
 
   const roomData = ref(null)
-  const roomLayoutData = ref(null)
 
   const workspacesList = ref([])
   const floorsList = ref([])
@@ -94,13 +93,12 @@ export default function useReservationsList() {
         reject(err)
       })
   })
-  const fetchRoom = () => new Promise((resolve, reject) => {
+  const fetchRoom = () => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
       .then(response => {
         roomData.value = response.data
-        resolve(response)
       })
-      .catch(err => {
+      .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
@@ -110,27 +108,8 @@ export default function useReservationsList() {
           },
         })
         roomData.value = []
-        reject(err)
       })
-  })
-
-  const fetchLayout = id => new Promise((resolve, reject) => {
-    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomLayout`, { id })
-      .then(response => {
-        roomLayoutData.value = response.data
-      })
-      .catch(err => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: `Error fetching layout ${roomFilter.value}`,
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
-        })
-        reject(err)
-      })
-  })
+  }
 
   function cleanFilters() {
     if (!roomsList.value.some(data => data.id === roomFilter.value)) {
@@ -159,9 +138,7 @@ export default function useReservationsList() {
         roomData.value = undefined
         return
       }
-      fetchRoom().then(res => {
-        fetchLayout(res.data.layout.id)
-      })
+      fetchRoom()
     })
   })
 
@@ -177,7 +154,6 @@ export default function useReservationsList() {
     roomsList,
 
     roomData,
-    roomLayoutData,
 
     // Extra Filters
     dateFilter,

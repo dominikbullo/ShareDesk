@@ -1,4 +1,4 @@
-from django_filters import rest_framework as filters
+from django_filters import rest_framework as django_filters
 from requests import Response
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -26,8 +26,8 @@ class FloorViewSet(viewsets.ModelViewSet):
     filterset_fields = "__all__"
 
 
-class RoomFilter(filters.FilterSet):
-    workspace = filters.ModelChoiceFilter(
+class RoomFilter(django_filters.FilterSet):
+    workspace = django_filters.ModelChoiceFilter(
         label='Workspace',
         empty_label='All workspaces',
         queryset=Workspace.objects.all(),
