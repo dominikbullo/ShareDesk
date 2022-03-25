@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/dominikbullo/ShareDesk/compare/v0.2.1...v0.3.0) (2022-03-25)
+
+
+### Features
+
+* filter reservation based on room and start/end ([ff2a338](https://github.com/dominikbullo/ShareDesk/commit/ff2a3389efe4a080df6f17d92c5dc4c8a7e1b961))
+* **reservation:** reservations finally showing correct data from BE ([7b3bab5](https://github.com/dominikbullo/ShareDesk/commit/7b3bab5642d611e39d4428a6c3c8cb0701bbbb0d))
+* roomSpotsReservationsData on FE showing correct reservations for selected date and room ([ce7043e](https://github.com/dominikbullo/ShareDesk/commit/ce7043e910cfa7d4779cdbcecfd463db63f58dd1))
+* spot to reservation only one to one field ([efbee93](https://github.com/dominikbullo/ShareDesk/commit/efbee93fe5dac7add1ecd66fcbe4574470b8d09f))
+
+
+### Bug Fixes
+
+* bad name ([0eb026f](https://github.com/dominikbullo/ShareDesk/commit/0eb026f04455e38d2d6cc5814cfffd2ad849e84f))
+* github actions ([5526047](https://github.com/dominikbullo/ShareDesk/commit/552604775cfa644d6733c1a69e021fe9eeb00704))
+
 ### [0.2.1](https://github.com/dominikbullo/ShareDesk/compare/v0.2.0...v0.2.1) (2022-03-24)
 
 
