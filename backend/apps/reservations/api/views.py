@@ -1,5 +1,4 @@
-from django_filters import rest_framework as django_filters, widgets
-from django_filters.widgets import RangeWidget
+from django_filters import rest_framework as django_filters
 from rest_framework import viewsets
 
 from apps.reservations.api.serializers import EventPolymorphicSerializer

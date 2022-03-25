@@ -19,7 +19,7 @@ class Reservation(models.Model):
 class SpotReservation(PolymorphicModel):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, related_name='created_spot_reservations', on_delete=models.DO_NOTHING)
-    reservation = models.ForeignKey(Reservation, related_name='reservations_for_spot', on_delete=models.CASCADE)
+    reservation = models.OneToOneField(Reservation, related_name='reservations_for_spot', on_delete=models.CASCADE)
     spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
     permanent = models.BooleanField(default=False)
 
