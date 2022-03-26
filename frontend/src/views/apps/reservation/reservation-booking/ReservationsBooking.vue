@@ -224,9 +224,9 @@ import store from '@/store'
 import Ripple from 'vue-ripple-directive'
 import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
 import { compareStringNoCaseSensitive } from '@/utils/utils'
-import useReservationsList from '@/views/apps/reservation/reservation-list/useReservationList'
+import useReservationsList from '@/views/apps/reservation/reservation-booking/useReservationBooking'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
-import ReservationsListFilters from '@/views/apps/reservation/reservation-list/ReservationsListFilters.vue'
+import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
 
 export default {
   components: {

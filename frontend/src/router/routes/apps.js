@@ -41,7 +41,7 @@ export default [
   {
     path: '/apps/reservations/list',
     name: 'apps-reservations-list',
-    component: () => import('@/views/apps/reservation/reservation-list/ReservationsList.vue'),
+    component: () => import('@/views/apps/reservation/reservation-booking/ReservationsBooking.vue'),
   },
   // *===============================================---*
   // *--------- WORKSPACES -----------------------------*
