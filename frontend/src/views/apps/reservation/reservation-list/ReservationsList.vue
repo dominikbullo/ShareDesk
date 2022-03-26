@@ -18,7 +18,6 @@
       </b-card-header>
       <b-row>
         <b-col
-          md="7"
           class="pt-5"
         >
           <div v-if="roomData.layout">
@@ -43,12 +42,11 @@
           </div>
         </b-col>
         <b-col
-          md="5"
           class="pt-3"
           align-content="center"
         >
           <div
-            v-show="selectedSeat !=null"
+            v-show="selectedSeat"
             class="card"
             style="display: none;"
           >
@@ -61,15 +59,15 @@
               <ul class="list-group">
                 <li
                   class="list-group-item"
-                  :class="seatStatus('RA')"
-                  @click="changeSeatStatus('RA')"
+                  :class="seatStatus(seatStatusString.available.full)"
+                  @click="changeSeatStatus(seatStatusString.available.full)"
                 >
                   <div
                     class="float-left bg-white"
                     style="width: 25px;"
                   >
                     <div
-                      class="cls-ra"
+                      class="cls-fa"
                       style="width: 30px; height: 30px; border: 1px solid black;"
                     />
                   </div>
@@ -77,8 +75,8 @@
                 </li>
                 <li
                   class="list-group-item"
-                  :class="seatStatus('RB')"
-                  @click="changeSeatStatus('RB')"
+                  :class="seatStatus(seatStatusString.booked.default)"
+                  @click="changeSeatStatus(seatStatusString.booked.default)"
                 >
                   <div
                     class="float-left"
