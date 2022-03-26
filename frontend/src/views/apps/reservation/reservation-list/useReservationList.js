@@ -106,7 +106,8 @@ export default function useReservationsList() {
 
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
       room: roomFilter.value,
-      reservation_end: dateFilter.value,
+      permanent: true,
+      reservation_start: dateFilter.value,
     }).then(response => {
       responsePermanent.value = response.data
       roomSpotsReservationsData.value = joinArraysSafely(responseClassic.value, responsePermanent.value)
