@@ -11,6 +11,9 @@ class RoomLayout(models.Model):
     columns = models.IntegerField()
     name = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"[{self.rows}x{self.columns}] - {self.name}"
+
 
 # class FloorLayout(models.Model):
 #     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,7 +36,7 @@ class Floor(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.workspace} F{self.number}"
+        return f"F{self.number}"
 
 
 # class FloorPlan(models.Model):
@@ -51,8 +54,8 @@ class Room(models.Model):
 
     def __str__(self):
         if self.name:
-            return f"{self.floor} R{self.number}"
-        return f"{self.floor} R{self.number}"
+            return f"R{self.number} - {self.name}"
+        return f"R{self.number}"
 
     def spot_number(self):
         if self.number:

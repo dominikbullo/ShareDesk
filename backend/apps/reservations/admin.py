@@ -1,6 +1,5 @@
 from django.contrib import admin
-from django.apps import apps
-from django.contrib.admin.sites import AlreadyRegistered
+from django.contrib.admin.decorators import display
 from polymorphic.admin import PolymorphicChildModelAdmin, PolymorphicParentModelAdmin
 
 from apps.reservations.models import Reservation, SpotReservation, TeamSpotReservation, UserSpotReservation
@@ -29,3 +28,18 @@ class TeamSpotReservationAdmin(PolymorphicChildModelAdmin):
 class SpotReservationAdmin(PolymorphicParentModelAdmin):
     base_model = SpotReservation
     child_models = (UserSpotReservation, TeamSpotReservation)
+    list_filter = ("reservation", "permanent",)
+    list_display = PolymorphicParentModelAdmin.list_display + \
+                   ("reservation", "permanent", "get_room", "get_floor", "get_workspace")
+
+    @display(ordering='spot__room', description='Room')
+    def get_room(self, obj):
+        return obj.spot.room
+
+    @display(ordering='spot__room__floor', description='Floor')
+    def get_floor(self, obj):
+        return obj.spot.room.floor
+
+    @display(ordering='spot__room__floor__workspace', description='Workspace')
+    def get_workspace(self, obj):
+        return obj.spot.room.floor.workspace

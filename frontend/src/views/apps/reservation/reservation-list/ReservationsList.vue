@@ -53,6 +53,11 @@
             style="display: none;"
           >
             <div class="card-body">
+              <div v-if="selectedSeat">
+                <h3>Seat reservation data:</h3>
+                <pre>{{ selectedSeat.reservationData }}</pre>
+              </div>
+
               <ul class="list-group">
                 <li
                   class="list-group-item"
@@ -364,11 +369,13 @@ export default {
             this.seats.push({
               position: { r: y, c: x },
               status: this.resolveSeatStatusVariant(seatReservation),
+              reservationData: seatReservation,
             })
           } else {
             this.seats.push({
               position: { r: y, c: x },
               status: this.seatStatusString.available.full,
+              reservationData: [],
             })
           }
         }

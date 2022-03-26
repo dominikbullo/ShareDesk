@@ -24,9 +24,7 @@ class SpotReservation(PolymorphicModel):
     permanent = models.BooleanField(default=False)
 
     def __str__(self):
-        if self.permanent:
-            return f"{self.spot} {self.reservation.datetime_from} - permanent"
-        return f"{self.spot} {self.reservation}"
+        return f"{self.spot} - {self.reservation}"
 
 
 class UserSpotReservation(SpotReservation):
