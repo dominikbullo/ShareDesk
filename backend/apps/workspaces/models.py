@@ -24,7 +24,7 @@ class Workspace(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class Floor(models.Model):
@@ -33,7 +33,7 @@ class Floor(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.number}"
+        return f"{self.workspace} F{self.number}"
 
 
 # class FloorPlan(models.Model):
@@ -46,13 +46,13 @@ class Room(models.Model):
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
     layout = models.ForeignKey(RoomLayout, on_delete=models.CASCADE)
     capacity = models.IntegerField()
-    name = models.CharField(max_length=255)
-    number = models.CharField(max_length=255, blank=True, null=True)
+    number = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        if self.number:
-            return f"room {self.number}"
-        return f"room on {self.floor}."
+        if self.name:
+            return f"{self.floor} R{self.number}"
+        return f"{self.floor} R{self.number}"
 
     def spot_number(self):
         if self.number:
@@ -66,10 +66,10 @@ class Spot(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     row = models.IntegerField()
     column = models.IntegerField()
-    identifier = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return f"spot {self.identifier}"
+        return f"{self.room} S[{self.row}-{self.column}]"
 
 
 class SpotIssue(models.Model):

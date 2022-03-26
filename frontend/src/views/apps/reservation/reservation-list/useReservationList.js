@@ -106,7 +106,6 @@ export default function useReservationsList() {
 
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
       room: roomFilter.value,
-      permanent: true,
       reservation_end: dateFilter.value,
     }).then(response => {
       responsePermanent.value = response.data
@@ -124,6 +123,7 @@ export default function useReservationsList() {
 
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
       room: roomFilter.value,
+      permanent: false,
       reservation_start: dateFilter.value,
       reservation_end: addDayToDate(dateFilter.value, 1).toISOString(),
     })
