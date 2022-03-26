@@ -18,6 +18,9 @@
             :value="dateFilter"
             :date-disabled-fn="dateDisabled"
             :start-weekday="1"
+            today-button
+            reset-button
+            close-button
             class="mb-2"
             nav-prev-year="disabled"
             @input="(val) => $emit('update:dateFilter', val)"
@@ -126,12 +129,13 @@ export default {
   },
   methods: {
     dateDisabled(ymd, date) {
+      return false
       // Disable weekends (Sunday = `0`, Saturday = `6`) and
       // disable days that fall on the 13th of the month
       const weekday = date.getDay()
       const day = date.getDate()
       // Return `true` if the date should be disabled
-      return weekday === 0 || weekday === 6 || day === 13
+      return weekday === 0 || weekday === 6
     },
   },
 }

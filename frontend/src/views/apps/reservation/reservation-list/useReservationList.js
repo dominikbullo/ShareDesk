@@ -4,7 +4,7 @@ import { ref, watch } from '@vue/composition-api'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
-import { addDayToDate } from '@/utils/utils'
+import { addDayToDate, joinArraysSafely } from '@/utils/utils'
 
 export default function useReservationsList() {
   // Use toast
@@ -95,10 +95,63 @@ export default function useReservationsList() {
         reject(err)
       })
   })
+  const fetchRoomSpotsReservations = () => {
+    const responseClassic = ref([])
+    const responsePermanent = ref([])
+
+    if (!dateFilter.value) {
+      roomSpotsReservationsData.value = []
+      return
+    }
+
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
+      room: roomFilter.value,
+      permanent: true,
+      reservation_end: dateFilter.value,
+    }).then(response => {
+      responsePermanent.value = response.data
+      roomSpotsReservationsData.value = joinArraysSafely(responseClassic.value, responsePermanent.value)
+    }).catch(() => {
+      toast({
+        component: ToastificationContent,
+        props: {
+          title: `Error fetching room ${roomFilter.value} spots data`,
+          icon: 'AlertTriangleIcon',
+          variant: 'danger',
+        },
+      })
+    })
+
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
+      room: roomFilter.value,
+      reservation_start: dateFilter.value,
+      reservation_end: addDayToDate(dateFilter.value, 1).toISOString(),
+    })
+      .then(response => {
+        responseClassic.value = response.data
+        roomSpotsReservationsData.value = joinArraysSafely(responseClassic.value, responsePermanent.value)
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: `Error fetching room ${roomFilter.value} spots data`,
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
+        })
+      })
+  }
+
   const fetchRoom = () => {
+    if (!roomFilter.value) {
+      roomData.value = null
+      return
+    }
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
       .then(response => {
         roomData.value = response.data
+        fetchRoomSpotsReservations()
       })
       .catch(() => {
         toast({
@@ -110,27 +163,6 @@ export default function useReservationsList() {
           },
         })
         roomData.value = []
-      })
-  }
-  const fetchRoomSpots = () => {
-    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
-      room: roomFilter.value,
-      reservation_start: dateFilter.value,
-      reservation_end: addDayToDate(dateFilter.value, 1).toISOString(),
-    })
-      .then(response => {
-        roomSpotsReservationsData.value = response.data
-      })
-      .catch(() => {
-        toast({
-          component: ToastificationContent,
-          props: {
-            title: `Error fetching room ${roomFilter.value} spots data`,
-            icon: 'AlertTriangleIcon',
-            variant: 'danger',
-          },
-        })
-        roomSpotsReservationsData.value = []
       })
   }
 
@@ -154,16 +186,15 @@ export default function useReservationsList() {
     })
   })
 
-  watch([dateFilter, roomFilter], () => {
+  watch([roomFilter], () => {
+    fetchRoom()
     fetchAllWorkspaces().then(() => {
       cleanFilters()
-      if (roomFilter.value === null) {
-        roomData.value = null
-        return
-      }
-      fetchRoom()
-      fetchRoomSpots()
     })
+  })
+
+  watch([dateFilter], () => {
+    fetchRoomSpotsReservations()
   })
 
   return {

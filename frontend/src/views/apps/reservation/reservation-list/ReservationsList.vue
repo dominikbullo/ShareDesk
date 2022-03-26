@@ -10,7 +10,7 @@
       :room-options="roomsList"
     />
 
-    <b-card v-if="roomData && dateFilter && dateFilter !== null">
+    <b-card v-if="roomData">
       <b-card-header class="pb-50">
         <h5>
           {{ $t("Select spot") }}
@@ -387,6 +387,7 @@ export default {
       return this.spots.filter(spot => (spot.row === r && spot.column === c))[0]
     },
     getSeatReservationFromData(r, c) {
+      if (!this.roomSpotsReservationsData || this.roomSpotsReservationsData.lenght <= 0) return []
       return this.roomSpotsReservationsData.filter(item => (item.spot.row === r && item.spot.column === c))
     },
     isInReservationData(r, c) {
