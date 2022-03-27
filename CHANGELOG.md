@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/dominikbullo/ShareDesk/compare/v0.3.0...v0.4.0) (2022-03-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* SpotReservations now could contain multiple spots. Primary usage for teams.
+
+### Features
+
+* add user to team modal POC ([9e792a5](https://github.com/dominikbullo/ShareDesk/commit/9e792a5d7033da737acb273c8e644b30845f0950))
+* **admin:** better django admin ([a858ef3](https://github.com/dominikbullo/ShareDesk/commit/a858ef39ec65c806a9d256ae775c5e7770fb8eda))
+* ManyToMany reservations - spots ([e60b1bc](https://github.com/dominikbullo/ShareDesk/commit/e60b1bcc0d1d7bc3a2a6667daf9c7390cf1cf8d9))
+* **my-reservations:** my reservations showing on endpoint and also success tested on FE ([0c80315](https://github.com/dominikbullo/ShareDesk/commit/0c803157f57619fb94b4f6844d78b53d64e7104c))
+* team view now has users list filtered by selected team ([7d88d93](https://github.com/dominikbullo/ShareDesk/commit/7d88d938dd9d24c53bf727ed6c47758237940337))
+
+
+### Bug Fixes
+
+* github actions deploy.yml ([5920566](https://github.com/dominikbullo/ShareDesk/commit/5920566d2d690bbfe80e09cfb0db63fd0a023487))
+* github actions deploy.yml again ([e0aa2cb](https://github.com/dominikbullo/ShareDesk/commit/e0aa2cb165c21df81085a64003620a1873c69808))
+* multi-day reservations ([18a548e](https://github.com/dominikbullo/ShareDesk/commit/18a548e5f242470cff2925b5e149164afac3f1a4))
+* permanent reservation...again ([05210d6](https://github.com/dominikbullo/ShareDesk/commit/05210d61453d31bd0d505a5586f36512153bed6e))
+* permanentné miesta sa zobrazia stálo ([3dfc718](https://github.com/dominikbullo/ShareDesk/commit/3dfc718d6207a1f69b7ea4225604e853dd347e8b))
+* teams through field ([86b6665](https://github.com/dominikbullo/ShareDesk/commit/86b6665a6485aec2ac1841c5581528b90155fd21))
+
 ## [0.3.0](https://github.com/dominikbullo/ShareDesk/compare/v0.2.1...v0.3.0) (2022-03-25)
 
 
