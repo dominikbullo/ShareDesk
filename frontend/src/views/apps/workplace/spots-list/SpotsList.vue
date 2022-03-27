@@ -151,7 +151,7 @@ import {
   BAvatar, BBadge, BCard, BPagination, BFormGroup, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 import { VueGoodTable } from 'vue-good-table'
-import store from '@/store/index'
+import store from '@/store'
 
 export default {
   components: {

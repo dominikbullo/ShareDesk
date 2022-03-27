@@ -40,8 +40,18 @@ export default [
   // *===============================================---*
   {
     path: '/apps/reservations/list',
-    name: 'apps-reservations-list',
+    name: 'apps-reservations-booking',
     component: () => import('@/views/apps/reservation/reservation-booking/ReservationsBooking.vue'),
+  },
+  {
+    path: '/apps/reservations/user/:id',
+    name: 'apps-reservations-user',
+    component: () => import('@/views/apps/reservation/reservation-user/UserReservationsList.vue'),
+  },
+  {
+    path: '/apps/reservations/manager',
+    name: 'apps-reservations-manager',
+    component: () => import('@/views/apps/reservation/reservation-manager/ReservationManager.vue'),
   },
   // *===============================================---*
   // *--------- WORKSPACES -----------------------------*
@@ -49,11 +59,21 @@ export default [
   {
     path: '/apps/workspaces/list',
     name: 'apps-workspaces-list',
-    component: () => import('@/views/apps/workplace/SpotsList.vue'),
+    component: () => import('@/views/apps/workplace/spots-list/SpotsList.vue'),
   },
   {
     path: '/apps/workspaces/issues/list',
     name: 'apps-workspaces-issues-list',
     component: () => import('@/views/apps/workplace/issues-list/SpotIssuesList.vue'),
+  },
+  {
+    path: '/apps/workspaces/layout/list',
+    name: 'apps-workspaces-layout-list',
+    component: () => import('@/views/apps/workplace/layout-list/RoomLayoutList.vue'),
+  },
+  {
+    path: '/apps/workspaces/layout/edit/:id/',
+    name: 'apps-workspaces-layout-edit',
+    component: () => import('@/views/apps/workplace/layout-edit/RoomLayoutEdit.vue'),
   },
 ]

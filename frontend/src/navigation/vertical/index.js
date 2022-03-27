@@ -6,14 +6,24 @@ export default [
   },
   {
     title: 'Reservations',
-    route: 'apps-reservations-list',
+    route: 'apps-reservations-booking',
     icon: 'ListIcon',
   },
-  // {
-  //   title: 'My reservations',
-  //   route: 'apps-reservations-list',
-  //   icon: 'HomeIcon',
-  // },
+  {
+    title: 'My reservations (testing only)',
+    route: 'apps-reservations-user',
+    icon: 'HomeIcon',
+  },
+  {
+    title: 'Reservation manager (testing only)',
+    route: 'apps-reservations-manager',
+    icon: 'HomeIcon',
+  },
+  {
+    title: 'Layout list (testing only)',
+    route: 'apps-workspaces-layout-list',
+    icon: 'HomeIcon',
+  },
   {
     title: 'Users',
     icon: 'HomeIcon',
