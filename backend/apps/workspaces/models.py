@@ -48,7 +48,6 @@ class Room(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     floor = models.ForeignKey(Floor, on_delete=models.CASCADE)
     layout = models.ForeignKey(RoomLayout, on_delete=models.CASCADE)
-    capacity = models.IntegerField()
     number = models.CharField(max_length=255)
     name = models.CharField(max_length=255, blank=True, null=True)
 

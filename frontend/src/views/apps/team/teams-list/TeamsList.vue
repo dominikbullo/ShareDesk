@@ -85,7 +85,6 @@
           <b-dropdown
             variant="link"
             no-caret
-            :right="$store.state.appConfig.isRTL"
           >
 
             <template #button-content>
@@ -95,6 +94,17 @@
                 class="align-middle text-body"
               />
             </template>
+
+            <b-dropdown-item
+              v-b-modal:modal-add-user-to-team
+              @click="teamData=data.item"
+            >
+              <feather-icon icon="UsersIcon" />
+              <span class="align-middle ml-50">Add member</span>
+            </b-dropdown-item>
+
+            <b-dropdown-divider />
+
             <b-dropdown-item :to="{ name: 'apps-teams-view', params: { id: data.item.id } }">
               <feather-icon icon="FileTextIcon" />
               <span class="align-middle ml-50">Details</span>
@@ -161,17 +171,22 @@
         </b-row>
       </div>
     </b-card>
+
+    <!-- Add user to team modal-->
+    <add-user-to-team :team-data.sync="teamData" />
+
   </div>
 </template>
 
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
-  BBadge, BDropdown, BDropdownItem, BPagination,
+  BBadge, BDropdown, BDropdownItem, BPagination, BDropdownDivider,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
 import store from '@/store'
+import AddUserToTeam from '@/components/common/modal/TeamModals.vue'
 import useTeamsList from './useTeamsList'
 import teamStoreModule from '../teamStoreModule'
 import TeamListAddNew from './TeamListAddNew.vue'
@@ -179,6 +194,7 @@ import TeamListAddNew from './TeamListAddNew.vue'
 export default {
   components: {
     TeamListAddNew,
+    AddUserToTeam,
 
     BCard,
     BRow,
@@ -192,9 +208,15 @@ export default {
     BBadge,
     BDropdown,
     BDropdownItem,
+    BDropdownDivider,
     BPagination,
 
     vSelect,
+  },
+  data() {
+    return {
+      teamData: {},
+    }
   },
   setup() {
     const TEAM_APP_STORE_MODULE_NAME = 'app-team'

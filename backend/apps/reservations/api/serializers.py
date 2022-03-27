@@ -61,7 +61,7 @@ class SpotReservationByTeamSerializer(SpotReservationSerializer):
         fields = "__all__"
 
 
-class EventPolymorphicSerializer(PolymorphicSerializer):
+class SpotReservationPolymorphicSerializer(PolymorphicSerializer):
     model_serializer_mapping = {
         UserSpotReservation: SpotReservationByUserSerializer,
         TeamSpotReservation: SpotReservationByTeamSerializer,

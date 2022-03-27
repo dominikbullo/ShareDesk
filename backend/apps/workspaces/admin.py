@@ -13,7 +13,7 @@ class CustomRoomAdmin(admin.ModelAdmin):
 
 @admin.register(Room)
 class CustomRoomAdmin(admin.ModelAdmin):
-    list_filter = ("floor", "layout", "capacity", "number", "name")
+    list_filter = ("floor", "layout", "number", "name")
     list_display = admin.ModelAdmin.list_display + list_filter
 
 

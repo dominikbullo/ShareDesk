@@ -1,8 +1,10 @@
 from django_filters import rest_framework as django_filters
-from requests import Response
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.response import Response
 
+from apps.reservations.api.serializers import SpotReservationPolymorphicSerializer
+from apps.reservations.models import SpotReservation
 from apps.workspaces.api.serializers import WorkspaceSerializer, SpotIssueSerializer, SpotSerializer, FloorSerializer, \
     RoomSerializer, RoomLayoutSerializer
 from apps.workspaces.models import Workspace, SpotIssue, Spot, Floor, Room, RoomLayout
@@ -59,6 +61,9 @@ class SpotViewSet(viewsets.ModelViewSet):
     serializer_class = SpotSerializer
     queryset = Spot.objects.all()
 
-    @action(detail=True, methods=['post', 'delete'])
-    def reservations(self, request, pk=None):
-        return Response({'status': 'okeeej set'})
+    # I dont need this for now
+    # @action(detail=True, methods=['GET'])
+    # def reservations(self, request, pk=None):
+    #     queryset = SpotReservation.objects.filter(spot=pk)
+    #     serializer = SpotReservationPolymorphicSerializer(queryset, many=True)
+    #     return Response(status=status.HTTP_200_OK, data=serializer.data)

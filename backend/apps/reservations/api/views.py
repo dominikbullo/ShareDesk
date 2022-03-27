@@ -4,7 +4,7 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from apps.reservations.api.serializers import EventPolymorphicSerializer
+from apps.reservations.api.serializers import SpotReservationPolymorphicSerializer
 from apps.reservations.models import SpotReservation, UserSpotReservation, TeamSpotReservation
 from apps.teams.models import Team
 from apps.workspaces.models import Room
@@ -33,7 +33,7 @@ class ReservationFilter(django_filters.FilterSet):
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
-    serializer_class = EventPolymorphicSerializer
+    serializer_class = SpotReservationPolymorphicSerializer
     queryset = SpotReservation.objects.all()
     filterset_class = ReservationFilter
 
