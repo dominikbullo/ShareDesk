@@ -20,12 +20,14 @@ class SpotReservation(PolymorphicModel):
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, related_name='created_spot_reservations', on_delete=models.DO_NOTHING)
     reservation = models.OneToOneField(Reservation, related_name='reservations_for_spot', on_delete=models.CASCADE)
-    # TODO many to many
-    spot = models.ForeignKey(Spot, on_delete=models.CASCADE)
+    spots = models.ManyToManyField(Spot)
     permanent = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.spot} - {self.reservation}"
+        return f"{self.reservation}"
+
+    def get_spots(self):
+        return "\n".join([str(p) for p in self.spots.all()])
 
 
 class UserSpotReservation(SpotReservation):

@@ -10,7 +10,6 @@ class HideFromMenuAdmin(admin.ModelAdmin):
         return False
 
 
-# admin.site.unregister(Reservation)
 admin.site.register(Reservation, HideFromMenuAdmin)
 
 
@@ -30,16 +29,16 @@ class SpotReservationAdmin(PolymorphicParentModelAdmin):
     child_models = (UserSpotReservation, TeamSpotReservation)
     list_filter = ("reservation", "permanent",)
     list_display = PolymorphicParentModelAdmin.list_display + \
-                   ("reservation", "permanent", "get_room", "get_floor", "get_workspace")
+                   ("reservation", "permanent",)
 
-    @display(ordering='spot__room', description='Room')
-    def get_room(self, obj):
-        return obj.spot.room
-
-    @display(ordering='spot__room__floor', description='Floor')
-    def get_floor(self, obj):
-        return obj.spot.room.floor
-
-    @display(ordering='spot__room__floor__workspace', description='Workspace')
-    def get_workspace(self, obj):
-        return obj.spot.room.floor.workspace
+    # @display(ordering='spot__room', description='Room')
+    # def get_room(self, obj):
+    #     return obj.spot.room
+    #
+    # @display(ordering='spot__room__floor', description='Floor')
+    # def get_floor(self, obj):
+    #     return obj.spot.room.floor
+    #
+    # @display(ordering='spot__room__floor__workspace', description='Workspace')
+    # def get_workspace(self, obj):
+    #     return obj.spot.room.floor.workspace

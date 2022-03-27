@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from apps.reservations.api.serializers import SpotReservationPolymorphicSerializer
 from apps.reservations.models import SpotReservation, UserSpotReservation, TeamSpotReservation
 from apps.teams.models import Team
-from apps.workspaces.models import Room
+from apps.workspaces.models import Room, Spot
 
 
 class ReservationFilter(django_filters.FilterSet):
@@ -18,6 +18,11 @@ class ReservationFilter(django_filters.FilterSet):
         to_field_name="id",
         method='filter_room',
     )
+    # https://django-filter.readthedocs.io/en/stable/ref/filters.html#modelmultiplechoicefilter
+    # spots = django_filters.ModelMultipleChoiceFilter(queryset=Spot.objects.all(),
+    #                                                  to_field_name="id",
+    #                                                  method='filter_spot',
+    #                                                  )
 
     # https://stackoverflow.com/questions/30366564/daterange-on-a-django-filter
     reservation_start = django_filters.DateTimeFilter(field_name="reservation__datetime_from__date",
@@ -25,7 +30,7 @@ class ReservationFilter(django_filters.FilterSet):
     reservation_end = django_filters.DateTimeFilter(field_name="reservation__datetime_to__date", lookup_expr=('gte'), )
 
     def filter_room(self, queryset, name, value):
-        return queryset.filter(spot__room_id=value.id)
+        return queryset.filter(spots__room_id=value)
 
     class Meta:
         model = SpotReservation

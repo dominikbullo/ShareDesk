@@ -126,7 +126,7 @@ export default function useReservationsList() {
       room: roomFilter.value,
       permanent: false,
       reservation_start: dateFilter.value,
-      reservation_end: addDayToDate(dateFilter.value, 1).toISOString(),
+      reservation_end: dateFilter.value,
     })
       .then(response => {
         responseClassic.value = response.data

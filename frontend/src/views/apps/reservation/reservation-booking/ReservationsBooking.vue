@@ -363,7 +363,6 @@ export default {
         for (let x = 1; x <= c; ++x) {
           const seatReservation = this.getSeatReservationFromData(y, x)
           if (seatReservation.length > 0) {
-            // TODO: show correct status
             this.seats.push({
               position: { r: y, c: x },
               status: this.resolveSeatStatusVariant(seatReservation),
@@ -392,11 +391,12 @@ export default {
       return this.spots.filter(spot => (spot.row === r && spot.column === c))[0]
     },
     getSeatReservationFromData(r, c) {
-      if (!this.roomSpotsReservationsData || this.roomSpotsReservationsData.lenght <= 0) return []
-      return this.roomSpotsReservationsData.filter(item => (item.spot.row === r && item.spot.column === c))
+      if (!this.roomSpotsReservationsData || this.roomSpotsReservationsData.length <= 0) return []
+      // Pozor na toom, lebo ten spot síce v tej rezervacií byť môže ale v inej room
+      return this.roomSpotsReservationsData.filter(element => element.spots.filter(item => (item.room === this.roomFilter && item.row === r && item.column === c)).length > 0)
     },
     isInReservationData(r, c) {
-      return this.roomSpotsReservationsData.filter(reservation => (reservation.spot.row === r && reservation.spot.column === c) > 0)
+      return this.roomSpotsReservationsData.filter(item => (item.spots.room === this.roomFilter && item.spots.row === r && item.spots.column === c))
     },
     isInSeatData(r, c) {
       return this.spots.filter(spot => (spot.row === r && spot.column === c)) > 0
