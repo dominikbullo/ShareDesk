@@ -4,7 +4,7 @@ from apps.teams.models import Team
 
 
 class TeamSerializer(serializers.ModelSerializer):
-    # created_by = serializers.StringRelatedField(default=serializers.CurrentUserDefault(), read_only=True)
+    # created_by = UserSerializer(default=serializers.CurrentUserDefault())
     members_count = serializers.SerializerMethodField()
 
     def get_members_count(self, obj):
@@ -13,3 +13,4 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = "__all__"
+        read_only_fields = ['created_by']

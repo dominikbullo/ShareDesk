@@ -19,4 +19,4 @@ class SpotIssueStatusChoices(models.TextChoices):
 class SpotPermanentStatusChoices(models.TextChoices):
     SUBMITTED = 'submitted', _('Submitted')
     ALLOWED = 'allowed', _('Allowed')
-    DECLINED = 'declined', _('Declined')
+    REJECTED = 'rejected', _('Rejected')

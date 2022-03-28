@@ -8,6 +8,7 @@ from apps.reservations.api.serializers import SpotReservationPolymorphicSerializ
 from apps.reservations.models import SpotReservation, UserSpotReservation, TeamSpotReservation
 from apps.teams.models import Team
 from apps.workspaces.models import Room, Spot
+from core.choices import SpotPermanentStatusChoices
 
 
 class ReservationFilter(django_filters.FilterSet):
@@ -18,13 +19,6 @@ class ReservationFilter(django_filters.FilterSet):
         to_field_name="id",
         method='filter_room',
     )
-    # https://django-filter.readthedocs.io/en/stable/ref/filters.html#modelmultiplechoicefilter
-    # spots = django_filters.ModelMultipleChoiceFilter(queryset=Spot.objects.all(),
-    #                                                  to_field_name="id",
-    #                                                  method='filter_spot',
-    #                                                  )
-
-    # https://stackoverflow.com/questions/30366564/daterange-on-a-django-filter
     reservation_start = django_filters.DateTimeFilter(field_name="reservation__datetime_from__date",
                                                       lookup_expr=('lte'), )
     reservation_end = django_filters.DateTimeFilter(field_name="reservation__datetime_to__date", lookup_expr=('gte'), )
@@ -52,3 +46,13 @@ class ReservationViewSet(viewsets.ModelViewSet):
         queryset = user_reservations | user_team_reservations
         serializer = self.serializer_class(queryset, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
+
+    @action(methods=['POST'], detail=True)
+    def change_status(self, request, pk=None):
+        reservation = self.get_object()
+        new_status = request.data.get('status', None)
+        if new_status not in SpotPermanentStatusChoices:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        reservation.permanent_status = new_status
+        reservation.save()
+        return Response(data=self.serializer_class(reservation).data, status=status.HTTP_200_OK)

@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ rows }}
     <b-card
       no-body
       class="py-2 px-1"
@@ -55,12 +54,15 @@
             <b-button
               variant="outline-success"
               class="btn-icon"
+              @click="changePermanentStatus(props.row.id, 'allowed' )"
             >
               <feather-icon icon="CheckIcon" />
             </b-button>
+
             <b-button
               variant="outline-danger"
               class="btn-icon ml-1"
+              @click="changePermanentStatus(props.row.id, 'rejected' )"
             >
               <feather-icon icon="XIcon" />
             </b-button>
@@ -180,10 +182,9 @@ import {
   BFormSelect,
   BPagination,
 } from 'bootstrap-vue'
-import store from '@/store'
-import { joinArraysSafely } from '@/utils/utils'
-import ToastificationContent from '@core/components/toastification/ToastificationContent'
 import Ripple from 'vue-ripple-directive'
+import { useToast } from 'vue-toastification/composition'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -290,6 +291,7 @@ export default {
         .get('/reservations/', {
           params: {
             permanent: true,
+            permanent_status: 'submitted',
           },
         })
         .then(response => {
@@ -300,6 +302,37 @@ export default {
           reject(error)
         })
     })
+  },
+  methods: {
+    changePermanentStatus(id, status) {
+      axios
+        .post(`/reservations/${id}/change_status`, { status })
+        .then(response => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Notification',
+              icon: 'CheckIcon',
+              text: `Permanent reservation has been ${response.data.permanent_status}`,
+              variant: 'success',
+            },
+          })
+          // Remove from araay, aka. do not display
+          const indexOfObject = this.rows.findIndex(object => object.id === id)
+          this.rows.splice(indexOfObject, 1)
+        })
+        .catch(error => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Error in changing status',
+              icon: 'AlertTriangleIcon',
+              text: 'Permanent reservation has been allowed',
+              variant: 'danger',
+            },
+          })
+        })
+    },
   },
 }
 </script>

@@ -189,7 +189,8 @@
               Carrot cake chocolate tootsie roll chocolate bar candy canes biscuit.
               Gummies bonbon apple pie fruitcake icing biscuit apple pie jelly-o sweet roll.
               Toffee sugar plum sugar plum jelly-o jujubes bonbon dessert carrot cake.
-              Cookie dessert tart muffin topping donut icing fruitcake. Sweet roll cotton candy dragée danish Candy canes chocolate bar cookie.
+              Cookie dessert tart muffin topping donut icing fruitcake. Sweet roll cotton candy dragée danish Candy
+              canes chocolate bar cookie.
               Gingerbread apple pie oat cake. Carrot cake fruitcake bear claw. Pastry gummi bears marshmallow jelly-o.
             </b-card-text>
           </b-modal>
@@ -381,10 +382,13 @@ export default {
     classifier(r, c) {
       const seat = this.getSeat(r, c)
       if (seat != null) {
-        if (this.selectedSeat != seat) {
+        if (this.selectedSeat !== seat) {
           return seat.status ? `cls-${seat.status.toLowerCase()}` : 'cls-fa'
         }
-        return 'cls-selected'
+        if (Object.values(this.seatStatusString.booked).includes(seat.status)) {
+          return 'cls-booked'
+        }
+        return 'cls-available'
       }
     },
     getSeatFromData(r, c) {
@@ -437,20 +441,25 @@ export default {
 // good table variable override to change the color of table
 
 .full-width .card-header-tabs {
-   margin-right: -21px;
-   margin-left: -21px;
+  margin-right: -21px;
+  margin-left: -21px;
 }
 
 .full-width .nav-tabs .nav-item {
-   margin-bottom: -1px;
-   flex-grow: 1;
-   text-align: center;
+  margin-bottom: -1px;
+  flex-grow: 1;
+  text-align: center;
 }
-.cls-selected{background-color:$success}
-.cls-tb{background-color: $secondary}
-.cls-ub{background-color:$secondary; border: 2px solid $primary !important;}
-.cls-pb{background-color:$danger}
-.cls-db{background-color:$secondary}
-.cls-fa{background-color:$light;}
-.cls-pa{background-color:$light;border: 2px solid $warning !important;}
+
+.cls {
+  &-booked {background-color: $danger;}
+  &-available {background-color: $success;}
+  &-selected{background-color:$success;}
+  &-tb{background-color: $secondary}
+  &-ub{background-color:$secondary; border: 2px solid $primary !important;}
+  &-pb{background-color:$danger}
+  &-db{background-color:$secondary}
+  &-fa{background-color:$light;}
+  &-pa{background-color:$light;border: 2px solid $warning !important;}
+}
 </style>

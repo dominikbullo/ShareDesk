@@ -87,4 +87,4 @@ class SpotIssue(models.Model):
     )
 
     def __str__(self):
-        return f"{self.subject} at {self.spots}"
+        return f"{self.subject} at {self.spot}"
