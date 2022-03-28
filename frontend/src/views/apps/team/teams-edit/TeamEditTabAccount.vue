@@ -61,7 +61,7 @@
           >
             <b-form-input
               id="username"
-              v-model="userData.username"
+              v-model="userData.email"
             />
           </b-form-group>
         </b-col>

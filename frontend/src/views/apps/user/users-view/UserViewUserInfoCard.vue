@@ -97,7 +97,7 @@
               <span class="font-weight-bold">Username</span>
             </th>
             <td class="pb-50">
-              {{ userData.username }}
+              {{ userData.email }}
             </td>
           </tr>
           <tr>

@@ -76,7 +76,7 @@
             >
               <b-form-input
                 id="username"
-                v-model="userData.username"
+                v-model="userData.email"
                 :state="getValidationState(validationContext)"
                 trim
               />
