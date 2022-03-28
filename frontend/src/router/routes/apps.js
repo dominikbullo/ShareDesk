@@ -44,7 +44,7 @@ export default [
     component: () => import('@/views/apps/reservation/reservation-booking/ReservationsBooking.vue'),
   },
   {
-    path: '/apps/reservations/user/:id',
+    path: '/apps/reservations/user',
     name: 'apps-reservations-user',
     component: () => import('@/views/apps/reservation/reservation-user/UserReservationsList.vue'),
   },
