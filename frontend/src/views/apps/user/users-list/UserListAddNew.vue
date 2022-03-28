@@ -51,7 +51,7 @@
             >
               <b-form-input
                 id="full-name"
-                v-model="userData.fullName"
+                v-model="userData.full_name"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim

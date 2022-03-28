@@ -7,14 +7,14 @@
         <b-avatar
           ref="previewEl"
           :src="userData.avatar"
-          :text="avatarText(userData.fullName)"
+          :text="avatarText(userData.full_name)"
           :variant="`light-${resolveUserRoleVariant(userData.role)}`"
           size="90px"
           rounded
         />
       </template>
       <h4 class="mb-1">
-        {{ userData.fullName }}
+        {{ userData.full_name }}
       </h4>
       <div class="d-flex flex-wrap">
         <b-button
@@ -77,7 +77,7 @@
           >
             <b-form-input
               id="full-name"
-              v-model="userData.fullName"
+              v-model="userData.full_name"
             />
           </b-form-group>
         </b-col>

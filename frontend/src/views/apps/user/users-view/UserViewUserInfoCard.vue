@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-start">
           <b-avatar
             :src="userData.avatar"
-            :text="avatarText(userData.fullName)"
+            :text="avatarText(userData.full_name)"
             :variant="`light-${resolveUserRoleVariant(userData.role)}`"
             size="104px"
             rounded
@@ -21,7 +21,7 @@
           <div class="d-flex flex-column ml-1">
             <div class="mb-1">
               <h4 class="mb-0">
-                {{ userData.fullName }}
+                {{ userData.full_name }}
               </h4>
               <span class="card-text">{{ userData.email }}</span>
             </div>

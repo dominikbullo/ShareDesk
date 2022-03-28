@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+import django_filters
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.mail import send_mail
@@ -13,8 +14,27 @@ from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from apps.teams.models import Team
 from apps.users.models import User
 from apps.users.api.serializers import UserSerializer, UserWriteSerializer
+
+
+class UsersFilter(django_filters.FilterSet):
+    # FIXME: multiple teams
+    # https://devdreamz.com/question/951148-negation-or-exclude-filter-in-django-rest-framework
+    teams__not = room = django_filters.ModelChoiceFilter(
+        label='Teams (excluded)',
+        empty_label='Excluded teams',
+        queryset=Team.objects.all(),
+        method='filter_team',
+    )
+
+    def filter_team(self, queryset, name, value):
+        return queryset.exclude(teams=value.id)
+
+    class Meta:
+        model = User
+        fields = ["email", "first_name", "last_name", "role", "teams", "teams__not"]
 
 
 # https://www.sankalpjonna.com/learn-django/pagination-made-easy-with-django-rest-framework
@@ -28,9 +48,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     pagination_class = UserViewSetPagination
+    filterset_class = UsersFilter
     filter_backends = api_settings.DEFAULT_FILTER_BACKENDS + [filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ["email", "first_name", "last_name", "role"]
-    filterset_fields = ["email", "first_name", "last_name", "role", "teams"]
+
     search_fields = ["email", "first_name", "last_name", "role", "teams"]
     permission_classes = []
 

@@ -7,7 +7,7 @@
     <template #button-content>
       <div class="d-sm-flex d-none user-nav">
         <p class="user-name font-weight-bolder mb-0">
-          {{ userData.fullName || userData.username }}
+          {{ userData.full_name || userData.username }}
         </p>
         <span class="user-status">{{ userData.role }}</span>
       </div>
@@ -20,7 +20,7 @@
         badge-variant="success"
       >
         <feather-icon
-          v-if="!userData.fullName"
+          v-if="!userData.avatar"
           icon="UserIcon"
           size="22"
         />
@@ -89,7 +89,6 @@ export default {
   },
   methods: {
     logout() {
-      console.log('logout')
       useJwt.logout({
         refresh: localStorage.getItem(useJwt.jwtConfig.storageRefreshTokenKeyName),
       }).then(response => {

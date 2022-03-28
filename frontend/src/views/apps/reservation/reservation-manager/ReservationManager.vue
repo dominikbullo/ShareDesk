@@ -286,22 +286,18 @@ export default {
     },
   },
   created() {
-    return new Promise((resolve, reject) => {
-      axios
-        .get('/reservations/', {
-          params: {
-            permanent: true,
-            permanent_status: 'submitted',
-          },
-        })
-        .then(response => {
-          this.rows = response.data
-          resolve(response)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+    axios
+      .get('/reservations/', {
+        params: {
+          permanent: true,
+          permanent_status: 'submitted',
+        },
+      })
+      .then(response => {
+        this.rows = response.data
+      })
+      .catch(error => {
+      })
   },
   methods: {
     changePermanentStatus(id, status) {

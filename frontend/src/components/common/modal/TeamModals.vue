@@ -6,33 +6,70 @@
       ok-title="submit"
       cancel-variant="outline-secondary"
       centered
+      @click="fetchResults"
+      @hide="selected=[]"
     >
-      {{ teamData }}
       <vue-autosuggest
         ref="autocomplete"
         v-model="query"
+        class="mb-2"
         :suggestions="suggestions"
         :input-props="inputProps"
         :section-configs="sectionConfigs"
         :render-suggestion="renderSuggestion"
         :get-suggestion-value="getSuggestionValue"
-        @input="fetchResults"
+        @click="fetchResults"
       />
 
-      <pre>{{ JSON.stringify(selected, null, 4) }}</pre>
-
+      <!-- media -->
+      <b-row class="mt-5">
+        <b-media
+          v-for="media in selected"
+          :key="media.id"
+          no-body
+          class="mb-1"
+        >
+          <b-media-aside class="mr-1">
+            <b-avatar
+              rounded
+              variant="light-primary"
+              size="34"
+              :src="media.avatar"
+            />
+          </b-media-aside>
+          <b-media-body>
+            <h6 class="mb-0">
+              {{ media.full_name }}
+            </h6>
+            <small>{{ media.email }}</small>
+          </b-media-body>
+        </b-media>
+      </b-row>
     </b-modal>
   </div>
 </template>
 
 <script>
 import {
-  BButton, BCard, BCardText, BAvatar, BModal, VBModal, BForm, BFormInput, BFormGroup,
+  BButton,
+  BCard,
+  BCardText,
+  BAvatar,
+  BModal,
+  VBModal,
+  BForm,
+  BFormInput,
+  BFormGroup,
+  BMedia,
+  BMediaAside,
+  BAvatarGroup,
+  BMediaBody,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import Ripple from 'vue-ripple-directive'
 import { VueAutosuggest } from 'vue-autosuggest'
 import axios from '@/libs/axios'
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
 
 export default {
   components: {
@@ -44,6 +81,11 @@ export default {
     BAvatar,
     BForm,
     BFormInput,
+    BMedia,
+    BMediaAside,
+    BAvatar,
+    BAvatarGroup,
+    BMediaBody,
     BFormGroup,
     vSelect,
   },
@@ -64,31 +106,21 @@ export default {
     return {
       query: '',
       results: [],
-      timeout: null,
-      selected: null,
-      debounceMilliseconds: 250,
-      usersUrl: 'https://jsonplaceholder.typicode.com/users',
-      photosUrl: 'https://jsonplaceholder.typicode.com/photos',
+      selected: [],
       inputProps: {
         id: 'autosuggest__input_ajax',
-        placeholder: 'Do you feel lucky, punk?',
+        placeholder: 'Search for users by name',
         class: 'form-control',
         name: 'ajax',
       },
       suggestions: [],
       sectionConfigs: {
-        destinations: {
-          limit: 6,
-          label: 'Destination',
+        users: {
+          label: 'Users',
           onSelected: selected => {
-            this.selected = selected.item
-          },
-        },
-        hotels: {
-          limit: 6,
-          label: 'Hotels',
-          onSelected: selected => {
-            this.selected = selected.item
+            console.log(selected.item)
+            this.query = ''
+            this.selected.push(selected.item)
           },
         },
       },
@@ -96,25 +128,34 @@ export default {
   },
   methods: {
     fetchResults() {
-      const { query } = this
-
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
-        const photosPromise = axios.get(this.photosUrl)
-        const usersPromise = axios.get(this.usersUrl)
-
-        Promise.all([photosPromise, usersPromise]).then(values => {
-          this.suggestions = []
-          this.selected = null
-
-          const photos = this.filterResults(values[0].data, query, 'title')
-          const users = this.filterResults(values[1].data, query, 'name')
-          users.length && this.suggestions.push({ name: 'destinations', data: users })
-          photos.length && this.suggestions.push({ name: 'hotels', data: photos })
+      axios
+        .get('/users/', {
+          params: {
+            teams__not: this.teamData.id,
+          },
         })
-      }, this.debounceMilliseconds)
+        .then(response => {
+          this.suggestions = []
+          const users = this.filterResults(response.data.results, this.query, 'full_name')
+          users.length && this.suggestions.push({ name: 'users', data: users })
+          if (users.length <= 0) {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'No users',
+                icon: 'AlertTriangleIcon',
+                text: 'Not found any users that can be added to this team',
+                variant: 'danger',
+              },
+            })
+          }
+        })
     },
     filterResults(data, text, field) {
+      // TODO: also selected
+      console.log(data)
+      console.log(text)
+      console.log(field)
       return data.filter(item => {
         if (item[field].toLowerCase().indexOf(text.toLowerCase()) > -1) {
           return item[field]
@@ -123,24 +164,26 @@ export default {
       }).sort()
     },
     renderSuggestion(suggestion) {
-      if (suggestion.name === 'hotels') {
-        const image = suggestion.item
+      if (suggestion.name === 'users') {
+        const image = suggestion.item.avatar
         return (
           <div class="d-flex">
             <div>
-              <b-avatar src={image.thumbnailUrl} class="mr-50"></b-avatar>
+              <b-avatar src={image} class="mr-50"></b-avatar>
             </div>
             <div>
-              <span>{image.title}</span>
+              <span class="font-weight-bold d-block text-nowrap">{suggestion.item.full_name}</span>
+              <small className="text-muted">{suggestion.item.email}</small>
             </div>
           </div>
         )
       }
-      return suggestion.item.name
+      return suggestion.item
     },
     getSuggestionValue(suggestion) {
-      const { name, item } = suggestion
-      return name === 'hotels' ? item.title : item.name
+      return ''
+      // const { name, item } = suggestion
+      // return name === 'users' ? item.full_name : item
     },
   },
 }
