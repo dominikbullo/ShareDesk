@@ -39,7 +39,7 @@ export default [
   // *--------- RESERVATIONS ---------------------------*
   // *===============================================---*
   {
-    path: '/apps/reservations/list',
+    path: '/apps/reservations/booking',
     name: 'apps-reservations-booking',
     component: () => import('@/views/apps/reservation/reservation-booking/ReservationsBooking.vue'),
   },

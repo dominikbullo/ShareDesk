@@ -4,6 +4,7 @@ from polymorphic.models import PolymorphicModel
 from apps.teams.models import Team
 from apps.users.models import User
 from apps.workspaces.models import Spot
+from core.choices import SpotPermanentStatusChoices
 
 
 class Reservation(models.Model):
@@ -22,6 +23,12 @@ class SpotReservation(PolymorphicModel):
     reservation = models.OneToOneField(Reservation, related_name='reservations_for_spot', on_delete=models.CASCADE)
     spots = models.ManyToManyField(Spot)
     permanent = models.BooleanField(default=False)
+    permanent_status = models.CharField(
+        blank=True, null=True,
+        max_length=20,
+        choices=SpotPermanentStatusChoices.choices,
+        default=SpotPermanentStatusChoices.SUBMITTED
+    )
 
     def __str__(self):
         return f"{self.reservation}"

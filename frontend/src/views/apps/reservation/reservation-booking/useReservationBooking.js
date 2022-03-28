@@ -107,6 +107,7 @@ export default function useReservationsList() {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
       room: roomFilter.value,
       permanent: true,
+      permanent_status: 'allowed',
       reservation_start: dateFilter.value,
     }).then(response => {
       responsePermanent.value = response.data

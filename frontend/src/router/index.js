@@ -22,6 +22,10 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
+      redirect: { name: 'apps-reservations-booking' },
+    },
+    {
+      path: '/home',
       name: 'home',
       component: () => import('@/views/Home.vue'),
       meta: {

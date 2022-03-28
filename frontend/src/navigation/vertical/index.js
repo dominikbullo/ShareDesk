@@ -1,18 +1,8 @@
 export default [
   {
-    title: 'Home',
-    route: 'home',
-    icon: 'HomeIcon',
-  },
-  {
     title: 'Reservations',
     route: 'apps-reservations-booking',
     icon: 'ListIcon',
-  },
-  {
-    title: 'My reservations (testing only)',
-    route: 'apps-reservations-user',
-    icon: 'HomeIcon',
   },
   {
     title: 'Reservation manager (testing only)',

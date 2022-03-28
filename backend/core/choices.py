@@ -14,3 +14,9 @@ class SpotIssueStatusChoices(models.TextChoices):
     OPEN = 'open', _('Open')
     IN_PROGRESS = 'in_progress', _('In progress')
     RESOLVED = 'resolved', _('Resolved')
+
+
+class SpotPermanentStatusChoices(models.TextChoices):
+    SUBMITTED = 'submitted', _('Submitted')
+    ALLOWED = 'allowed', _('Allowed')
+    DECLINED = 'declined', _('Declined')

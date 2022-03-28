@@ -4,7 +4,7 @@ from rest_polymorphic.serializers import PolymorphicSerializer
 from apps.reservations.models import UserSpotReservation, TeamSpotReservation, Reservation
 from apps.teams.api.serializers import TeamSerializer
 from apps.users.api.serializers import UserSerializer
-from apps.workspaces.api.serializers import SpotSerializer
+from apps.workspaces.api.serializers import SpotSerializer, RoomSerializer
 
 
 class ReservationSerializer(serializers.ModelSerializer):
