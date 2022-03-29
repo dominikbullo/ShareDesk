@@ -52,108 +52,122 @@
           >
             <div class="card-body">
               <div v-if="selectedSeat">
-                <h3>Seat reservation data:</h3>
-                <pre>{{ selectedSeat.reservationData }}</pre>
+
+                <div v-if="selectedSeat.data">
+                  <h3>Seat data:</h3>
+                  <pre> {{ selectedSeat.data }}</pre>
+                </div>
+                <div v-else>
+                  <h3>No data for this seat on the server</h3>
+                </div>
+
+                <div v-if="selectedSeat.reservationData.length > 0">
+                  <h3>Seat reservation data:</h3>
+                  <pre>{{ selectedSeat.reservationData }}</pre>
+                </div>
+                <div v-else>
+                  <h3>No reservation data for this seat</h3>
+                </div>
               </div>
 
-              <ul class="list-group">
-                <li
-                  class="list-group-item"
-                  :class="seatStatus(seatStatusString.available.full)"
-                  @click="changeSeatStatus(seatStatusString.available.full)"
-                >
-                  <div
-                    class="float-left bg-white"
-                    style="width: 25px;"
-                  >
-                    <div
-                      class="cls-fa"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                    />
-                  </div>
-                  <span class="px-3">Available</span>
-                </li>
-                <li
-                  class="list-group-item"
-                  :class="seatStatus(seatStatusString.booked.default)"
-                  @click="changeSeatStatus(seatStatusString.booked.default)"
-                >
-                  <div
-                    class="float-left"
-                    style="width: 25px;"
-                  >
-                    <div
-                      class="cls-rb"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                    />
-                  </div>
-                  <span class="px-3">Booked</span>
-                </li>
-                <li
-                  class="list-group-item"
-                  :class="seatStatus('FA')"
-                  @click="changeSeatStatus('FA')"
-                >
-                  <div
-                    class="float-left"
-                    style="width: 25px;"
-                  >
-                    <div
-                      class="cls-fa"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                    />
-                  </div>
-                  <span class="px-3">Reserve for Female</span>
-                </li>
-                <li
-                  class="list-group-item"
-                  :class="seatStatus('FB')"
-                  @click="changeSeatStatus('FB')"
-                >
-                  <div
-                    class="float-left"
-                    style="width: 25px;"
-                  >
-                    <div
-                      class="cls-fb"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                    />
-                  </div>
-                  <span class="px-3">Reserve for Female - Booked</span>
-                </li>
-                <li
-                  class="list-group-item"
-                  :class="seatStatus('MA')"
-                  @click="changeSeatStatus('MA')"
-                >
-                  <div
-                    class="float-left"
-                    style="width: 25px;"
-                  >
-                    <div
-                      class="cls-ma"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                    />
-                  </div>
-                  <span class="px-3">Reserve for Male</span>
-                </li>
-                <li
-                  class="list-group-item"
-                  :class="seatStatus('MB')"
-                  @click="changeSeatStatus('MB')"
-                >
-                  <div
-                    class="float-left"
-                    style="width: 25px;"
-                  >
-                    <div
-                      class="cls-mb"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                    />
-                  </div>
-                  <span class="px-3">Reserve for Male - Booked</span>
-                </li>
-              </ul>
+              <!--              <ul class="list-group">-->
+              <!--                <li-->
+              <!--                  class="list-group-item"-->
+              <!--                  :class="seatStatus(seatStatusString.available.full)"-->
+              <!--                  @click="changeSeatStatus(seatStatusString.available.full)"-->
+              <!--                >-->
+              <!--                  <div-->
+              <!--                    class="float-left bg-white"-->
+              <!--                    style="width: 25px;"-->
+              <!--                  >-->
+              <!--                    <div-->
+              <!--                      class="cls-fa"-->
+              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
+              <!--                    />-->
+              <!--                  </div>-->
+              <!--                  <span class="px-3">Available</span>-->
+              <!--                </li>-->
+              <!--                <li-->
+              <!--                  class="list-group-item"-->
+              <!--                  :class="seatStatus(seatStatusString.booked.default)"-->
+              <!--                  @click="changeSeatStatus(seatStatusString.booked.default)"-->
+              <!--                >-->
+              <!--                  <div-->
+              <!--                    class="float-left"-->
+              <!--                    style="width: 25px;"-->
+              <!--                  >-->
+              <!--                    <div-->
+              <!--                      class="cls-rb"-->
+              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
+              <!--                    />-->
+              <!--                  </div>-->
+              <!--                  <span class="px-3">Booked</span>-->
+              <!--                </li>-->
+              <!--                <li-->
+              <!--                  class="list-group-item"-->
+              <!--                  :class="seatStatus('FA')"-->
+              <!--                  @click="changeSeatStatus('FA')"-->
+              <!--                >-->
+              <!--                  <div-->
+              <!--                    class="float-left"-->
+              <!--                    style="width: 25px;"-->
+              <!--                  >-->
+              <!--                    <div-->
+              <!--                      class="cls-fa"-->
+              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
+              <!--                    />-->
+              <!--                  </div>-->
+              <!--                  <span class="px-3">Reserve for Female</span>-->
+              <!--                </li>-->
+              <!--                <li-->
+              <!--                  class="list-group-item"-->
+              <!--                  :class="seatStatus('FB')"-->
+              <!--                  @click="changeSeatStatus('FB')"-->
+              <!--                >-->
+              <!--                  <div-->
+              <!--                    class="float-left"-->
+              <!--                    style="width: 25px;"-->
+              <!--                  >-->
+              <!--                    <div-->
+              <!--                      class="cls-fb"-->
+              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
+              <!--                    />-->
+              <!--                  </div>-->
+              <!--                  <span class="px-3">Reserve for Female - Booked</span>-->
+              <!--                </li>-->
+              <!--                <li-->
+              <!--                  class="list-group-item"-->
+              <!--                  :class="seatStatus('MA')"-->
+              <!--                  @click="changeSeatStatus('MA')"-->
+              <!--                >-->
+              <!--                  <div-->
+              <!--                    class="float-left"-->
+              <!--                    style="width: 25px;"-->
+              <!--                  >-->
+              <!--                    <div-->
+              <!--                      class="cls-ma"-->
+              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
+              <!--                    />-->
+              <!--                  </div>-->
+              <!--                  <span class="px-3">Reserve for Male</span>-->
+              <!--                </li>-->
+              <!--                <li-->
+              <!--                  class="list-group-item"-->
+              <!--                  :class="seatStatus('MB')"-->
+              <!--                  @click="changeSeatStatus('MB')"-->
+              <!--                >-->
+              <!--                  <div-->
+              <!--                    class="float-left"-->
+              <!--                    style="width: 25px;"-->
+              <!--                  >-->
+              <!--                    <div-->
+              <!--                      class="cls-mb"-->
+              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
+              <!--                    />-->
+              <!--                  </div>-->
+              <!--                  <span class="px-3">Reserve for Male - Booked</span>-->
+              <!--                </li>-->
+              <!--              </ul>-->
             </div>
           </div>
           <!-- button -->
@@ -363,17 +377,20 @@ export default {
       for (let y = 1; y <= r; ++y) {
         for (let x = 1; x <= c; ++x) {
           const seatReservation = this.getSeatReservationFromData(y, x)
+          const seatData = this.getSeatFromData(y, x)
           if (seatReservation.length > 0) {
             this.seats.push({
               position: { r: y, c: x },
               status: this.resolveSeatStatusVariant(seatReservation),
               reservationData: seatReservation,
+              data: seatData,
             })
           } else {
             this.seats.push({
               position: { r: y, c: x },
               status: this.seatStatusString.available.full,
               reservationData: [],
+              data: seatData,
             })
           }
         }
