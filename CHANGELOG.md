@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/dominikbullo/ShareDesk/compare/v0.4.1...v0.4.2) (2022-03-29)
+
+
+### Bug Fixes
+
+* runserver_plus does not work with werkzeug 2.1.0 ([07111e8](https://github.com/dominikbullo/ShareDesk/commit/07111e8a8a423d85a60c1e5d23c48c956a32ea85))
+
 ### [0.4.1](https://github.com/dominikbullo/ShareDesk/compare/v0.4.0...v0.4.1) (2022-03-29)
 
 
