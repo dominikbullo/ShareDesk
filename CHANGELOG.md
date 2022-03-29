@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/dominikbullo/ShareDesk/compare/v0.4.0...v0.4.1) (2022-03-29)
+
+
+### Features
+
+* Add user to team suggestions working now ([f511251](https://github.com/dominikbullo/ShareDesk/commit/f511251d0c7cd0f6aca690e87d988fe7a2015f02))
+* change permanent status from FE ([567773a](https://github.com/dominikbullo/ShareDesk/commit/567773a13465a7ee2035bb8f379856bfe2b6da6b))
+* **teams:** You could now add user to team with autosuggestions ([57b58cd](https://github.com/dominikbullo/ShareDesk/commit/57b58cdd36b4837ae04182be9fd3ed440bea38d1))
+* **user-reservations:** basics ([c7cb412](https://github.com/dominikbullo/ShareDesk/commit/c7cb412277d06e4058684faa21fadabf67b9c484))
+
 ## [0.4.0](https://github.com/dominikbullo/ShareDesk/compare/v0.3.0...v0.4.0) (2022-03-27)
 
 
