@@ -2,12 +2,14 @@
   <div>
     <b-modal
       id="modal-add-user-to-team"
-      title="Basic Modal"
-      ok-title="submit"
+      title="Add users to team"
+      :ok-title="this.$t('Add users')"
+      :ok-disabled="selected.length<=0"
       cancel-variant="outline-secondary"
       centered
-      @click="fetchResults"
-      @hide="selected=[]"
+      @show="fetchResults"
+      @hide="resetModal"
+      @ok="handleOk"
     >
       <vue-autosuggest
         ref="autocomplete"
@@ -18,33 +20,30 @@
         :section-configs="sectionConfigs"
         :render-suggestion="renderSuggestion"
         :get-suggestion-value="getSuggestionValue"
-        @click="fetchResults"
+        @input="filterOnClientSide"
       />
 
       <!-- media -->
-      <b-row class="mt-5">
-        <b-media
-          v-for="media in selected"
-          :key="media.id"
-          no-body
-          class="mb-1"
-        >
-          <b-media-aside class="mr-1">
-            <b-avatar
-              rounded
-              variant="light-primary"
-              size="34"
-              :src="media.avatar"
-            />
-          </b-media-aside>
-          <b-media-body>
-            <h6 class="mb-0">
-              {{ media.full_name }}
-            </h6>
-            <small>{{ media.email }}</small>
-          </b-media-body>
-        </b-media>
-      </b-row>
+      <b-media
+        v-for="media in selected"
+        :key="media.id"
+        no-body
+        class="my-1"
+      >
+        <b-media-aside class="mr-1">
+          <b-avatar
+            variant="light-primary"
+            size="34"
+            :src="media.avatar"
+          />
+        </b-media-aside>
+        <b-media-body>
+          <h6 class="mb-0">
+            {{ media.full_name }}
+          </h6>
+          <small>{{ media.email }}</small>
+        </b-media-body>
+      </b-media>
     </b-modal>
   </div>
 </template>
@@ -62,6 +61,7 @@ import {
   BFormGroup,
   BMedia,
   BMediaAside,
+  BRow,
   BAvatarGroup,
   BMediaBody,
 } from 'bootstrap-vue'
@@ -87,6 +87,7 @@ export default {
     BAvatarGroup,
     BMediaBody,
     BFormGroup,
+    BRow,
     vSelect,
   },
   directives: {
@@ -105,7 +106,7 @@ export default {
   data() {
     return {
       query: '',
-      results: [],
+      datasuggest: [],
       selected: [],
       inputProps: {
         id: 'autosuggest__input_ajax',
@@ -121,12 +122,47 @@ export default {
             console.log(selected.item)
             this.query = ''
             this.selected.push(selected.item)
+            this.filterOnClientSide()
           },
         },
       },
     }
   },
   methods: {
+    handleOk() {
+      axios
+        .put(`/team/${this.teamData.id}`, {
+          name: this.teamData.name,
+          members: [...this.teamData.members, ...this.selected.map(x => x.id)],
+        })
+        .then(response => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Notification',
+              icon: 'CheckIcon',
+              text: 'Users has been added to team',
+              variant: 'success',
+            },
+          })
+          this.$emit('update:team-data', response.data)
+          this.$emit('refetch-data')
+        })
+        .catch(() => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Notification',
+              icon: 'AlertTriangleIcon',
+              text: 'Something went wrong. Cannot add users to team',
+              variant: 'danger',
+            },
+          })
+        })
+    },
+    resetModal() {
+      this.selected = []
+    },
     fetchResults() {
       axios
         .get('/users/', {
@@ -137,7 +173,8 @@ export default {
         .then(response => {
           this.suggestions = []
           const users = this.filterResults(response.data.results, this.query, 'full_name')
-          users.length && this.suggestions.push({ name: 'users', data: users })
+          this.suggestions = [{ name: 'users', data: users }]
+          this.datasuggest = { users: response.data.results }
           if (users.length <= 0) {
             this.$toast({
               component: ToastificationContent,
@@ -151,11 +188,23 @@ export default {
           }
         })
     },
+    filterOnClientSide() {
+      const usersDataWithoutSelected = this.datasuggest.users.filter(item => Object.values(this.selected).filter(value => value.id === item.id).length <= 0)
+      const users = this.filterResults(usersDataWithoutSelected, this.query, 'full_name')
+      this.suggestions = [{ name: 'users', data: users }]
+      if (users.length <= 0) {
+        this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'No users',
+            icon: 'AlertTriangleIcon',
+            text: 'Not found any users that can be added to this team',
+            variant: 'danger',
+          },
+        })
+      }
+    },
     filterResults(data, text, field) {
-      // TODO: also selected
-      console.log(data)
-      console.log(text)
-      console.log(field)
       return data.filter(item => {
         if (item[field].toLowerCase().indexOf(text.toLowerCase()) > -1) {
           return item[field]

@@ -173,7 +173,10 @@
     </b-card>
 
     <!-- Add user to team modal-->
-    <add-user-to-team :team-data.sync="teamData" />
+    <add-user-to-team
+      :team-data.sync="teamData"
+      @refetch-data="refetchData"
+    />
 
   </div>
 </template>
