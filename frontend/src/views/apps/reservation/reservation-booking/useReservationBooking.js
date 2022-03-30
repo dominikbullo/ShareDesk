@@ -108,7 +108,7 @@ export default function useReservationsList() {
       room: roomFilter.value,
       permanent: true,
       permanent_status: 'allowed',
-      reservation_start: dateFilter.value,
+      start: dateFilter.value,
     }).then(response => {
       responsePermanent.value = response.data
       roomSpotsReservationsData.value = joinArraysSafely(responseClassic.value, responsePermanent.value)

@@ -4,8 +4,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from apps.reservations.api.serializers import SpotReservationPolymorphicSerializer
-from apps.reservations.models import SpotReservation, UserSpotReservation, TeamSpotReservation
+from apps.reservations.api.serializers import SpotReservationPolymorphicSerializer, ReservationSerializer
+from apps.reservations.models import SpotReservation, UserSpotReservation, TeamSpotReservation, Reservation
 from apps.teams.models import Team
 from apps.workspaces.models import Room, Spot
 from core.choices import SpotPermanentStatusChoices
@@ -19,9 +19,9 @@ class ReservationFilter(django_filters.FilterSet):
         to_field_name="id",
         method='filter_room',
     )
-    reservation_start = django_filters.DateTimeFilter(field_name="reservation__datetime_from__date",
+    reservation_start = django_filters.DateTimeFilter(field_name="reservation__start__date",
                                                       lookup_expr=('lte'), )
-    reservation_end = django_filters.DateTimeFilter(field_name="reservation__datetime_to__date", lookup_expr=('gte'), )
+    reservation_end = django_filters.DateTimeFilter(field_name="reservation__end__date", lookup_expr=('gte'), )
 
     def filter_room(self, queryset, name, value):
         return queryset.filter(spots__room_id=value)

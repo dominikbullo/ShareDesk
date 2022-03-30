@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from rest_polymorphic.serializers import PolymorphicSerializer
 
-from apps.reservations.models import UserSpotReservation, TeamSpotReservation, Reservation
+from apps.reservations.models import UserSpotReservation, TeamSpotReservation, Reservation, SpotReservation
 from apps.teams.api.serializers import TeamSerializer
 from apps.users.api.serializers import UserSerializer
-from apps.workspaces.api.serializers import SpotSerializer, RoomSerializer
+from apps.workspaces.api.serializers import SpotSerializer
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -14,6 +14,23 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 
 class SpotReservationSerializer(serializers.ModelSerializer):
+    reservation = ReservationSerializer()
+
+    def validate(self, attrs):
+        print("validate")
+        # Daj rezervacie od do času kde spot je spot ktorý chcem save a check či exist, ak hej validate error
+        # if reservation.datetime_from
+        # reservation.datetime_to
+        reservation_from = attrs["reservation"]["datetime_from"]
+        reservation_to = attrs["reservation"]["datetime_to"]
+
+        # same_spot_and_time = SpotReservation.objects.filter(reservation__datetime_from__gte=reservation_from,
+        #                                                     reservation__datetime__to__lte=reservation_to,
+        #                                                     spots__in=attrs["spots"])
+        # if same_spot_and_time.exists():
+        #     raise serializers.ValidationError("Seat already booked for this time")
+
+        return super().validate(attrs)
 
     def to_representation(self, instance):
         self.fields["reservation"] = ReservationSerializer(read_only=True)
@@ -23,6 +40,14 @@ class SpotReservationSerializer(serializers.ModelSerializer):
 
 
 class SpotReservationByUserSerializer(SpotReservationSerializer):
+
+    def create(self, validated_data):
+        reservation_data = validated_data.pop('reservation')
+        spots = validated_data.pop('spots')
+        reservation = Reservation.objects.create(**reservation_data)
+        instance = UserSpotReservation.objects.create(**validated_data, reservation=reservation)
+        instance.spots.set(spots)
+        return instance
 
     def to_representation(self, instance):
         self.fields["reservation_for"] = UserSerializer(read_only=True)
@@ -35,6 +60,15 @@ class SpotReservationByUserSerializer(SpotReservationSerializer):
 
 
 class SpotReservationByTeamSerializer(SpotReservationSerializer):
+
+    def create(self, validated_data):
+        reservation_data = validated_data.pop('reservation')
+        spots = validated_data.pop('spots')
+        reservation = Reservation.objects.create(**reservation_data)
+        instance = TeamSpotReservation.objects.create(**validated_data, reservation=reservation)
+        instance.spots.set(spots)
+        return instance
+
     def to_representation(self, instance):
         self.fields["reservation_for"] = TeamSerializer(read_only=True)
         to_representation = super().to_representation(instance)

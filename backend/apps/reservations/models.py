@@ -9,12 +9,12 @@ from core.choices import SpotPermanentStatusChoices
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, related_name='created_reservations', on_delete=models.DO_NOTHING)
-    datetime_from = models.DateTimeField()
-    datetime_to = models.DateTimeField()
+    # created_by = models.ForeignKey(User, related_name='created_reservations', on_delete=models.DO_NOTHING)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
 
     def __str__(self):
-        return f'from {self.datetime_from.strftime("%d.%m-%H:%M")} to {self.datetime_to.strftime("%d.%m-%H:%M")}'
+        return f'from {self.start.strftime("%d.%m-%H:%M")} to {self.end.strftime("%d.%m-%H:%M")}'
 
 
 class SpotReservation(PolymorphicModel):

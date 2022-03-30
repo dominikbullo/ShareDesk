@@ -6,13 +6,14 @@ from apps.workspaces.models import Room, Spot
 from django.db.models.signals import pre_save
 
 
-# @receiver(post_save, sender=Spot)
-# def default_subject(sender, instance, using):
+# @receiver(pre_save, sender=SpotReservation)
+# def ensure_reservation_is_unique(sender, instance, using):
 #     if not instance.subject_init:
 #         instance.subject_init = instance.subject_initials()
 
+
 @receiver(post_save, sender=Room)
-def post_save_handler(sender, instance, created, **kwargs):
+def room_post_save_handler(sender, instance, created, **kwargs):
     if not created:
         # https://stackoverflow.com/questions/48768148/create-multiple-django-model-instances-using-for-loop
         spots = []

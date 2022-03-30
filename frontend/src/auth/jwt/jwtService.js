@@ -69,8 +69,6 @@ export default class JwtService {
               originalRequest.headers.Authorization = `${this.jwtConfig.tokenType} ${accessToken}`
               resolve(this.axiosIns(originalRequest))
             })
-            router.push({ name: 'auth-login' })
-            return Promise.reject(new Error('Invalid token. You have to log in again'))
           })
           return retryOriginalRequest
         }
