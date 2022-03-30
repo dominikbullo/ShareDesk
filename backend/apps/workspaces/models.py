@@ -68,7 +68,7 @@ class Spot(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     row = models.IntegerField()
     column = models.IntegerField()
-    identifier = models.CharField(max_length=255, null=True)
+    identifier = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.room} S[{self.row}-{self.column}]"

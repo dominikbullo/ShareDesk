@@ -69,6 +69,19 @@
           </span>
 
           <!-- Column: Status -->
+          <span v-else-if="props.column.field === 'spots'">
+            {{ props.row.spots }}
+            <!--            <b-badge-->
+            <!--              v-for="spot in props.row.spots"-->
+            <!--              :key="spot.id"-->
+            <!--              :variant="statusVariant(props.row.status)"-->
+            <!--              class="mr-1"-->
+            <!--            >-->
+            <!--              {{ spot.identifier }}-->
+            <!--            </b-badge>-->
+          </span>
+
+          <!-- Column: Status -->
           <span v-else-if="props.column.field === 'status'">
             <b-badge :variant="statusVariant(props.row.status)">
               {{ props.row.status }}
@@ -240,6 +253,22 @@ export default {
             placeholder: 'Search Email',
           },
         },
+        // {
+        //   label: this.$t('Reservation to'),
+        //   field: 'reservation_for',
+        //   filterOptions: {
+        //     enabled: true,
+        //     placeholder: 'Search Status',
+        //   },
+        // },
+        {
+          label: this.$t('Spots'),
+          field: 'spots',
+          filterOptions: {
+            enabled: true,
+            placeholder: 'Search Status',
+          },
+        },
         {
           label: this.$t('Type'),
           field: 'resourcetype',
@@ -253,14 +282,6 @@ export default {
           tdClass: 'text-center text-nowrap',
           field: 'allow',
         },
-        // {
-        //   label: this.$t('Reservation to'),
-        //   field: 'reservation_for',
-        //   filterOptions: {
-        //     enabled: true,
-        //     placeholder: 'Search Status',
-        //   },
-        // },
         {
           label: 'Action',
           field: 'action',
