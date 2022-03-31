@@ -11,122 +11,122 @@
     />
 
     <b-card v-if="roomData">
-      <b-card-header class="pb-50">
-        <h5>
-          {{ $t("Select spot") }}
-        </h5>
-      </b-card-header>
-      <b-row>
-        <b-col
-          class="pt-5"
-        >
-          <div v-if="roomData.layout">
-            <table>
-              <tbody>
-                <tr v-for="idxr, r in roomData.layout.rows">
-                  <td
-                    v-for="idxc, c in roomData.layout.columns"
-                    class="pl-2"
-                    style="width: 50px;"
-                  >
-                    <div
-                      v-if="isEnabled(idxr, idxc)"
-                      v-b-popover.hover.top="`${getSeat(idxr,idxc).data.identifier}`"
-                      :class="classifier(idxr, idxc)"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
-                      @click.exact="onSeatSelected(idxr, idxc, false)"
-                      @click.ctrl="onSeatSelected(idxr, idxc, true)"
-                      @click.alt="seatReservationsDetail(idxr, idxc)"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </b-col>
-        <b-col
-          class="pt-3"
-          align-content="center"
-        >
-          <div
-            v-show="selectedSeats"
-            class="card"
-            style="display: none;"
-          >
-
-            <div v-if="selectedSeats">
-              <!--TODO v for-->
-              <b-row
-                v-for="seat in selectedSeats"
-                :key="seat.id"
-              >
-                <b-col>
-                  <h3>Seat data:</h3>
-                  <pre> {{ seat.data }}</pre>
-                </b-col>
-                <b-col>
-                  <div v-if="seat.reservationData.length > 0">
-                    <h3>Seat reservation data:</h3>
-                    <pre>{{ seat.reservationData }}</pre>
-                  </div>
-                  <div v-else>
-                    <h3>No reservation data for this seat</h3>
-                  </div>
-                </b-col>
-              </b-row>
+      <div class="card-body">
+        <b-row>
+          <b-col class="col-md-auto">
+            <div
+              v-if="roomData.layout"
+              class="p-5"
+            >
+              <table>
+                <tbody>
+                  <tr v-for="idxr, r in roomData.layout.rows">
+                    <td
+                      v-for="idxc, c in roomData.layout.columns"
+                      class="pl-1"
+                      style="width: 1rem;"
+                    >
+                      <div
+                        v-if="isEnabled(idxr, idxc)"
+                        v-b-popover.hover.top="`${getSeat(idxr,idxc).data.identifier}`"
+                        :class="classifier(idxr, idxc)"
+                        style="width: 30px; height: 30px; border: 1px solid black;"
+                        @click.exact="onSeatSelected(idxr, idxc, false)"
+                        @click.ctrl="onSeatSelected(idxr, idxc, true)"
+                        @click.alt="seatReservationsDetail(idxr, idxc)"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-          </div>
-          <div class="card-body">
-            <b-button
-              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-              class="ml-2"
-              variant="outline-primary"
-              @click="modalShow = !modalShow"
+          </b-col>
+          <b-col
+            class="pt-3 pl-2"
+            align-content="center"
+          >
+            <div
+              v-show="selectedSeats && selectedSeats.length >0"
+              class="card"
+              style="display: none;"
             >
-              {{ $t("Book for team") }}
 
-            </b-button>
+              <div v-if="selectedSeats && selectedSeats.length >0">
+                <!--TODO v for-->
+                <b-row class="mb-2">
+                  <b-col>
+                    <h5>{{ $t("Start") }}</h5>
+                    <flat-pickr
+                      v-model="dateNtimStart"
+                      class="form-control"
+                      :config="datePickerConfig"
+                    />
+                  </b-col>
+                  <b-col>
+                    <h5>{{ $t("End") }}</h5>
+                    <flat-pickr
+                      v-model="dateNtimEnd"
+                      class="form-control"
+                      :config="datePickerConfig"
+                    />
+                  </b-col>
+                </b-row>
+                <b-row
+                  class="mt-5"
+                  align-v="center"
+                >
+                  <b-col>
+                    <h5>{{ $t("Team") }}</h5>
+                    <v-select
+                      :value="teamFilter"
+                      :options="teamOptions"
+                      class="w-100"
+                      label="name"
+                      :reduce="val => val.id"
+                      @input="(val) => $emit('update:workspaceFilter', val)"
+                    />
+                  </b-col>
+                  <b-col>
+                    <b-form-checkbox
+                      checked="false"
+                      name="check-button"
+                      switch
+                      inline
+                    >
+                      {{ $t("Permanent") }}
+                    </b-form-checkbox>
+                    <!--                    <flat-pickr-->
+                    <!--                      v-model="dateNtimEnd"-->
+                    <!--                      class="form-control"-->
+                    <!--                      :config="{...datePickerConfig, ...{ defaultDate: new Date().fp_incr(1).setHours(16)}}"-->
+                    <!--                    />-->
+                  </b-col>
+                </b-row>
+              </div>
 
-            <!-- button -->
-            <b-button
-              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-              class="ml-2"
-              variant="outline-primary"
-              @click="modalShow = !modalShow"
-            >
-              {{ $t("Book for user") }}
-            </b-button>
+              <b-row class="mt-3 justify-content-end">
+                <b-button
+                  v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                  variant="outline-danger"
+                >
+                  {{ `${$t("Disable")}  ${$tc("spot", selectedSeats.length)}` }}
+                </b-button>
 
-            <b-button
-              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-              class="ml-2"
-              variant="outline-primary"
-              @click="modalShow = !modalShow"
-            >
-              {{ $t("Book for team") }}
+                <b-button
+                  v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                  variant="primary"
+                  class="ml-2"
+                  @click="submitReservation"
+                >
+                  {{ `${$t("Book")}  ${$tc("spot", selectedSeats.length)}` }}
+                </b-button>
+              </b-row>
 
-            </b-button>
-
-          </div></b-col>
-      </b-row>
+            </div>
+          </b-col>
+        </b-row>
+      </div>
     </b-card>
-
-    <b-row v-if="roomData">
-      <!-- Spots pre zistenie, či je ten spot disabled alebo nie, resp pre layout-->
-      <!--        <pre>{{ roomData }}</pre>-->
-      <!-- roomSpotsReservationsData pre viac info o mieste + je ho classifier -->
-      <!--        <pre>{{ roomSpotsReservationsData }}</pre>-->
-      <b-col>
-        <pre>{{ spots }}</pre>
-      </b-col>
-      <b-col>
-        <pre>{{ reservations }}</pre>
-      </b-col>
-      <b-col>
-        <pre>{{ seats }}</pre>
-      </b-col>
-    </b-row>
     <b-modal
       v-model="modalShow"
       centered
@@ -136,7 +136,6 @@
       ok-title="Accept"
     >
       <b-card-text>
-        <!-- TODO: show table or timetable or idk-->
         <b-table
           responsive="sm"
           :fields="['reservation.start', 'reservation.end', 'permanent', 'resourcetype']"
@@ -150,7 +149,7 @@
 <script>
 
 import {
-  BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow, BTable, VBTooltip, VBPopover,
+  BButton, BCard, BFormCheckbox, BCardHeader, BCardText, BCol, BModal, BRow, BTable, VBTooltip, VBPopover,
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
@@ -161,17 +160,26 @@ import reservationStoreModule from '@/views/apps/reservation/reservationStoreMod
 import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent'
 
+import flatPickr from 'vue-flatpickr-component'
+import { Slovak } from 'flatpickr/dist/l10n/sk.js'
+import vSelect from 'vue-select'
+import { getUserData } from '@/auth/utils'
+import axios from '@/libs/axios'
+
 export default {
   components: {
     ReservationsListFilters,
     BCard,
     BRow,
+    BFormCheckbox,
     BCardHeader,
+    flatPickr,
     BCol,
     BButton,
     BModal,
     BTable,
     BCardText,
+    vSelect,
   },
   directives: {
     'b-tooltip': VBTooltip,
@@ -183,10 +191,25 @@ export default {
       modalShow: false,
       modalData: '',
       errors: [],
+      teamFilter: [],
+      teamOptions: [],
       o: [],
       selectedSeats: [],
       selectedBookedSeat: null,
       seats: [],
+      dateNtimStart: new Date().fp_incr(1).setHours(8),
+      dateNtimEnd: new Date().fp_incr(1).setHours(16),
+
+      datePickerConfig: {
+        locale: Slovak,
+        enableTime: true,
+        time_24hr: true,
+        altInput: true,
+        allowInput: true,
+        altFormat: 'd.m.Y H:i',
+        minDate: new Date(),
+        defaultDate: new Date().fp_incr(1),
+      },
     }
   },
   computed: {
@@ -353,15 +376,31 @@ export default {
     isSeatBooked(seat) {
       return (Object.values(this.seatStatusString.booked).includes(seat.status))
     },
+    isDatepickerValid() {
+      if (!this.dateFilter) {
+        this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Missing date',
+            icon: 'AlertTriangleIcon',
+            text: 'Please select date',
+            variant: 'danger',
+          },
+        })
+        return false
+      }
+      return true
+    },
     seatReservationsDetail(r, c) {
+      if (!this.isDatepickerValid()) return
       const seat = this.getSeat(r, c)
-      console.log(seat)
       if (seat.reservationData && seat.reservationData.length > 0) {
         this.modalShow = true
         this.modalData = seat.reservationData
       }
     },
     onSeatSelected(r, c, multiple = false) {
+      if (!this.isDatepickerValid()) return
       const seat = this.getSeat(r, c)
       if (this.isSeatBooked(seat)) {
         // TODO: Only show data
@@ -379,11 +418,36 @@ export default {
         this.selectedSeats = [seat]
       }
     },
+    submitReservation() {
+      //     "reservation_for": [
+      //         "This field is required."
+      //     ],
+      console.log(this.selectedSeats)
+      const data = {
+        reservation: {
+          start: new Date(this.dateNtimStart).toISOString(),
+          end: new Date(this.dateNtimEnd).toISOString(),
+        },
+        created_by: getUserData().id,
+        resourcetype: this.teamFilter.value ? 'TeamSpotReservation' : 'UserSpotReservation',
+        reservation_for: this.teamFilter.value ? this.teamFilter.value : getUserData().id,
+        spots: this.selectedSeats.map(item => item.data.id),
+      }
+      console.log(data)
+
+      axios
+        .post('/reservations/', { ...data })
+        .then(response => { console.log(response) })
+        .catch(error => { console.error(error) })
+    },
   },
 }
 </script>
 
 <style lang="scss">
+@import '@core/scss/vue/libs/vue-select.scss';
+@import '@core/scss/vue/libs/vue-flatpicker.scss';
+
 // Core variables and mixins
 @import '~@core/scss/base/bootstrap-extended/include';
 // Overrides user variable

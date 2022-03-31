@@ -21,8 +21,8 @@ class SpotReservationSerializer(serializers.ModelSerializer):
         # Daj rezervacie od do času kde spot je spot ktorý chcem save a check či exist, ak hej validate error
         # if reservation.datetime_from
         # reservation.datetime_to
-        reservation_from = attrs["reservation"]["datetime_from"]
-        reservation_to = attrs["reservation"]["datetime_to"]
+        reservation_start = attrs["reservation"]["start"]
+        reservation_end = attrs["reservation"]["end"]
 
         # same_spot_and_time = SpotReservation.objects.filter(reservation__datetime_from__gte=reservation_from,
         #                                                     reservation__datetime__to__lte=reservation_to,

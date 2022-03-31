@@ -10,11 +10,6 @@ export default [
     icon: 'HomeIcon',
   },
   {
-    title: 'Layout list (testing only)',
-    route: 'apps-workspaces-layout-list',
-    icon: 'HomeIcon',
-  },
-  {
     title: 'Users',
     icon: 'HomeIcon',
     children: [

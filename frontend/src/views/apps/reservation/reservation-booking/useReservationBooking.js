@@ -168,6 +168,20 @@ export default function useReservationBooking() {
       })
   }
 
+  function checkDatePicker() {
+    if (!this.roomFilter && this.dateFilter) {
+      toast({
+        component: ToastificationContent,
+        props: {
+          title: 'Missing date',
+          icon: 'AlertTriangleIcon',
+          text: 'Please select also date',
+          variant: 'warning',
+        },
+      })
+    }
+  }
+
   function cleanFilters() {
     if (!roomsList.value.some(data => data.id === roomFilter.value)) {
       roomFilter.value = null

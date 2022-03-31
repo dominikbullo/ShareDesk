@@ -1,5 +1,5 @@
 <template>
-  <b-card no-body>
+  <b-card>
     <b-card-header class="pb-50">
       <h5>
         Filters
@@ -21,6 +21,7 @@
             today-button
             reset-button
             close-button
+            :state="datePickerValidation"
             class="mb-2"
             nav-prev-year="disabled"
             @input="(val) => $emit('update:dateFilter', val)"
@@ -126,6 +127,13 @@ export default {
     return {
       test: '',
     }
+  },
+  computed: {
+    datePickerValidation() {
+      if (this.dateFilter) return true
+      if (!this.roomFilter && !this.dateFilter) return null
+      return !(this.roomFilter && !this.dateFilter)
+    },
   },
   methods: {
     dateDisabled(ymd, date) {
