@@ -184,7 +184,7 @@ export default {
       columns: [
         {
           label: this.$t('Start'),
-          field: 'reservation.datetime_from',
+          field: 'reservation.start',
           type: 'date',
           dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss\'Z\'',
           dateOutputFormat: 'dd.MM.yyyy HH:mm',
@@ -195,7 +195,7 @@ export default {
         },
         {
           label: this.$t('End'),
-          field: 'reservation.datetime_to',
+          field: 'reservation.end',
           type: 'date',
           dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss\'Z\'',
           dateOutputFormat: 'dd.MM.yyyy HH:mm',
