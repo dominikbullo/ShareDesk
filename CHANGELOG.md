@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/dominikbullo/ShareDesk/compare/v0.4.2...v0.5.0) (2022-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **workspaces:** Auto generated seats when creating room
+
+### Features
+
+* **auth:** force re-login if bad refresh token for whatever reason ([fa61750](https://github.com/dominikbullo/ShareDesk/commit/fa61750478adb22169772afe1d71ff939d4b12de))
+* **reservation:** multiple seat selection on FE ([8d522e0](https://github.com/dominikbullo/ShareDesk/commit/8d522e0b1c0144e87f03eb86556e3b7dece456a3))
+* **reservation:** permanent now working ([81b1bfa](https://github.com/dominikbullo/ShareDesk/commit/81b1bfaf41d115d4b08c6550df60f9c5ddb7094f))
+* **reservation:** POC and creating reservation from FE working ([47447fc](https://github.com/dominikbullo/ShareDesk/commit/47447fcd9684a3c048ffe0178fd050c4684b3654))
+* **reservation:** reservation api create reservation working ([237b961](https://github.com/dominikbullo/ShareDesk/commit/237b96186f0471a8fa73ee3c0eba90f133c466ba))
+* **reservation:** Seat data showing when seat is selected ([0bfc8a7](https://github.com/dominikbullo/ShareDesk/commit/0bfc8a757426fa5a16189226dba656f9d159a61b))
+* **reservation:** seat reservation data on alt + click ([d8ad2d4](https://github.com/dominikbullo/ShareDesk/commit/d8ad2d433e386798221d15144f02787bba610f40))
+* **workspaces:** seats are creating automatically when room is created ([2e147f2](https://github.com/dominikbullo/ShareDesk/commit/2e147f257693d684adee7889cb897d8fe5bd47b0))
+
+
+### Bug Fixes
+
+* reservation date keys ([e87a111](https://github.com/dominikbullo/ShareDesk/commit/e87a11105bd2a47c085a792ecf1dd283ac0f7e13))
+* runserver_plus does not work with werkzeug 2.1.0 ([71a612b](https://github.com/dominikbullo/ShareDesk/commit/71a612baf6f8100ce045dbea79070b5acb4e3ecc))
+* user lsit search ([f9ea772](https://github.com/dominikbullo/ShareDesk/commit/f9ea772a8a1143b4f8372d201c2647833ecc56af))
+
 ### [0.4.2](https://github.com/dominikbullo/ShareDesk/compare/v0.4.1...v0.4.2) (2022-03-29)
 
 
