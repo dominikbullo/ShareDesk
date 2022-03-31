@@ -14,7 +14,7 @@ from django.db.models.signals import pre_save
 
 @receiver(post_save, sender=Room)
 def room_post_save_handler(sender, instance, created, **kwargs):
-    if not created:
+    if created:
         # https://stackoverflow.com/questions/48768148/create-multiple-django-model-instances-using-for-loop
         spots = []
         for row in range(1, instance.layout.rows + 1):
