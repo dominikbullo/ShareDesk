@@ -14,7 +14,7 @@
         >
           <label>{{ $t("Date") }}</label>
           <b-form-datepicker
-            id="example-datepicker"
+            id="view-reservations-datepicker"
             :value="dateFilter"
             :date-disabled-fn="dateDisabled"
             :start-weekday="1"
@@ -151,4 +151,8 @@ export default {
 
 <style lang="scss">
 @import '@core/scss/vue/libs/vue-select.scss';
+
+#view-reservations-datepicker__dialog_ {
+  z-index: 999;
+}
 </style>

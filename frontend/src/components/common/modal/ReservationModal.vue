@@ -1,51 +1,26 @@
 <template>
   <div>
     <b-modal
-      id="modal-add-user-to-team"
-      title="Add users to team"
-      :ok-title="this.$t('Add users')"
-      :ok-disabled="selected.length<=0"
-      cancel-variant="outline-secondary"
+      id="modal-reservation-table"
       centered
+      title="Reservation data for selected seat"
+      ok-only
+      size="lg"
+      ok-title="Accept"
+      cancel-variant="outline-secondary"
       @show="fetchResults"
       @hide="resetModal"
       @ok="handleOk"
     >
-      <vue-autosuggest
-        ref="autocomplete"
-        v-model="query"
-        class="mb-2"
-        :suggestions="suggestions"
-        :input-props="inputProps"
-        :section-configs="sectionConfigs"
-        :render-suggestion="renderSuggestion"
-        :get-suggestion-value="getSuggestionValue"
-        @input="filterOnClientSide"
-      />
 
-      <!-- media -->
-      <b-media
-        v-for="media in selected"
-        :key="media.id"
-        no-body
-        class="my-1"
-      >
-        <b-media-aside class="mr-1">
-          <b-avatar
-            variant="light-primary"
-            size="34"
-            :src="media.avatar"
-          />
-        </b-media-aside>
-        <b-media-body>
-          <h6 class="mb-0">
-            {{ media.full_name }}
-          </h6>
-          <small>{{ media.email }}</small>
-        </b-media-body>
-      </b-media>
+      <b-card-text>
+        <b-table
+          responsive="sm"
+          :fields="['reservation.start', 'reservation.end', 'permanent', 'resourcetype']"
+          :items="modalData"
+        />
+      </b-card-text>
     </b-modal>
-
   </div>
 </template>
 

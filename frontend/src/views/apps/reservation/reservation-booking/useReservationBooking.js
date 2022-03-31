@@ -4,11 +4,12 @@ import { ref, watch } from '@vue/composition-api'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import store from '@/store'
-import { addDayToDate, joinArraysSafely } from '@/utils/utils'
+import { joinArraysSafely } from '@/utils/utils'
 
 export default function useReservationBooking() {
   // Use toast
   const toast = useToast()
+  const showSeatSpinner = ref(false)
 
   const roomData = ref(null)
   const roomSpotsReservationsData = ref(null)
@@ -95,34 +96,7 @@ export default function useReservationBooking() {
         reject(err)
       })
   })
-  const fetchRoomSpotsReservations = () => {
-    const responseClassic = ref([])
-    const responsePermanent = ref([])
-
-    if (!dateFilter.value) {
-      roomSpotsReservationsData.value = []
-      return
-    }
-
-    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
-      room: roomFilter.value,
-      permanent: true,
-      permanent_status: 'allowed',
-      start: dateFilter.value,
-    }).then(response => {
-      responsePermanent.value = response.data
-      roomSpotsReservationsData.value = joinArraysSafely(responseClassic.value, responsePermanent.value)
-    }).catch(() => {
-      toast({
-        component: ToastificationContent,
-        props: {
-          title: `Error fetching room ${roomFilter.value} spots data`,
-          icon: 'AlertTriangleIcon',
-          variant: 'danger',
-        },
-      })
-    })
-
+  const fetchReservations = () => new Promise((resolve, reject) => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
       room: roomFilter.value,
       permanent: false,
@@ -130,10 +104,9 @@ export default function useReservationBooking() {
       reservation_end: dateFilter.value,
     })
       .then(response => {
-        responseClassic.value = response.data
-        roomSpotsReservationsData.value = joinArraysSafely(responseClassic.value, responsePermanent.value)
+        resolve(response.data)
       })
-      .catch(() => {
+      .catch(err => {
         toast({
           component: ToastificationContent,
           props: {
@@ -142,7 +115,41 @@ export default function useReservationBooking() {
             variant: 'danger',
           },
         })
+        reject(err)
       })
+  })
+
+  const fetchPermanentReservations = () => new Promise((resolve, reject) => {
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
+      room: roomFilter.value,
+      permanent: true,
+      permanent_status: 'allowed',
+      start: dateFilter.value,
+    }).then(response => {
+      resolve(response.data)
+    }).catch(err => {
+      toast({
+        component: ToastificationContent,
+        props: {
+          title: `Error fetching room ${roomFilter.value} spots data`,
+          icon: 'AlertTriangleIcon',
+          variant: 'danger',
+        },
+      })
+      reject(err)
+    })
+  })
+
+  const fetchRoomSpotsReservations = () => {
+    if (!dateFilter.value) {
+      roomSpotsReservationsData.value = []
+      return
+    }
+    showSeatSpinner.value = true
+    Promise.all([fetchReservations(), fetchPermanentReservations()]).then(values => {
+      roomSpotsReservationsData.value = joinArraysSafely(values[0], values[1])
+      showSeatSpinner.value = false
+    })
   }
 
   const fetchRoom = () => {
@@ -232,5 +239,7 @@ export default function useReservationBooking() {
     workspaceFilter,
     floorFilter,
     roomFilter,
+
+    showSeatSpinner,
   }
 }
