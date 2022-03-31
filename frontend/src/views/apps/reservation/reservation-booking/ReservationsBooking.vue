@@ -88,18 +88,13 @@
                   </b-col>
                   <b-col>
                     <b-form-checkbox
-                      checked="false"
+                      v-model="permanent"
                       name="check-button"
                       switch
                       inline
                     >
                       {{ $t("Permanent") }}
                     </b-form-checkbox>
-                    <!--                    <flat-pickr-->
-                    <!--                      v-model="dateNtimEnd"-->
-                    <!--                      class="form-control"-->
-                    <!--                      :config="{...datePickerConfig, ...{ defaultDate: new Date().fp_incr(1).setHours(16)}}"-->
-                    <!--                    />-->
                   </b-col>
                 </b-row>
               </div>
@@ -188,6 +183,7 @@ export default {
   },
   data() {
     return {
+      permanent: false,
       modalShow: false,
       modalData: '',
       errors: [],
@@ -432,6 +428,7 @@ export default {
         resourcetype: this.teamFilter.value ? 'TeamSpotReservation' : 'UserSpotReservation',
         reservation_for: this.teamFilter.value ? this.teamFilter.value : getUserData().id,
         spots: this.selectedSeats.map(item => item.data.id),
+        permanent: this.permanent,
       }
       console.log(data)
 
