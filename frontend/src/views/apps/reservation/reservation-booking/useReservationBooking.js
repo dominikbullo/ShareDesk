@@ -6,7 +6,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 import store from '@/store'
 import { addDayToDate, joinArraysSafely } from '@/utils/utils'
 
-export default function useReservationsList() {
+export default function useReservationBooking() {
   // Use toast
   const toast = useToast()
 

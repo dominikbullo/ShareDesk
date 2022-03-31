@@ -31,9 +31,11 @@
                   >
                     <div
                       v-if="isEnabled(idxr, idxc)"
+                      v-b-popover.hover.top="`${getSeat(idxr,idxc).data.identifier}`"
                       :class="classifier(idxr, idxc)"
                       style="width: 30px; height: 30px; border: 1px solid black;"
-                      @click="onSeatSelected(idxr, idxc)"
+                      @click.exact="onSeatSelected(idxr, idxc, false)"
+                      @click.ctrl="onSeatSelected(idxr, idxc, true)"
                     />
                   </td>
                 </tr>
@@ -46,169 +48,66 @@
           align-content="center"
         >
           <div
-            v-show="selectedSeat"
+            v-show="selectedSeats"
             class="card"
             style="display: none;"
           >
             <div class="card-body">
-              <div v-if="selectedSeat">
+              <div v-if="selectedSeats">
 
-                <div v-if="selectedSeat.data">
+                <!--TODO v for-->
+                <div
+                  v-for="seat in selectedSeats"
+                  :key="seat.id"
+                >
                   <h3>Seat data:</h3>
-                  <pre> {{ selectedSeat.data }}</pre>
-                </div>
-                <div v-else>
-                  <h3>No data for this seat on the server</h3>
-                </div>
+                  <pre> {{ seat.data }}</pre>
+                  <!--                <div v-else>-->
+                  <!--                  <h3>No data for this seat on the server</h3>-->
+                  <!--                </div>-->
 
-                <div v-if="selectedSeat.reservationData.length > 0">
-                  <h3>Seat reservation data:</h3>
-                  <pre>{{ selectedSeat.reservationData }}</pre>
-                </div>
-                <div v-else>
-                  <h3>No reservation data for this seat</h3>
+                  <div v-if="seat.reservationData.length > 0">
+                    <h3>Seat reservation data:</h3>
+                    <pre>{{ seat.reservationData }}</pre>
+                  </div>
+                  <div v-else>
+                    <h3>No reservation data for this seat</h3>
+                  </div>
                 </div>
               </div>
-
-              <!--              <ul class="list-group">-->
-              <!--                <li-->
-              <!--                  class="list-group-item"-->
-              <!--                  :class="seatStatus(seatStatusString.available.full)"-->
-              <!--                  @click="changeSeatStatus(seatStatusString.available.full)"-->
-              <!--                >-->
-              <!--                  <div-->
-              <!--                    class="float-left bg-white"-->
-              <!--                    style="width: 25px;"-->
-              <!--                  >-->
-              <!--                    <div-->
-              <!--                      class="cls-fa"-->
-              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
-              <!--                    />-->
-              <!--                  </div>-->
-              <!--                  <span class="px-3">Available</span>-->
-              <!--                </li>-->
-              <!--                <li-->
-              <!--                  class="list-group-item"-->
-              <!--                  :class="seatStatus(seatStatusString.booked.default)"-->
-              <!--                  @click="changeSeatStatus(seatStatusString.booked.default)"-->
-              <!--                >-->
-              <!--                  <div-->
-              <!--                    class="float-left"-->
-              <!--                    style="width: 25px;"-->
-              <!--                  >-->
-              <!--                    <div-->
-              <!--                      class="cls-rb"-->
-              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
-              <!--                    />-->
-              <!--                  </div>-->
-              <!--                  <span class="px-3">Booked</span>-->
-              <!--                </li>-->
-              <!--                <li-->
-              <!--                  class="list-group-item"-->
-              <!--                  :class="seatStatus('FA')"-->
-              <!--                  @click="changeSeatStatus('FA')"-->
-              <!--                >-->
-              <!--                  <div-->
-              <!--                    class="float-left"-->
-              <!--                    style="width: 25px;"-->
-              <!--                  >-->
-              <!--                    <div-->
-              <!--                      class="cls-fa"-->
-              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
-              <!--                    />-->
-              <!--                  </div>-->
-              <!--                  <span class="px-3">Reserve for Female</span>-->
-              <!--                </li>-->
-              <!--                <li-->
-              <!--                  class="list-group-item"-->
-              <!--                  :class="seatStatus('FB')"-->
-              <!--                  @click="changeSeatStatus('FB')"-->
-              <!--                >-->
-              <!--                  <div-->
-              <!--                    class="float-left"-->
-              <!--                    style="width: 25px;"-->
-              <!--                  >-->
-              <!--                    <div-->
-              <!--                      class="cls-fb"-->
-              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
-              <!--                    />-->
-              <!--                  </div>-->
-              <!--                  <span class="px-3">Reserve for Female - Booked</span>-->
-              <!--                </li>-->
-              <!--                <li-->
-              <!--                  class="list-group-item"-->
-              <!--                  :class="seatStatus('MA')"-->
-              <!--                  @click="changeSeatStatus('MA')"-->
-              <!--                >-->
-              <!--                  <div-->
-              <!--                    class="float-left"-->
-              <!--                    style="width: 25px;"-->
-              <!--                  >-->
-              <!--                    <div-->
-              <!--                      class="cls-ma"-->
-              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
-              <!--                    />-->
-              <!--                  </div>-->
-              <!--                  <span class="px-3">Reserve for Male</span>-->
-              <!--                </li>-->
-              <!--                <li-->
-              <!--                  class="list-group-item"-->
-              <!--                  :class="seatStatus('MB')"-->
-              <!--                  @click="changeSeatStatus('MB')"-->
-              <!--                >-->
-              <!--                  <div-->
-              <!--                    class="float-left"-->
-              <!--                    style="width: 25px;"-->
-              <!--                  >-->
-              <!--                    <div-->
-              <!--                      class="cls-mb"-->
-              <!--                      style="width: 30px; height: 30px; border: 1px solid black;"-->
-              <!--                    />-->
-              <!--                  </div>-->
-              <!--                  <span class="px-3">Reserve for Male - Booked</span>-->
-              <!--                </li>-->
-              <!--              </ul>-->
             </div>
-          </div>
-          <!-- button -->
-          <b-button
-            v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-            variant="outline-primary"
-            @click="modalShow = !modalShow"
-          >
-            {{ $t("Book for user") }}
-          </b-button>
 
-          <b-button
-            v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-            class="ml-2"
-            variant="outline-primary"
-            @click="modalShow = !modalShow"
-          >
-            {{ $t("Book for team") }}
+            <b-button
+              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+              class="ml-2"
+              variant="outline-primary"
+              @click="modalShow = !modalShow"
+            >
+              {{ $t("Book for team") }}
 
-          </b-button>
+            </b-button>
 
-          <!-- modal -->
-          <b-modal
-            v-model="modalShow"
-            centered
-            size="lg"
-            title="Vertically Centered"
-            :ok-title="$t('Book this spot')"
-          >
-            <b-card-text>
-              Bonbon caramels muffin.
-              Chocolate bar oat cake cookie pastry dragée pastry.
-              Carrot cake chocolate tootsie roll chocolate bar candy canes biscuit.
-              Gummies bonbon apple pie fruitcake icing biscuit apple pie jelly-o sweet roll.
-              Toffee sugar plum sugar plum jelly-o jujubes bonbon dessert carrot cake.
-              Cookie dessert tart muffin topping donut icing fruitcake. Sweet roll cotton candy dragée danish Candy
-              canes chocolate bar cookie.
-              Gingerbread apple pie oat cake. Carrot cake fruitcake bear claw. Pastry gummi bears marshmallow jelly-o.
-            </b-card-text>
-          </b-modal>
-        </b-col>
+            <!-- button -->
+            <b-button
+              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+              class="ml-2"
+              variant="outline-primary"
+              @click="modalShow = !modalShow"
+            >
+              {{ $t("Book for user") }}
+            </b-button>
+
+            <b-button
+              v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+              class="ml-2"
+              variant="outline-primary"
+              @click="modalShow = !modalShow"
+            >
+              {{ $t("Book for team") }}
+
+            </b-button>
+
+          </div></b-col>
       </b-row>
     </b-card>
 
@@ -233,15 +132,16 @@
 <script>
 
 import {
-  BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow,
+  BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow, VBTooltip, VBPopover,
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
 import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
 import { compareStringNoCaseSensitive } from '@/utils/utils'
-import useReservationsList from '@/views/apps/reservation/reservation-booking/useReservationBooking'
+import useReservationBooking from '@/views/apps/reservation/reservation-booking/useReservationBooking'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
 
 export default {
   components: {
@@ -255,6 +155,8 @@ export default {
     BCardText,
   },
   directives: {
+    'b-tooltip': VBTooltip,
+    'b-popover': VBPopover,
     Ripple,
   },
   data() {
@@ -262,7 +164,7 @@ export default {
       modalShow: false,
       errors: [],
       o: [],
-      selectedSeat: null,
+      selectedSeats: [],
       seats: [],
     }
   },
@@ -306,7 +208,7 @@ export default {
       workspaceFilter,
       floorFilter,
       roomFilter,
-    } = useReservationsList()
+    } = useReservationBooking()
 
     return {
       seatStatusString: {
@@ -399,11 +301,15 @@ export default {
     classifier(r, c) {
       const seat = this.getSeat(r, c)
       if (seat != null) {
-        if (this.selectedSeat !== seat) {
+        const foundSelectedSeat = this.selectedSeats.find(e => e === seat)
+        if (foundSelectedSeat === undefined) {
           return seat.status ? `cls-${seat.status.toLowerCase()}` : 'cls-fa'
         }
-        if (Object.values(this.seatStatusString.booked).includes(seat.status)) {
+        if (Object.values(this.seatStatusString.booked).includes(foundSelectedSeat.status)) {
           return 'cls-booked'
+        }
+        if (foundSelectedSeat) {
+          return 'cls-selected'
         }
         return 'cls-available'
       }
@@ -422,28 +328,24 @@ export default {
     isInSeatData(r, c) {
       return this.spots.filter(spot => (spot.row === r && spot.column === c)) > 0
     },
-    onSeatSelected(r, c) {
-      if (this.selectedSeat == this.getSeat(r, c)) {
-        this.selectedSeat = null
-      } else {
-        this.selectedSeat = this.getSeat(r, c)
-      }
+    isSeatBooked(seat) {
+      return (Object.values(this.seatStatusString.booked).includes(seat.status))
     },
-    seatStatus(status) {
-      if (this.selectedSeat != null) {
-        if (this.selectedSeat.status == status) return 'active'
+    onSeatSelected(r, c, multiple = false) {
+      const seat = this.getSeat(r, c)
+      if (this.isSeatBooked(seat)) {
+        // TODO: Only show data
+        return
       }
-      return ''
-    },
-    changeSeatStatus(status) {
-      if (this.selectedSeat != null) {
-        for (let i = 0; i < this.seats.length; i++) {
-          if (this.seats[i].position.r == this.selectedSeat.position.r && this.seats[i].position.c == this.selectedSeat.position.c) {
-            this.seats[i].status = status
-            this.selectedSeat = null
-            break
-          }
+      if (multiple) {
+        const seatIndex = this.selectedSeats.findIndex(item => item === seat)
+        if (seatIndex <= -1) {
+          this.selectedSeats.push(seat)
+        } else {
+          this.selectedSeats.splice(seatIndex, 1)
         }
+      } else {
+        this.selectedSeats = [seat]
       }
     },
   },
@@ -470,7 +372,7 @@ export default {
 
 .cls {
   &-booked {background-color: $danger;}
-  &-available {background-color: $success;}
+  &-available {background-color: $white;}
   &-selected{background-color:$success;}
   &-tb{background-color: $secondary}
   &-ub{background-color:$secondary; border: 2px solid $primary !important;}
