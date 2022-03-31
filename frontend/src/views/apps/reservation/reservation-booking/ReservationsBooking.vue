@@ -9,6 +9,7 @@
       :floor-options="floorsList"
       :room-options="roomsList"
     />
+
     <b-card v-if="roomData">
       <b-row>
         <b-overlay
@@ -82,17 +83,17 @@
                 <b-col>
                   <h5>{{ $t("Team") }}</h5>
                   <v-select
-                    :value="teamFilter"
-                    :options="teamOptions"
+                    v-model="newReservationData.teamFilter"
+                    :options="newReservationData.teamOptions"
                     class="w-100"
                     label="name"
+                    :clearable="true"
                     :reduce="val => val.id"
-                    @input="(val) => $emit('update:workspaceFilter', val)"
                   />
                 </b-col>
                 <b-col>
                   <b-form-checkbox
-                    v-model="permanent"
+                    v-model="newReservationData.permanent"
                     name="check-button"
                     switch
                     inline
@@ -114,7 +115,7 @@
               <b-button
                 v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                 variant="primary"
-                class="ml-2"
+                class="mx-2"
                 @click="submitReservation"
               >
                 {{ `${$t("Book")}  ${$tc("spot", selectedSeats.length)}` }}
@@ -148,7 +149,7 @@
 <script>
 
 import {
-  BButton, BOverlay, BCard, BFormCheckbox, BSpinner, BCardHeader, BCardText, BCol, BModal, BRow, BTable, VBTooltip, VBPopover,
+  BButton, BOverlay, BCard, BFormCheckbox, BCardText, BCol, BModal, BRow, BTable, VBPopover,
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
@@ -172,37 +173,36 @@ export default {
     BRow,
     BFormCheckbox,
     BOverlay,
-    BCardHeader,
     flatPickr,
     BCol,
     BButton,
     BModal,
     BTable,
-    BSpinner,
     BCardText,
     vSelect,
   },
   directives: {
-    'b-tooltip': VBTooltip,
     'b-popover': VBPopover,
     Ripple,
   },
   data() {
     return {
-      permanent: false,
+      seats: [],
       modalShow: false,
       modalData: '',
+
       errors: [],
-      teamFilter: [],
-      teamOptions: [],
-      o: [],
+
       selectedSeats: [],
       selectedBookedSeat: null,
+      teamFilter2: null,
       newReservationData: {
-        start: new Date().fp_incr(1).setHours(8),
-        end: new Date().fp_incr(1).setHours(16),
+        start: '',
+        end: '',
+        teamFilter: null,
+        teamOptions: [],
+        permanent: false,
       },
-      seats: [],
 
       datePickerConfig: {
         locale: Slovak,
@@ -294,6 +294,10 @@ export default {
     }
   },
   watch: {
+    dateFilter(val) {
+      this.newReservationData.start = new Date(val).setHours(8)
+      this.newReservationData.end = new Date(val).setHours(16)
+    },
     roomData(val) {
       this.selectedSeats = []
       if (this.roomData) this.generateSeats(val.layout.rows, val.layout.columns)
@@ -304,6 +308,11 @@ export default {
   },
   created() {
     this.fetchAllWorkspaces()
+    axios
+      .get('/teams/')
+      .then(response => {
+        this.newReservationData.teamOptions = response.data.results
+      })
   },
   methods: {
     getSeat(r, c) {
@@ -433,17 +442,50 @@ export default {
           end: new Date(this.newReservationData.end).toISOString(),
         },
         created_by: getUserData().id,
-        resourcetype: this.teamFilter.value ? 'TeamSpotReservation' : 'UserSpotReservation',
-        reservation_for: this.teamFilter.value ? this.teamFilter.value : getUserData().id,
+        resourcetype: this.newReservationData.teamFilter ? 'TeamSpotReservation' : 'UserSpotReservation',
+        reservation_for: this.newReservationData.teamFilter ? this.newReservationData.teamFilter : getUserData().id,
         spots: this.selectedSeats.map(item => item.data.id),
-        permanent: this.permanent,
+        permanent: this.newReservationData.permanent,
       }
       console.log(data)
 
       axios
         .post('/reservations/', { ...data })
-        .then(response => { console.log(response) })
-        .catch(error => { console.error(error) })
+        .then(response => {
+          this.roomSpotsReservationsData.push(response.data)
+          if (response.data.permanent) {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Reservation created',
+                icon: 'EditIcon',
+                text: "You're permanent reservation has been submitted. Now is waiting for allowance",
+                variant: 'warning',
+              },
+            })
+          } else {
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: 'Reservation created',
+                icon: 'EditIcon',
+                variant: 'success',
+              },
+            })
+          }
+        })
+        .catch(error => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Notification',
+              icon: 'AlertTriangleIcon',
+              text: 'Cannot create reservation with selected data',
+              variant: 'danger',
+            },
+          })
+          console.error(error)
+        })
     },
   },
 }
