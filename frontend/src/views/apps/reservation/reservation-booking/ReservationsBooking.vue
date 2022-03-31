@@ -36,6 +36,7 @@
                       style="width: 30px; height: 30px; border: 1px solid black;"
                       @click.exact="onSeatSelected(idxr, idxc, false)"
                       @click.ctrl="onSeatSelected(idxr, idxc, true)"
+                      @click.alt="seatReservationsDetail(idxr, idxc)"
                     />
                   </td>
                 </tr>
@@ -52,20 +53,18 @@
             class="card"
             style="display: none;"
           >
-            <div class="card-body">
-              <div v-if="selectedSeats">
 
-                <!--TODO v for-->
-                <div
-                  v-for="seat in selectedSeats"
-                  :key="seat.id"
-                >
+            <div v-if="selectedSeats">
+              <!--TODO v for-->
+              <b-row
+                v-for="seat in selectedSeats"
+                :key="seat.id"
+              >
+                <b-col>
                   <h3>Seat data:</h3>
                   <pre> {{ seat.data }}</pre>
-                  <!--                <div v-else>-->
-                  <!--                  <h3>No data for this seat on the server</h3>-->
-                  <!--                </div>-->
-
+                </b-col>
+                <b-col>
                   <div v-if="seat.reservationData.length > 0">
                     <h3>Seat reservation data:</h3>
                     <pre>{{ seat.reservationData }}</pre>
@@ -73,10 +72,12 @@
                   <div v-else>
                     <h3>No reservation data for this seat</h3>
                   </div>
-                </div>
-              </div>
+                </b-col>
+              </b-row>
             </div>
 
+          </div>
+          <div class="card-body">
             <b-button
               v-ripple.400="'rgba(113, 102, 240, 0.15)'"
               class="ml-2"
@@ -126,13 +127,30 @@
         <pre>{{ seats }}</pre>
       </b-col>
     </b-row>
+    <b-modal
+      v-model="modalShow"
+      centered
+      title="Reservation data for selected seat"
+      ok-only
+      size="lg"
+      ok-title="Accept"
+    >
+      <b-card-text>
+        <!-- TODO: show table or timetable or idk-->
+        <b-table
+          responsive="sm"
+          :fields="['reservation.start', 'reservation.end', 'permanent', 'resourcetype']"
+          :items="modalData"
+        />
+      </b-card-text>
+    </b-modal>
   </div>
 </template>
 
 <script>
 
 import {
-  BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow, VBTooltip, VBPopover,
+  BButton, BCard, BCardHeader, BCardText, BCol, BModal, BRow, BTable, VBTooltip, VBPopover,
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
@@ -152,6 +170,7 @@ export default {
     BCol,
     BButton,
     BModal,
+    BTable,
     BCardText,
   },
   directives: {
@@ -162,9 +181,11 @@ export default {
   data() {
     return {
       modalShow: false,
+      modalData: '',
       errors: [],
       o: [],
       selectedSeats: [],
+      selectedBookedSeat: null,
       seats: [],
     }
   },
@@ -242,6 +263,7 @@ export default {
   watch: {
     roomData(val) {
       // Generate seats on room data change
+      this.selectedSeats = []
       if (this.roomData) this.generateSeats(val.layout.rows, val.layout.columns)
     },
     roomSpotsReservationsData() {
@@ -331,10 +353,19 @@ export default {
     isSeatBooked(seat) {
       return (Object.values(this.seatStatusString.booked).includes(seat.status))
     },
+    seatReservationsDetail(r, c) {
+      const seat = this.getSeat(r, c)
+      console.log(seat)
+      if (seat.reservationData && seat.reservationData.length > 0) {
+        this.modalShow = true
+        this.modalData = seat.reservationData
+      }
+    },
     onSeatSelected(r, c, multiple = false) {
       const seat = this.getSeat(r, c)
       if (this.isSeatBooked(seat)) {
         // TODO: Only show data
+        this.selectedBookedSeat = seat
         return
       }
       if (multiple) {
