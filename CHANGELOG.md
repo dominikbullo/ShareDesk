@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/dominikbullo/ShareDesk/compare/v0.5.0...v0.6.0) (2022-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **reservation:** Reservation now could be created from FE
+
+### Features
+
+* **reservation:** now supporting permanent pending and allowed in reservations view ([a959d3e](https://github.com/dominikbullo/ShareDesk/commit/a959d3e8da7cd902eeafa1a8f8bc58c7877b6c49))
+* **reservation:** Reservation now could be created from FE ([7c87959](https://github.com/dominikbullo/ShareDesk/commit/7c8795971661699f8d015cd81a3f00c063ff1fc6))
+* spinner while loading ([1e2897a](https://github.com/dominikbullo/ShareDesk/commit/1e2897a4ed0322dac1dee504e74cfbfe547a0ec5))
+
 ## [0.5.0](https://github.com/dominikbullo/ShareDesk/compare/v0.4.2...v0.5.0) (2022-03-31)
 
 
