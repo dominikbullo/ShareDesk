@@ -133,7 +133,6 @@
       title="Reservation data for selected seat"
       ok-only
       size="lg"
-      ok-title="Accept"
     >
       <b-card-text>
         <b-table
@@ -187,6 +186,11 @@ export default {
   },
   data() {
     return {
+      reservationMeta: {
+        start: '8:00',
+        end: '18:00',
+      },
+
       seats: [],
       modalShow: false,
       modalData: '',
@@ -195,7 +199,7 @@ export default {
 
       selectedSeats: [],
       selectedBookedSeat: null,
-      teamFilter2: null,
+
       newReservationData: {
         start: '',
         end: '',
@@ -266,7 +270,10 @@ export default {
         booked: {
           team: 'TB',
           user: 'UB',
-          permanent: 'PB',
+          permanent: {
+            pending: 'PB-P',
+            allowed: 'PB-A',
+          },
           default: 'DB',
         },
         available: {
@@ -329,9 +336,20 @@ export default {
     },
     resolveSeatStatusVariant(seatReservationList) {
       // TODO better decisions and statuses for example by dates, or multiple events
+      // console.log('seatReservationList')
+      // console.log(seatReservationList)
       const seatReservation = seatReservationList[0]
 
-      if (seatReservation.permanent) return this.seatStatusString.booked.permanent
+      for (let i = 0; i < seatReservationList.length; i++) {
+        console.log(seatReservationList[i])
+      }
+      if (seatReservation.permanent) {
+        if (seatReservation.permanent_status === 'allowed') {
+          return this.seatStatusString.booked.permanent.allowed
+        }
+        return this.seatStatusString.booked.permanent.pending
+      }
+
       if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'UserSpotReservation')) return this.seatStatusString.booked.user
       if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'TeamSpotReservation')) return this.seatStatusString.booked.team
       return this.seatStatusString.booked.default
@@ -421,7 +439,28 @@ export default {
       const seat = this.getSeat(r, c)
       if (this.isSeatBooked(seat)) {
         // TODO: Only show data
-        this.selectedBookedSeat = seat
+        if (seat.status === this.seatStatusString.booked.permanent) {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Permanent reservation',
+              icon: 'EditIcon',
+              text: 'This seat is reserved permanently',
+              variant: 'danger',
+            },
+          })
+          this.seatReservationsDetail(r, c)
+        } else {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Partially reserved',
+              icon: 'EditIcon',
+              text: 'This seat is partially reserved',
+              variant: 'warning',
+            },
+          })
+        }
         return
       }
       if (multiple) {
@@ -516,11 +555,15 @@ export default {
   &-booked {background-color: $danger;}
   &-available {background-color: $white;}
   &-selected{background-color:$success;}
-  &-tb{background-color: $secondary}
+  &-tb{background-color: $secondary;}
   &-ub{background-color:$secondary; border: 2px solid $primary !important;}
-  &-pb{background-color:$danger}
-  &-db{background-color:$secondary}
+  &-pb{background-color:$danger;}
+  &-db{background-color:$secondary;}
   &-fa{background-color:$light;}
-  &-pa{background-color:$light;border: 2px solid $warning !important;}
+    &-pa{background-color:$light;border: 2px solid $warning !important;}
+  &-pb{
+    &-a{background-color:$danger; }
+    &-p{background-color:$secondary;border: 2px solid $danger !important;}
+  }
 }
 </style>
