@@ -10,7 +10,14 @@
       :room-options="roomsList"
     />
 
-    <b-card v-if="roomData">
+    <b-card
+      v-if="roomData"
+      class="card-body"
+    >
+      <b-row>
+        <h1>asd</h1>
+        <pre>{{ seatStatuses }}</pre>
+      </b-row>
       <b-row>
         <b-overlay
           :show="showSeatSpinner"
@@ -23,6 +30,21 @@
             v-if="roomData.layout"
             class="col-md-auto p-5"
           >
+            <b-row
+              v-if="isTouch()"
+              class="mb-2 d-flex justify-content-center"
+              align-self="center"
+            >
+              <b-form-checkbox
+                v-model="multipleTouchCheckbox"
+                switch
+                inline
+                class="mb-2 text-center"
+                align-self="center"
+              >
+                {{ $t("Mutliselect") }}
+              </b-form-checkbox>
+            </b-row>
             <table>
               <tbody>
                 <tr v-for="idxr, r in roomData.layout.rows">
@@ -153,7 +175,7 @@ import {
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
 import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
-import { compareStringNoCaseSensitive } from '@/utils/utils'
+import { compareStringNoCaseSensitive, isTouch } from '@/utils/utils'
 import useReservationBooking from '@/views/apps/reservation/reservation-booking/useReservationBooking'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
@@ -186,6 +208,9 @@ export default {
   },
   data() {
     return {
+      isTouch,
+      multipleTouchCheckbox: false,
+
       reservationMeta: {
         start: '8:00',
         end: '18:00',
@@ -266,19 +291,18 @@ export default {
     } = useReservationBooking()
 
     return {
+      seatStatuses: [],
       seatStatusString: {
         booked: {
           team: 'TB',
           user: 'UB',
-          permanent: {
-            pending: 'PB-P',
-            allowed: 'PB-A',
-          },
-          default: 'DB',
+          permanent_pending: 'PB-P',
+          permanent_allowed: 'PB-A',
         },
         available: {
           full: 'FA',
           partial: 'PA',
+          permanent_rejected: 'PB-R',
         },
       },
       fetchAllWorkspaces,
@@ -320,6 +344,18 @@ export default {
       .then(response => {
         this.newReservationData.teamOptions = response.data.results
       })
+
+    const iterate = obj => {
+      Object.keys(obj).forEach(key => {
+        if (typeof obj[key] !== 'object') {
+          this.seatStatuses.push(obj[key])
+        }
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          iterate(obj[key])
+        }
+      })
+    }
+    iterate(this.seatStatusString)
   },
   methods: {
     getSeat(r, c) {
@@ -344,10 +380,16 @@ export default {
         console.log(seatReservationList[i])
       }
       if (seatReservation.permanent) {
-        if (seatReservation.permanent_status === 'allowed') {
-          return this.seatStatusString.booked.permanent.allowed
+        switch (seatReservation.permanent_status) {
+          case 'pending':
+            return this.seatStatusString.booked.permanent_pending
+          case 'allowed':
+            return this.seatStatusString.booked.permanent_allowed
+          case 'rejected':
+            return this.seatStatusString.available.permanent_rejected
+          default:
+            return this.seatStatusString.booked.permanent_pending
         }
-        return this.seatStatusString.booked.permanent.pending
       }
 
       if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'UserSpotReservation')) return this.seatStatusString.booked.user
@@ -382,15 +424,16 @@ export default {
       const seat = this.getSeat(r, c)
       if (seat != null) {
         const foundSelectedSeat = this.selectedSeats.find(e => e === seat)
+        if (foundSelectedSeat) {
+          return 'cls-selected'
+        }
         if (foundSelectedSeat === undefined) {
           return seat.status ? `cls-${seat.status.toLowerCase()}` : 'cls-fa'
         }
         if (Object.values(this.seatStatusString.booked).includes(foundSelectedSeat.status)) {
           return 'cls-booked'
         }
-        if (foundSelectedSeat) {
-          return 'cls-selected'
-        }
+
         return 'cls-available'
       }
     },
@@ -435,11 +478,17 @@ export default {
       }
     },
     onSeatSelected(r, c, multiple = false) {
+      // support for touch devices
+      // eslint-disable-next-line no-param-reassign
+      if (this.multipleTouchCheckbox) { multiple = true }
+
       if (!this.isDatepickerValid()) return
       const seat = this.getSeat(r, c)
       if (this.isSeatBooked(seat)) {
         // TODO: Only show data
-        if (seat.status === this.seatStatusString.booked.permanent) {
+        console.log('seat.status')
+        console.log(seat.status)
+        if (seat.status === this.seatStatusString.booked.permanent_allowed) {
           this.$toast({
             component: ToastificationContent,
             props: {
@@ -564,6 +613,7 @@ export default {
   &-pb{
     &-a{background-color:$danger; }
     &-p{background-color:$secondary;border: 2px solid $danger !important;}
+    &-r{background-color: $white;border: 2px solid $warning !important;}
   }
 }
 </style>
