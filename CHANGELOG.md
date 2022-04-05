@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.1](https://github.com/dominikbullo/ShareDesk/compare/v0.6.0...v0.6.1) (2022-04-05)
+
+
+### Features
+
+* badges ([f7af3f9](https://github.com/dominikbullo/ShareDesk/commit/f7af3f953eec6e864854df38f626bf1f9d3bae62))
+* multiselect on touch devices ([c14c1f0](https://github.com/dominikbullo/ShareDesk/commit/c14c1f0f72ee83941644a1232bd579fc0cd37b36))
+* **spot-issues:** Now you can submit spot issue from ReservationsBooking.vue ([685c651](https://github.com/dominikbullo/ShareDesk/commit/685c651c8347108f51648b16241e6e36fb0edbc4))
+
+
+### Bug Fixes
+
+* if created room generate seats ([e1eb22a](https://github.com/dominikbullo/ShareDesk/commit/e1eb22a713eb0d59276cffda7986fced8ec3a986))
+
 ## [0.6.0](https://github.com/dominikbullo/ShareDesk/compare/v0.5.0...v0.6.0) (2022-03-31)
 
 
