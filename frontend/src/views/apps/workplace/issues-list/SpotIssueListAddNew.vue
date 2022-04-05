@@ -1,7 +1,7 @@
 <template>
   <b-sidebar
     id="add-new-user-sidebar"
-    :visible="isAddNewUserSidebarActive"
+    :visible="isAddNewIssueSidebarActive"
     bg-variant="white"
     sidebar-class="sidebar-lg"
     shadow
@@ -9,7 +9,7 @@
     no-header
     right
     @hidden="resetForm"
-    @change="(val) => $emit('update:is-add-new-user-sidebar-active', val)"
+    @change="(val) => $emit('update:is-add-new-issue-sidebar-active', val)"
   >
     <template #default="{ hide }">
       <!-- Header -->
@@ -39,44 +39,19 @@
           @reset.prevent="resetForm"
         >
 
-          <!-- Full Name -->
           <validation-provider
             #default="validationContext"
-            name="Full Name"
-            rules="required"
-          >
-            <b-form-group
-              label="Full Name"
-              label-for="full-name"
-            >
-              <b-form-input
-                id="full-name"
-                v-model="userData.full_name"
-                autofocus
-                :state="getValidationState(validationContext)"
-                trim
-                placeholder="John Doe"
-              />
-
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <!-- Username -->
-          <validation-provider
-            #default="validationContext"
-            name="Username"
+            name="Subject"
             rules="required|alpha-num"
           >
             <b-form-group
-              label="Username"
-              label-for="username"
+              label="Subject"
+              label-for="subject"
             >
               <b-form-input
-                id="username"
-                v-model="userData.email"
+                id="subject"
+                v-model="newIssueData.subject"
+                autofocus
                 :state="getValidationState(validationContext)"
                 trim
               />
@@ -87,67 +62,20 @@
             </b-form-group>
           </validation-provider>
 
-          <!-- Email -->
           <validation-provider
             #default="validationContext"
-            name="Email"
-            rules="required|email"
+            name="Description"
+            rules="required|alpha-num"
           >
             <b-form-group
-              label="Email"
-              label-for="email"
+              label="Description"
+              label-for="description"
             >
-              <b-form-input
-                id="email"
-                v-model="userData.email"
+              <b-form-textarea
+                id="description"
+                v-model="newIssueData.description"
                 :state="getValidationState(validationContext)"
-                trim
-              />
-
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <!-- Company -->
-          <validation-provider
-            #default="validationContext"
-            name="Contact"
-            rules="required"
-          >
-            <b-form-group
-              label="Contact"
-              label-for="contact"
-            >
-              <b-form-input
-                id="contact"
-                v-model="userData.contact"
-                :state="getValidationState(validationContext)"
-                trim
-              />
-
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <!-- Company -->
-          <validation-provider
-            #default="validationContext"
-            name="Company"
-            rules="required"
-          >
-            <b-form-group
-              label="Company"
-              label-for="company"
-            >
-              <b-form-input
-                id="company"
-                v-model="userData.company"
-                :state="getValidationState(validationContext)"
-                trim
+                rows="6"
               />
 
               <b-form-invalid-feedback>
@@ -159,20 +87,19 @@
           <!-- Form Actions -->
           <div class="d-flex mt-2">
             <b-button
-              v-ripple.400="'rgba(255, 255, 255, 0.15)'"
               variant="primary"
               class="mr-2"
               type="submit"
             >
-              Add (Not working)
+              {{ $t("Submit") }}
             </b-button>
+
             <b-button
-              v-ripple.400="'rgba(186, 191, 199, 0.15)'"
               type="button"
               variant="outline-secondary"
               @click="hide"
             >
-              Cancel
+              {{ $t("Cancel") }}
             </b-button>
           </div>
 
@@ -184,16 +111,18 @@
 
 <script>
 import {
-  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
+  BSidebar, BForm, BFormTextarea, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { ref } from '@vue/composition-api'
+import { ref, onUnmounted } from '@vue/composition-api'
 import { required, alphaNum, email } from '@validations'
 import formValidation from '@core/comp-functions/forms/form-validation'
 import Ripple from 'vue-ripple-directive'
 import vSelect from 'vue-select'
-// import countries from '@/@fake-db/data/other/countries'
 import store from '@/store'
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
+import { useToast } from 'vue-toastification/composition'
+import workspaceStoreModule from '../workspaceStoreModule'
 
 export default {
   components: {
@@ -201,6 +130,7 @@ export default {
     BForm,
     BFormGroup,
     BFormInput,
+    BFormTextarea,
     BFormInvalidFeedback,
     BButton,
     vSelect,
@@ -213,12 +143,16 @@ export default {
     Ripple,
   },
   model: {
-    prop: 'isAddNewUserSidebarActive',
+    prop: 'isAddNewIssueSidebarActive',
     event: 'update:is-add-new-user-sidebar-active',
   },
   props: {
-    isAddNewUserSidebarActive: {
+    isAddNewIssueSidebarActive: {
       type: Boolean,
+      required: true,
+    },
+    spotId: {
+      type: [Number, String],
       required: true,
     },
   },
@@ -230,27 +164,52 @@ export default {
     }
   },
   setup(props, { emit }) {
-    const blankUserData = {
-      fullName: '',
-      username: '',
-      email: '',
-      role: null,
-      currentPlan: null,
-      company: '',
-      country: '',
-      contact: '',
+    const toast = useToast()
+
+    const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
+
+    // Register module
+    if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModule)
+
+    // UnRegister on leave
+    onUnmounted(() => {
+      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
+    })
+
+    const blankIssueData = {
+      subject: '',
+      description: '',
+      spot: props.spotId,
     }
 
-    const userData = ref(JSON.parse(JSON.stringify(blankUserData)))
-    const resetuserData = () => {
-      userData.value = JSON.parse(JSON.stringify(blankUserData))
+    const newIssueData = ref(JSON.parse(JSON.stringify(blankIssueData)))
+    const resetIssueData = () => {
+      newIssueData.value = JSON.parse(JSON.stringify(blankIssueData))
     }
 
     const onSubmit = () => {
-      store.dispatch('app-user/addUser', userData.value)
+      store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/addSpotIssue`, newIssueData.value)
         .then(() => {
-          emit('refetch-data')
-          emit('update:is-add-new-user-sidebar-active', false)
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'New spot issue submitted',
+              icon: 'CheckIcon',
+              text: "You're issue has been submitted. Thank you!",
+              variant: 'success',
+            },
+          })
+          emit('update:is-add-new-issue-sidebar-active', false)
+        }).catch(() => {
+          toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Notification',
+              icon: 'CheckIcon',
+              text: 'Something went wrong creating new issue',
+              variant: 'danger',
+            },
+          })
         })
     }
 
@@ -258,10 +217,10 @@ export default {
       refFormObserver,
       getValidationState,
       resetForm,
-    } = formValidation(resetuserData)
+    } = formValidation(resetIssueData)
 
     return {
-      userData,
+      newIssueData,
       onSubmit,
 
       refFormObserver,

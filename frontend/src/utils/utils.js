@@ -12,3 +12,5 @@ export const joinArraysSafely = (arr1, arr2) => {
   if (arr2.length <= 0) return arr1
   return [...arr1, ...arr2]
 }
+
+export const isTouch = () => (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0))

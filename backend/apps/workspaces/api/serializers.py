@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.workspaces.models import Workspace, SpotIssue, Spot, Floor, Room, RoomLayout
+from core.choices import SpotIssueStatusChoices
 
 
 class RoomLayoutSerializer(serializers.ModelSerializer):
@@ -44,6 +45,10 @@ class SpotSerializer(serializers.ModelSerializer):
 
 
 class SpotIssueSerializer(serializers.ModelSerializer):
+    status = serializers.ChoiceField(choices=SpotIssueStatusChoices.choices,
+                                     default=SpotIssueStatusChoices.SUBMITTED,
+                                     allow_null=True)
+
     class Meta:
         model = SpotIssue
         fields = "__all__"

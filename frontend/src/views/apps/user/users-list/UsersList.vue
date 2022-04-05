@@ -112,20 +112,20 @@
         </template>
 
         <template #cell(teams)="data">
-          <ul v-if="data.item.teams.length>0">
-            <li v-for="item in data.item.teams">
-              <b-link
-                :to="{ name: 'apps-teams-view', params: { id: item.id } }"
-                class="font-weight-bold d-block text-nowrap"
-              >
-                {{ item.name }}
-              </b-link>
-            </li>
-          </ul>
+          <div v-if="data.item.teams.length>0">
+            <b-badge
+              v-for="item in data.item.teams"
+              :key="item.id"
+              :to="{ name: 'apps-teams-view', params: { id: item.id } }"
+              variant="light-primary"
+              class="mr-1"
+            >
+              {{ item.name }}
+            </b-badge>
+          </div>
           <p v-else>
             {{ $t("No team") }}
           </p>
-
         </template>
 
         <!-- Column: Actions -->
@@ -223,7 +223,7 @@
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
-  BDropdown, BDropdownItem, BPagination, BDropdownDivider,
+  BDropdown, BDropdownItem, BPagination, BDropdownDivider, BBadge,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { ref, onUnmounted } from '@vue/composition-api'
@@ -240,6 +240,7 @@ export default {
     BCard,
     BRow,
     BCol,
+    BBadge,
     BFormInput,
     BButton,
     BTable,

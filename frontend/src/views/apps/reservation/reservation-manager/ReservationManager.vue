@@ -70,15 +70,15 @@
 
           <!-- Column: Status -->
           <span v-else-if="props.column.field === 'spots'">
-            {{ props.row.spots }}
-            <!--            <b-badge-->
-            <!--              v-for="spot in props.row.spots"-->
-            <!--              :key="spot.id"-->
-            <!--              :variant="statusVariant(props.row.status)"-->
-            <!--              class="mr-1"-->
-            <!--            >-->
-            <!--              {{ spot.identifier }}-->
-            <!--            </b-badge>-->
+            <!--            {{ props.row.spots }}-->
+            <b-badge
+              v-for="spot in props.row.spots"
+              :key="spot.id"
+              variant="light-primary"
+              class="mr-1"
+            >
+              {{ `${spot.identifier}` }}
+            </b-badge>
           </span>
 
           <!-- Column: Status -->
@@ -224,7 +224,7 @@ export default {
       columns: [
         {
           label: this.$t('Start'),
-          field: 'reservation.datetime_from',
+          field: 'reservation.start',
           type: 'date',
           dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss\'Z\'',
           dateOutputFormat: 'dd.MM.yyyy HH:mm',
@@ -235,7 +235,7 @@ export default {
         },
         {
           label: this.$t('End'),
-          field: 'reservation.datetime_to',
+          field: 'reservation.end',
           type: 'date',
           dateInputFormat: 'yyyy-MM-dd\'T\'HH:mm:ss\'Z\'',
           dateOutputFormat: 'dd.MM.yyyy HH:mm',
@@ -262,20 +262,16 @@ export default {
         //   },
         // },
         {
-          label: this.$t('Spots'),
-          field: 'spots',
-          filterOptions: {
-            enabled: true,
-            placeholder: 'Search Status',
-          },
-        },
-        {
           label: this.$t('Type'),
           field: 'resourcetype',
           filterOptions: {
             enabled: true,
             placeholder: 'Search Status',
           },
+        },
+        {
+          label: this.$t('Spots'),
+          field: 'spots',
         },
         {
           label: this.$t('Allow'),

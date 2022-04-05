@@ -10,7 +10,20 @@
       :room-options="roomsList"
     />
 
-    <b-card v-if="roomData">
+    <spot-issue-list-add-new
+      v-if="selectedSeats.length === 1"
+      :is-add-new-issue-sidebar-active.sync="isAddNewIssueSidebarActive"
+      :spot-id="selectedSeats[0].data.id"
+    />
+
+    <b-card
+      v-if="roomData"
+      class="card-body"
+    >
+      <b-row>
+        <h1>asd</h1>
+        <pre>{{ seatStatuses }}</pre>
+      </b-row>
       <b-row>
         <b-overlay
           :show="showSeatSpinner"
@@ -23,6 +36,21 @@
             v-if="roomData.layout"
             class="col-md-auto p-5"
           >
+            <b-row
+              v-if="isTouch()"
+              class="mb-2 d-flex justify-content-center"
+              align-self="center"
+            >
+              <b-form-checkbox
+                v-model="multipleTouchCheckbox"
+                switch
+                inline
+                class="mb-2 text-center"
+                align-self="center"
+              >
+                {{ $t("Mutliselect") }}
+              </b-form-checkbox>
+            </b-row>
             <table>
               <tbody>
                 <tr v-for="idxr, r in roomData.layout.rows">
@@ -113,6 +141,16 @@
               </b-button>
 
               <b-button
+                v-if="selectedSeats.length === 1"
+                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                variant="outline-warning"
+                class="ml-2"
+                @click="isAddNewIssueSidebarActive = true"
+              >
+                {{ $t("Add issue") }}
+              </b-button>
+
+              <b-button
                 v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                 variant="primary"
                 class="mx-2"
@@ -152,8 +190,8 @@ import {
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
-import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
-import { compareStringNoCaseSensitive } from '@/utils/utils'
+import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
+import { compareStringNoCaseSensitive, isTouch } from '@/utils/utils'
 import useReservationBooking from '@/views/apps/reservation/reservation-booking/useReservationBooking'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
@@ -163,11 +201,16 @@ import flatPickr from 'vue-flatpickr-component'
 import { Slovak } from 'flatpickr/dist/l10n/sk.js'
 import vSelect from 'vue-select'
 import { getUserData } from '@/auth/utils'
+
 import axios from '@/libs/axios'
+import SpotIssueListAddNew from '@/views/apps/workplace/issues-list/SpotIssueListAddNew'
+import workspaceStoreModule from '@/views/apps/workplace/workspaceStoreModule'
 
 export default {
   components: {
     ReservationsListFilters,
+    SpotIssueListAddNew,
+
     BCard,
     BRow,
     BFormCheckbox,
@@ -186,6 +229,9 @@ export default {
   },
   data() {
     return {
+      isTouch,
+      multipleTouchCheckbox: false,
+
       reservationMeta: {
         start: '8:00',
         end: '18:00',
@@ -235,15 +281,20 @@ export default {
     },
   },
   setup() {
-    const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-workspace'
+    const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-reservations'
+    const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
 
     // Register module
     if (!store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.registerModule(RESERVATIONS_APP_STORE_MODULE_NAME, reservationStoreModule)
+    if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.unregisterModule(RESERVATIONS_APP_STORE_MODULE_NAME)
+      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
     })
+
+    const isAddNewIssueSidebarActive = ref(false)
 
     const {
       fetchAllWorkspaces,
@@ -266,19 +317,18 @@ export default {
     } = useReservationBooking()
 
     return {
+      seatStatuses: [],
       seatStatusString: {
         booked: {
           team: 'TB',
           user: 'UB',
-          permanent: {
-            pending: 'PB-P',
-            allowed: 'PB-A',
-          },
-          default: 'DB',
+          permanent_pending: 'PB-P',
+          permanent_allowed: 'PB-A',
         },
         available: {
           full: 'FA',
           partial: 'PA',
+          permanent_rejected: 'PB-R',
         },
       },
       fetchAllWorkspaces,
@@ -298,6 +348,7 @@ export default {
 
       // UI
       showSeatSpinner,
+      isAddNewIssueSidebarActive,
     }
   },
   watch: {
@@ -310,7 +361,7 @@ export default {
       if (this.roomData) this.generateSeats(val.layout.rows, val.layout.columns)
     },
     roomSpotsReservationsData() {
-      if (this.roomData) this.generateSeats(this.roomData.layout.rows, this.roomData.layout.columns)
+      if (this.roomData) this.generateSeats(this.rows, this.cols)
     },
   },
   created() {
@@ -320,6 +371,18 @@ export default {
       .then(response => {
         this.newReservationData.teamOptions = response.data.results
       })
+
+    // const iterate = obj => {
+    //   Object.keys(obj).forEach(key => {
+    //     if (typeof obj[key] !== 'object') {
+    //       this.seatStatuses.push(obj[key])
+    //     }
+    //     if (typeof obj[key] === 'object' && obj[key] !== null) {
+    //       iterate(obj[key])
+    //     }
+    //   })
+    // }
+    // iterate(this.seatStatusString)
   },
   methods: {
     getSeat(r, c) {
@@ -344,10 +407,16 @@ export default {
         console.log(seatReservationList[i])
       }
       if (seatReservation.permanent) {
-        if (seatReservation.permanent_status === 'allowed') {
-          return this.seatStatusString.booked.permanent.allowed
+        switch (seatReservation.permanent_status) {
+          case 'pending':
+            return this.seatStatusString.booked.permanent_pending
+          case 'allowed':
+            return this.seatStatusString.booked.permanent_allowed
+          case 'rejected':
+            return this.seatStatusString.available.permanent_rejected
+          default:
+            return this.seatStatusString.booked.permanent_pending
         }
-        return this.seatStatusString.booked.permanent.pending
       }
 
       if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'UserSpotReservation')) return this.seatStatusString.booked.user
@@ -382,15 +451,16 @@ export default {
       const seat = this.getSeat(r, c)
       if (seat != null) {
         const foundSelectedSeat = this.selectedSeats.find(e => e === seat)
+        if (foundSelectedSeat) {
+          return 'cls-selected'
+        }
         if (foundSelectedSeat === undefined) {
           return seat.status ? `cls-${seat.status.toLowerCase()}` : 'cls-fa'
         }
         if (Object.values(this.seatStatusString.booked).includes(foundSelectedSeat.status)) {
           return 'cls-booked'
         }
-        if (foundSelectedSeat) {
-          return 'cls-selected'
-        }
+
         return 'cls-available'
       }
     },
@@ -435,11 +505,17 @@ export default {
       }
     },
     onSeatSelected(r, c, multiple = false) {
+      // support for touch devices
+      // eslint-disable-next-line no-param-reassign
+      if (this.multipleTouchCheckbox) { multiple = true }
+
       if (!this.isDatepickerValid()) return
       const seat = this.getSeat(r, c)
       if (this.isSeatBooked(seat)) {
         // TODO: Only show data
-        if (seat.status === this.seatStatusString.booked.permanent) {
+        console.log('seat.status')
+        console.log(seat.status)
+        if (seat.status === this.seatStatusString.booked.permanent_allowed) {
           this.$toast({
             component: ToastificationContent,
             props: {
@@ -451,6 +527,7 @@ export default {
           })
           this.seatReservationsDetail(r, c)
         } else {
+          // TODO permanent waiting
           this.$toast({
             component: ToastificationContent,
             props: {
@@ -564,6 +641,7 @@ export default {
   &-pb{
     &-a{background-color:$danger; }
     &-p{background-color:$secondary;border: 2px solid $danger !important;}
+    &-r{background-color: $white;border: 2px solid $warning !important;}
   }
 }
 </style>
