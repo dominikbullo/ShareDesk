@@ -10,6 +10,12 @@
       :room-options="roomsList"
     />
 
+    <spot-issue-list-add-new
+      v-if="selectedSeats.length === 1"
+      :is-add-new-issue-sidebar-active.sync="isAddNewIssueSidebarActive"
+      :spot-id="selectedSeats[0].data.id"
+    />
+
     <b-card
       v-if="roomData"
       class="card-body"
@@ -135,6 +141,16 @@
               </b-button>
 
               <b-button
+                v-if="selectedSeats.length === 1"
+                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                variant="outline-warning"
+                class="ml-2"
+                @click="isAddNewIssueSidebarActive = true"
+              >
+                {{ $t("Add issue") }}
+              </b-button>
+
+              <b-button
                 v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                 variant="primary"
                 class="mx-2"
@@ -174,7 +190,7 @@ import {
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
-import { onUnmounted } from '@vue/composition-api/dist/vue-composition-api'
+import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
 import { compareStringNoCaseSensitive, isTouch } from '@/utils/utils'
 import useReservationBooking from '@/views/apps/reservation/reservation-booking/useReservationBooking'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
@@ -185,11 +201,16 @@ import flatPickr from 'vue-flatpickr-component'
 import { Slovak } from 'flatpickr/dist/l10n/sk.js'
 import vSelect from 'vue-select'
 import { getUserData } from '@/auth/utils'
+
 import axios from '@/libs/axios'
+import SpotIssueListAddNew from '@/views/apps/workplace/issues-list/SpotIssueListAddNew'
+import workspaceStoreModule from '@/views/apps/workplace/workspaceStoreModule'
 
 export default {
   components: {
     ReservationsListFilters,
+    SpotIssueListAddNew,
+
     BCard,
     BRow,
     BFormCheckbox,
@@ -260,15 +281,20 @@ export default {
     },
   },
   setup() {
-    const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-workspace'
+    const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-reservations'
+    const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
 
     // Register module
     if (!store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.registerModule(RESERVATIONS_APP_STORE_MODULE_NAME, reservationStoreModule)
+    if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.unregisterModule(RESERVATIONS_APP_STORE_MODULE_NAME)
+      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
     })
+
+    const isAddNewIssueSidebarActive = ref(false)
 
     const {
       fetchAllWorkspaces,
@@ -322,6 +348,7 @@ export default {
 
       // UI
       showSeatSpinner,
+      isAddNewIssueSidebarActive,
     }
   },
   watch: {
@@ -334,7 +361,7 @@ export default {
       if (this.roomData) this.generateSeats(val.layout.rows, val.layout.columns)
     },
     roomSpotsReservationsData() {
-      if (this.roomData) this.generateSeats(this.roomData.layout.rows, this.roomData.layout.columns)
+      if (this.roomData) this.generateSeats(this.rows, this.cols)
     },
   },
   created() {
@@ -345,17 +372,17 @@ export default {
         this.newReservationData.teamOptions = response.data.results
       })
 
-    const iterate = obj => {
-      Object.keys(obj).forEach(key => {
-        if (typeof obj[key] !== 'object') {
-          this.seatStatuses.push(obj[key])
-        }
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
-          iterate(obj[key])
-        }
-      })
-    }
-    iterate(this.seatStatusString)
+    // const iterate = obj => {
+    //   Object.keys(obj).forEach(key => {
+    //     if (typeof obj[key] !== 'object') {
+    //       this.seatStatuses.push(obj[key])
+    //     }
+    //     if (typeof obj[key] === 'object' && obj[key] !== null) {
+    //       iterate(obj[key])
+    //     }
+    //   })
+    // }
+    // iterate(this.seatStatusString)
   },
   methods: {
     getSeat(r, c) {
@@ -500,6 +527,7 @@ export default {
           })
           this.seatReservationsDetail(r, c)
         } else {
+          // TODO permanent waiting
           this.$toast({
             component: ToastificationContent,
             props: {

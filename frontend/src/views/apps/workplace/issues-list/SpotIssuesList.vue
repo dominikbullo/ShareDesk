@@ -1,9 +1,10 @@
 <template>
   <div>
 
-    <spot-issue-list-add-new
-      :is-add-new-user-sidebar-active.sync="isAddNewIssueSidebarActive"
-    />
+    <!--    <spot-issue-list-add-new-->
+    <!--      :is-add-new-issue-sidebar-active.sync="isAddNewIssueSidebarActive"-->
+    <!--      :spot-id="1"-->
+    <!--    />-->
 
     <b-card
       no-body
@@ -17,12 +18,12 @@
             class="d-inline-block mr-1"
             placeholder="Search..."
           />
-          <b-button
-            variant="primary"
-            @click="isAddNewIssueSidebarActive = true"
-          >
-            <span class="text-nowrap">Add Issue</span>
-          </b-button>
+          <!--          <b-button-->
+          <!--            variant="primary"-->
+          <!--            @click="isAddNewIssueSidebarActive = true"-->
+          <!--          >-->
+          <!--            <span class="text-nowrap">Add Issue</span>-->
+          <!--          </b-button>-->
         </div>
       </div>
 

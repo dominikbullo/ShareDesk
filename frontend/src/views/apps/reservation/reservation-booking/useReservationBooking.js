@@ -96,6 +96,7 @@ export default function useReservationBooking() {
         reject(err)
       })
   })
+
   const fetchReservations = () => new Promise((resolve, reject) => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoomSpots`, {
       room: roomFilter.value,

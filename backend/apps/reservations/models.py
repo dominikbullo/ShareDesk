@@ -7,6 +7,11 @@ from apps.workspaces.models import Spot
 from core.choices import SpotPermanentStatusChoices
 
 
+# class Settings(models.Model):
+#     reservation_start_time = models.TimeField(default='8:00')
+#     reservation_end_time = models.TimeField(default='8:00')
+
+
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, related_name='created_reservations', on_delete=models.DO_NOTHING)
