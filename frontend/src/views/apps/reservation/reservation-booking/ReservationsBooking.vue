@@ -569,6 +569,7 @@ export default {
         .post('/reservations/', { ...data })
         .then(response => {
           this.roomSpotsReservationsData.push(response.data)
+          this.selectedSeats = []
           if (response.data.permanent) {
             this.$toast({
               component: ToastificationContent,
