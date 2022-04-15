@@ -25,19 +25,43 @@ export default function useIssuesList() {
       },
     },
     {
-      label: i18n.t('Spot'),
-      field: 'spot',
-      filterOptions: {
-        enabled: true,
-        placeholder: `${i18n.t('Search')} ${i18n.t('Spot')}`,
-      },
-    },
-    {
       label: i18n.t('Description'),
       field: 'description',
       filterOptions: {
         enabled: true,
         placeholder: `${i18n.t('Search')} ${i18n.t('Description')}`,
+      },
+    },
+    {
+      label: i18n.t('Workspace'),
+      field: 'spot.workspace_info.workspace',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Workspace')}`,
+      },
+    },
+    {
+      label: i18n.t('Floor'),
+      field: 'spot.workspace_info.floor',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Floor')}`,
+      },
+    },
+    {
+      label: i18n.t('Room'),
+      field: 'spot.workspace_info.room',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Room')}`,
+      },
+    },
+    {
+      label: i18n.t('Spot'),
+      field: 'spot.identifier',
+      filterOptions: {
+        enabled: true,
+        placeholder: `${i18n.t('Search')} ${i18n.t('Spot')}`,
       },
     },
     {

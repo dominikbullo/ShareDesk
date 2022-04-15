@@ -18,12 +18,6 @@
             class="d-inline-block mr-1"
             placeholder="Search..."
           />
-          <!--          <b-button-->
-          <!--            variant="primary"-->
-          <!--            @click="isAddNewIssueSidebarActive = true"-->
-          <!--          >-->
-          <!--            <span class="text-nowrap">Add Issue</span>-->
-          <!--          </b-button>-->
         </div>
       </div>
 
@@ -44,20 +38,8 @@
           slot-scope="props"
         >
 
-          <!-- Column: Name -->
-          <div
-            v-if="props.column.field === 'fullName'"
-            class="text-nowrap"
-          >
-            <b-avatar
-              :src="props.row.avatar"
-              class="mx-1"
-            />
-            <span class="text-nowrap">{{ props.row.fullName }}</span>
-          </div>
-
           <!-- Column: Status -->
-          <span v-else-if="props.column.field === 'status'">
+          <span v-if="props.column.field === 'status'">
             <b-badge :variant="`light-${resolveIssueStatusVariant(props.row.status).color}`">
               {{ resolveIssueStatusVariant(props.row.status).text }}
             </b-badge>
@@ -83,14 +65,14 @@
                     icon="Edit2Icon"
                     class="mr-50"
                   />
-                  <span>Edit</span>
+                  <span>{{ $t('Change status') }}</span>
                 </b-dropdown-item>
-                <b-dropdown-item>
+                <b-dropdown-item @click="deleteIssue(props.row.id )">
                   <feather-icon
                     icon="TrashIcon"
                     class="mr-50"
                   />
-                  <span>Delete</span>
+                  <span>{{ $t('Delete') }}</span>
                 </b-dropdown-item>
               </b-dropdown>
             </span>
@@ -159,8 +141,10 @@ import {
   BAvatar, BBadge, BButton, BCard, BPagination, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 // WARNING: VueGoodTable (3rd party - Not Vue 3 ready yet)
-import { VueGoodTable } from 'vue-good-table'
-import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
+import {VueGoodTable} from 'vue-good-table'
+import {onUnmounted, ref} from '@vue/composition-api/dist/vue-composition-api'
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
+import axios from '@/libs/axios'
 import useIssuesList from '@/views/apps/workplace/issues-list/useIssuesList'
 import store from '@/store'
 import workspaceStoreModule from '../workspaceStoreModule'
@@ -226,6 +210,31 @@ export default {
 
       isAddNewIssueSidebarActive,
     }
+  },
+  methods: {
+    deleteIssue(id) {
+      axios.delete(`/spot-issue/${id}`)
+        .then(res => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Issue Deleted',
+              icon: 'CheckIcon',
+              variant: 'success',
+            },
+          })
+          this.issuesList = this.issuesList.filter(el => (el.id !== id))
+        })
+        .catch(err => this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error',
+            text: 'Cannot delete issue',
+            icon: 'EditIcon',
+            variant: 'danger',
+          },
+        }))
+    },
   },
 }
 </script>

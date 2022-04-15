@@ -39,6 +39,15 @@ class RoomSerializer(serializers.ModelSerializer):
 
 
 class SpotSerializer(serializers.ModelSerializer):
+    workspace_info = serializers.SerializerMethodField(read_only=True)
+
+    def get_workspace_info(self, instance):
+        return {
+            "workspace": instance.room.floor.workspace.name,
+            "floor": instance.room.floor.name,
+            "room": instance.room.name,
+        }
+
     class Meta:
         model = Spot
         fields = "__all__"
@@ -48,6 +57,11 @@ class SpotIssueSerializer(serializers.ModelSerializer):
     status = serializers.ChoiceField(choices=SpotIssueStatusChoices.choices,
                                      default=SpotIssueStatusChoices.SUBMITTED,
                                      allow_null=True)
+
+    def to_representation(self, instance):
+        self.fields["spot"] = SpotSerializer(read_only=True)
+        to_representation = super().to_representation(instance)
+        return to_representation
 
     class Meta:
         model = SpotIssue
