@@ -50,6 +50,16 @@
           </div>
 
           <!-- Column: Status -->
+          <span v-else-if="props.column.field === 'resourcetype'">
+            {{ resolveResourceType(props.row.resourcetype) }}
+          </span>
+
+          <!-- Column: Status -->
+          <span v-else-if="props.column.field === 'reservation_for'">
+            {{ (props.row.reservation_for.email) ? props.row.reservation_for.email : props.row.reservation_for.name }}
+          </span>
+
+          <!-- Column: Status -->
           <span v-else-if="props.column.field === 'allow'">
             <b-button
               variant="outline-success"
@@ -77,7 +87,7 @@
               variant="light-primary"
               class="mr-1"
             >
-              {{ `${spot.identifier}` }}
+              {{ `${spot.workspace_info.room} - ${spot.identifier}` }}
             </b-badge>
           </span>
 
@@ -181,7 +191,6 @@
 
 <script>
 
-import axios from '@/libs/axios'
 import { VueGoodTable } from 'vue-good-table'
 import {
   BAvatar,
@@ -198,6 +207,8 @@ import {
 import Ripple from 'vue-ripple-directive'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import axios from '@/libs/axios'
+import { compareStringNoCaseSensitive } from '@/utils/utils'
 
 export default {
   components: {
@@ -253,17 +264,17 @@ export default {
             placeholder: 'Search Email',
           },
         },
-        // {
-        //   label: this.$t('Reservation to'),
-        //   field: 'reservation_for',
-        //   filterOptions: {
-        //     enabled: true,
-        //     placeholder: 'Search Status',
-        //   },
-        // },
         {
           label: this.$t('Type'),
           field: 'resourcetype',
+          filterOptions: {
+            enabled: true,
+            placeholder: 'Search Status',
+          },
+        },
+        {
+          label: this.$t('Reservation for'),
+          field: 'reservation_for',
           filterOptions: {
             enabled: true,
             placeholder: 'Search Status',
@@ -278,10 +289,10 @@ export default {
           tdClass: 'text-center text-nowrap',
           field: 'allow',
         },
-        {
-          label: 'Action',
-          field: 'action',
-        },
+        // {
+        //   label: 'Action',
+        //   field: 'action',
+        // },
       ],
       rows: [],
       searchTerm: '',
@@ -345,6 +356,11 @@ export default {
             },
           })
         })
+    },
+    resolveResourceType(resType) {
+      if (compareStringNoCaseSensitive(resType, 'UserSpotReservation')) return 'User'
+      if (compareStringNoCaseSensitive(resType, 'TeamSpotReservation')) return 'Team'
+      return 'undefined'
     },
   },
 }
