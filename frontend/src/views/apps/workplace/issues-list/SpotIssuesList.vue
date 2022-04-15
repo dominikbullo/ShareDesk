@@ -60,14 +60,17 @@
                     class="text-body align-middle mr-25"
                   />
                 </template>
-                <b-dropdown-item>
+                <b-dropdown-item
+                  v-b-modal.modal-spot-issue-change-status
+                  @click="selectedIssue = props.row"
+                >
                   <feather-icon
                     icon="Edit2Icon"
                     class="mr-50"
                   />
                   <span>{{ $t('Change status') }}</span>
                 </b-dropdown-item>
-                <b-dropdown-item @click="deleteIssue(props.row.id )">
+                <b-dropdown-item @click="deleteIssue(props.row.id)">
                   <feather-icon
                     icon="TrashIcon"
                     class="mr-50"
@@ -133,6 +136,22 @@
         </template>
       </vue-good-table>
     </b-card>
+    <b-modal
+      id="modal-spot-issue-change-status"
+      centered
+      title="Change status"
+      no-close-on-backdrop
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+    >
+      <v-select
+        v-model="issueStatusValue"
+        :reduce="val => val.key"
+        :options="issueStatusOptions"
+        class="w-100 modal-popup-z-index"
+      />
+    </b-modal>
   </div>
 </template>
 
@@ -141,9 +160,10 @@ import {
   BAvatar, BBadge, BButton, BCard, BPagination, BFormInput, BFormSelect, BDropdown, BDropdownItem,
 } from 'bootstrap-vue'
 // WARNING: VueGoodTable (3rd party - Not Vue 3 ready yet)
-import {VueGoodTable} from 'vue-good-table'
-import {onUnmounted, ref} from '@vue/composition-api/dist/vue-composition-api'
+import { VueGoodTable } from 'vue-good-table'
+import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
 import ToastificationContent from '@core/components/toastification/ToastificationContent'
+import vSelect from 'vue-select'
 import axios from '@/libs/axios'
 import useIssuesList from '@/views/apps/workplace/issues-list/useIssuesList'
 import store from '@/store'
@@ -154,6 +174,7 @@ export default {
   components: {
     VueGoodTable,
     SpotIssueListAddNew,
+    vSelect,
 
     BAvatar,
     BBadge,
@@ -169,6 +190,14 @@ export default {
     return {
       pageLength: 10,
       searchTerm: '',
+      selectedIssue: null,
+      issueStatusValue: '',
+      issueStatusOptions: [
+        { key: 'submitted', label: 'Submitted' },
+        { key: 'open', label: 'Open' },
+        { key: 'in_progress', label: 'In progress' },
+        { key: 'resolved', label: 'Resolved' },
+      ],
     }
   },
   created() {
@@ -212,7 +241,7 @@ export default {
     }
   },
   methods: {
-    deleteIssue(id) {
+    serverDeleteIssue(id) {
       axios.delete(`/spot-issue/${id}`)
         .then(res => {
           this.$toast({
@@ -235,10 +264,57 @@ export default {
           },
         }))
     },
+    deleteIssue(id) {
+      this.$bvModal
+        .msgBoxConfirm('Please confirm that you want to delete everything.', {
+          title: 'Please Confirm',
+          size: 'sm',
+          okVariant: 'primary',
+          okTitle: 'Yes',
+          cancelTitle: 'No',
+          cancelVariant: 'outline-secondary',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if (value) this.serverDeleteIssue(id)
+        })
+    },
+    handleOk() {
+      axios.patch(`/spot-issue/${this.selectedIssue.id}`, { status: this.issueStatusValue })
+        .then(res => {
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Issue status changed',
+              icon: 'CheckIcon',
+              variant: 'success',
+            },
+          })
+          const objIndex = this.issuesList.findIndex((obj => obj.id === this.selectedIssue.id))
+          this.issuesList[objIndex].status = res.data.status
+        })
+        .catch(err => this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Error',
+            text: 'Issue status cannot be changed',
+            icon: 'EditIcon',
+            variant: 'danger',
+          },
+        }))
+    },
+    resetModal() {
+      this.issueStatusValue = ''
+    },
   },
 }
 </script>
 
 <style lang="scss">
 @import '@/assets/scss/libs/vue-good-table.scss';
+
+.modal-popup-z-index {
+  z-index: 999 !important;
+}
 </style>
