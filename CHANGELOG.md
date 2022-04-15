@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.2](https://github.com/dominikbullo/ShareDesk/compare/v0.6.1...v0.6.2) (2022-04-15)
+
+
+### Features
+
+* **reservations-manager:** fix table data ([21ef94c](https://github.com/dominikbullo/ShareDesk/commit/21ef94c0725ca51cd3414a3d5a26c14f2fff28fd))
+* **spot-issues:** allow changing issue status ([8222225](https://github.com/dominikbullo/ShareDesk/commit/822222558be1cadeef7dd15a01e5bdf45b0217b6))
+* **spot-issues:** correct info in table & deleting issue working ([fe2e94b](https://github.com/dominikbullo/ShareDesk/commit/fe2e94b2a11680d30ad835349c8ed4b9d18e910e))
+* **teams:** removing teams now working correctly ([0685e83](https://github.com/dominikbullo/ShareDesk/commit/0685e835a8141b88e49a68e0609efcc267ce250a))
+* **users:** User can be removed (is_active=False) from app ([fa2f4eb](https://github.com/dominikbullo/ShareDesk/commit/fa2f4ebf87ae66f2a09ba29fc54958a53730062a))
+
+
+### Bug Fixes
+
+* **UI:** clean selected seats after submit ([6524a48](https://github.com/dominikbullo/ShareDesk/commit/6524a48695535bc62cf2470a0ae4c3f92243e882))
+
 ### [0.6.1](https://github.com/dominikbullo/ShareDesk/compare/v0.6.0...v0.6.1) (2022-04-05)
 
 
