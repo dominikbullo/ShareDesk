@@ -269,7 +269,7 @@ export default {
         .msgBoxConfirm('Please confirm that you want to delete everything.', {
           title: 'Please Confirm',
           size: 'sm',
-          okVariant: 'primary',
+          okVariant: 'danger',
           okTitle: 'Yes',
           cancelTitle: 'No',
           cancelVariant: 'outline-secondary',

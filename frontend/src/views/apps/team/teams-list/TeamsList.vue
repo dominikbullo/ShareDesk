@@ -110,12 +110,7 @@
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
-            <b-dropdown-item :to="{ name: 'apps-teams-edit', params: { id: data.item.id } }">
-              <feather-icon icon="EditIcon" />
-              <span class="align-middle ml-50">Edit</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item>
+            <b-dropdown-item @click="deleteTeamModal(data.item)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
@@ -250,12 +245,21 @@ export default {
 
     } = useTeamsList()
 
+    const deleteTeam = id => {
+      store.dispatch(`${TEAM_APP_STORE_MODULE_NAME}/deleteTeam`, { id })
+        .then(() => {
+          // eslint-disable-next-line no-use-before-define
+          refetchData()
+        })
+    }
+
     return {
 
       // Sidebar
       isAddNewTeamSidebarActive,
 
       fetchTeams,
+      deleteTeam,
       tableColumns,
       perPage,
       currentPage,
@@ -268,6 +272,24 @@ export default {
       refTeamListTable,
       refetchData,
     }
+  },
+  methods: {
+    deleteTeamModal(item) {
+      this.$bvModal
+        .msgBoxConfirm('Please confirm that you want to delete everything.', {
+          title: 'Please Confirm',
+          size: 'sm',
+          okVariant: 'danger',
+          okTitle: 'Yes',
+          cancelTitle: 'No',
+          cancelVariant: 'outline-secondary',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if (value) this.deleteTeam(item.id)
+        })
+    },
   },
 }
 </script>

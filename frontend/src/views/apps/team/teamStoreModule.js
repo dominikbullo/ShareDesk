@@ -30,5 +30,13 @@ export default {
           .catch(error => reject(error))
       })
     },
+    deleteTeam(ctx, { id }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .delete(`/team/${id}`)
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
   },
 }

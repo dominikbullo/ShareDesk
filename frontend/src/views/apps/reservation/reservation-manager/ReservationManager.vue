@@ -269,7 +269,11 @@ export default {
           field: 'resourcetype',
           filterOptions: {
             enabled: true,
-            placeholder: 'Search Status',
+            placeholder: 'Search Type',
+            filterDropdownItems: [
+              { value: 'UserSpotReservation', text: 'User' },
+              { value: 'TeamSpotReservation', text: 'Team' },
+            ],
           },
         },
         {
@@ -277,7 +281,6 @@ export default {
           field: 'reservation_for',
           filterOptions: {
             enabled: true,
-            placeholder: 'Search Status',
           },
         },
         {

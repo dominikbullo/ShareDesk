@@ -71,8 +71,8 @@ export default function useTeamsList() {
         ordering: isSortDirDesc.value ? sortBy.value : `-${sortBy.value}`,
       })
       .then(response => {
-        const users = response.data.results
-        callback(users)
+        const teams = response.data.results
+        callback(teams)
         totalTeams.value = response.data.count
       })
       .catch(() => {
