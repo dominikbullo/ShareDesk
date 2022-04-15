@@ -16,6 +16,7 @@ export default function useUsersList() {
   const tableColumns = [
     { key: 'user', sortable: true },
     { key: 'role', sortable: true },
+    { key: 'is_active', sortable: false },
     {
       key: 'registered_at',
       label: 'Register',
@@ -38,7 +39,7 @@ export default function useUsersList() {
   const isSortDirDesc = ref(true)
   const roleFilter = ref(null)
   const planFilter = ref(null)
-  const statusFilter = ref(null)
+  const statusFilter = ref(true)
   const teamFilter = ref(null)
 
   const dataMeta = computed(() => {
@@ -68,7 +69,7 @@ export default function useUsersList() {
         role: roleFilter.value,
         teams: teamFilter.value,
         // plan: planFilter.value,
-        // status: statusFilter.value,
+        is_active: statusFilter.value,
       })
       .then(response => {
         const users = response.data.results
@@ -109,6 +110,11 @@ export default function useUsersList() {
     return 'primary'
   }
 
+  const resolveUserIsActiveVariant = status => {
+    if (status) return 'success'
+    return 'danger'
+  }
+
   return {
     fetchUsers,
     tableColumns,
@@ -125,6 +131,8 @@ export default function useUsersList() {
     resolveUserRoleVariant,
     resolveUserRoleIcon,
     resolveUserStatusVariant,
+    resolveUserIsActiveVariant,
+
     refetchData,
 
     // Extra Filters

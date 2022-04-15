@@ -9,7 +9,7 @@
       <b-row>
         <b-col
           cols="12"
-          md="4"
+          md="6"
           class="mb-md-0 mb-2"
         >
           <label>Role</label>
@@ -24,27 +24,11 @@
         </b-col>
         <b-col
           cols="12"
-          md="4"
-          class="mb-md-0 mb-2"
-        >
-          <label>Plan</label>
-          <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-            :value="planFilter"
-            :options="planOptions"
-            class="w-100"
-            :reduce="val => val.value"
-            @input="(val) => $emit('update:planFilter', val)"
-          />
-        </b-col>
-        <b-col
-          cols="12"
-          md="4"
+          md="6"
           class="mb-md-0 mb-2"
         >
           <label>Status</label>
           <v-select
-            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
             :value="statusFilter"
             :options="statusOptions"
             class="w-100"

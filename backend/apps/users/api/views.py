@@ -34,7 +34,7 @@ class UsersFilter(django_filters.FilterSet):
 
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "role", "teams", "teams__not"]
+        fields = ["email", "first_name", "last_name", "role", "teams", "teams__not", "is_active"]
 
 
 # https://www.sankalpjonna.com/learn-django/pagination-made-easy-with-django-rest-framework
@@ -97,7 +97,7 @@ class UserViewSet(viewsets.ModelViewSet):
         email = request.data.get('email', None)
 
         if User.objects.filter(email__iexact=email).exists():
-            return Response({'status': 210})
+            return Response({'email': "User with this email address already exist"}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():

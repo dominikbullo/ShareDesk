@@ -32,6 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
             'full_name',
             'short_name',
             'registered_at',
+            'is_active',
             'role',
             'teams',
         ]

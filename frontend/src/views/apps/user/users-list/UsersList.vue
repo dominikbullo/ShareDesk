@@ -97,6 +97,17 @@
             <small class="text-muted"> {{ data.item.email }} </small>
           </b-media>
         </template>
+        ,
+
+        <template #cell(is_active)="data">
+          <b-badge
+            pill
+            :variant="`light-${resolveUserIsActiveVariant(data.item.is_active)}`"
+            class="text-capitalize"
+          >
+            {{ data.item.is_active }}
+          </b-badge>
+        </template>
 
         <!-- Column: Role -->
         <template #cell(role)="data">
@@ -156,12 +167,7 @@
               <span class="align-middle ml-50">{{ $tc("Detail", 2) }}</span>
             </b-dropdown-item>
 
-            <b-dropdown-item :to="{ name: 'apps-users-edit', params: { id: data.item.id } }">
-              <feather-icon icon="EditIcon" />
-              <span class="align-middle ml-50">Edit</span>
-            </b-dropdown-item>
-
-            <b-dropdown-item>
+            <b-dropdown-item @click="deleteUserModal(data.item)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>
@@ -291,9 +297,8 @@ export default {
     ]
 
     const statusOptions = [
-      { label: 'Pending', value: '6' },
-      { label: 'Active', value: '8' },
-      { label: 'Inactive', value: '255' },
+      { label: 'Active', value: true },
+      { label: 'Inactive', value: false },
     ]
 
     const {
@@ -314,6 +319,7 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
+      resolveUserIsActiveVariant,
 
       // Extra Filters
       roleFilter,
@@ -322,12 +328,21 @@ export default {
       teamFilter,
     } = useUsersList()
 
+    const deleteUser = id => {
+      store.dispatch(`${USER_APP_STORE_MODULE_NAME}/deleteUser`, { id })
+        .then(() => {
+          // eslint-disable-next-line no-use-before-define
+          refetchData()
+        })
+    }
     return {
 
       // Sidebar
       isAddNewUserSidebarActive,
 
       fetchUsers,
+      deleteUser,
+
       tableColumns,
       perPage,
       currentPage,
@@ -347,6 +362,7 @@ export default {
       resolveUserRoleVariant,
       resolveUserRoleIcon,
       resolveUserStatusVariant,
+      resolveUserIsActiveVariant,
 
       roleOptions,
       planOptions,
@@ -358,6 +374,24 @@ export default {
       statusFilter,
       teamFilter,
     }
+  },
+  methods: {
+    deleteUserModal(item) {
+      this.$bvModal
+        .msgBoxConfirm('Please confirm that you want to delete everything.', {
+          title: 'Please Confirm',
+          size: 'sm',
+          okVariant: 'danger',
+          okTitle: 'Yes',
+          cancelTitle: 'No',
+          cancelVariant: 'outline-secondary',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if (value) this.deleteUser(item.id)
+        })
+    },
   },
 }
 </script>
