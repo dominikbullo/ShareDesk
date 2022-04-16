@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/dominikbullo/ShareDesk/compare/v0.6.2...v0.7.0) (2022-04-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* ACL abilities updating  based on role from server
+
+### Features
+
+* AccountSetting correct data ([03f7596](https://github.com/dominikbullo/ShareDesk/commit/03f7596956c7c5c266a5918ad3875b718971a128))
+* ACL implemented on FE ([5d54ddd](https://github.com/dominikbullo/ShareDesk/commit/5d54ddd64eced4dd9d0934f8c6bc45a3fff19549))
+* added breadcrumb ([f7d8ff3](https://github.com/dominikbullo/ShareDesk/commit/f7d8ff31b4ebb84f4d3f2e46712bd1ac6f1ce942))
+* Team view ([818cb8e](https://github.com/dominikbullo/ShareDesk/commit/818cb8eeadddb2482509bc32ea913d015b634b7c))
+* User view ([34dec3b](https://github.com/dominikbullo/ShareDesk/commit/34dec3b31b0dbf3f28aebeccad500e8c6d21cde1))
+
+
+### Bug Fixes
+
+* some table data fixing ([5f47f47](https://github.com/dominikbullo/ShareDesk/commit/5f47f47c23b85a5f5651c925292223a10d5f7b6a))
+
 ### [0.6.2](https://github.com/dominikbullo/ShareDesk/compare/v0.6.1...v0.6.2) (2022-04-15)
 
 
