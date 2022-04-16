@@ -48,6 +48,26 @@
 
         </div>
 
+        <span v-else-if="props.column.field === 'resourcetype'">
+          {{ resolveResourceType(props.row.resourcetype) }}
+        </span>
+
+        <span v-else-if="props.column.field === 'reservation_for'">
+          {{ (props.row.reservation_for.email) ? props.row.reservation_for.email : props.row.reservation_for.name }}
+        </span>
+
+        <span v-else-if="props.column.field === 'spots'">
+          <!--            {{ props.row.spots }}-->
+          <b-badge
+            v-for="spot in props.row.spots"
+            :key="spot.id"
+            variant="light-primary"
+            class="mr-1"
+          >
+            {{ `${spot.workspace_info.room} - ${spot.identifier}` }}
+          </b-badge>
+        </span>
+
         <!-- Column: Status -->
         <span v-else-if="props.column.field === 'status'">
           <b-badge :variant="statusVariant(props.row.status)">
@@ -161,6 +181,7 @@ import {
   BFormSelect,
   BPagination,
 } from 'bootstrap-vue'
+import { resolveResourceType } from '@/views/apps/team/teamUtils'
 
 export default {
   components: {
@@ -218,25 +239,32 @@ export default {
           tdClass: 'text-center',
           filterOptions: {
             enabled: true,
-            placeholder: 'Search Email',
+            filterDropdownItems: [
+              { value: true, text: 'Permanent' },
+              { value: false, text: 'Temporary' },
+            ],
           },
         },
         {
           label: this.$t('Type'),
           field: 'resourcetype',
+          tdClass: 'text-center',
           filterOptions: {
             enabled: true,
-            placeholder: 'Search Status',
+            placeholder: 'Search type',
+            filterDropdownItems: [
+              { value: 'UserSpotReservation', text: 'User' },
+              { value: 'TeamSpotReservation', text: 'Team' },
+            ],
           },
         },
-        // {
-        //   label: this.$t('Reservation to'),
-        //   field: 'reservation_for',
-        //   filterOptions: {
-        //     enabled: true,
-        //     placeholder: 'Search Status',
-        //   },
-        // },
+        {
+          label: this.$t('Reservation for'),
+          field: 'reservation_for',
+          filterOptions: {
+            enabled: true,
+          },
+        },
         {
           label: 'Action',
           field: 'action',
@@ -272,10 +300,12 @@ export default {
         .catch(error => reject(error))
     })
   },
+  methods: {
+    resolveResourceType,
+  },
 }
 </script>
 
-  <style lang="scss">
-    @import '@core/scss/vue/libs/vue-good-table.scss';
-  </style>
-</template>
+<style lang="scss">
+@import '@/assets/scss/libs/vue-good-table.scss';
+</style>

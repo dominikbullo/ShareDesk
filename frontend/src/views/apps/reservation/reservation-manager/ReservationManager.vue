@@ -49,12 +49,10 @@
 
           </div>
 
-          <!-- Column: Status -->
           <span v-else-if="props.column.field === 'resourcetype'">
             {{ resolveResourceType(props.row.resourcetype) }}
           </span>
 
-          <!-- Column: Status -->
           <span v-else-if="props.column.field === 'reservation_for'">
             {{ (props.row.reservation_for.email) ? props.row.reservation_for.email : props.row.reservation_for.name }}
           </span>
@@ -208,7 +206,7 @@ import Ripple from 'vue-ripple-directive'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import axios from '@/libs/axios'
-import { compareStringNoCaseSensitive } from '@/utils/utils'
+import { resolveResourceType } from '@/views/apps/team/teamUtils'
 
 export default {
   components: {
@@ -261,12 +259,16 @@ export default {
           tdClass: 'text-center',
           filterOptions: {
             enabled: true,
-            placeholder: 'Search Email',
+            filterDropdownItems: [
+              { value: true, text: 'User' },
+              { value: false, text: 'Team' },
+            ],
           },
         },
         {
           label: this.$t('Type'),
           field: 'resourcetype',
+          tdClass: 'text-center',
           filterOptions: {
             enabled: true,
             placeholder: 'Search Type',
@@ -331,6 +333,7 @@ export default {
       })
   },
   methods: {
+    resolveResourceType,
     changePermanentStatus(id, status) {
       axios
         .post(`/reservations/${id}/change_status`, { status })
@@ -360,15 +363,10 @@ export default {
           })
         })
     },
-    resolveResourceType(resType) {
-      if (compareStringNoCaseSensitive(resType, 'UserSpotReservation')) return 'User'
-      if (compareStringNoCaseSensitive(resType, 'TeamSpotReservation')) return 'Team'
-      return 'undefined'
-    },
   },
 }
 </script>
 
 <style lang="scss">
-@import '@core/scss/vue/libs/vue-good-table.scss';
+@import '@/assets/scss/libs/vue-good-table.scss';
 </style>

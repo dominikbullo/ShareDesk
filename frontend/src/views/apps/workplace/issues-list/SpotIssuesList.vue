@@ -313,8 +313,4 @@ export default {
 
 <style lang="scss">
 @import '@/assets/scss/libs/vue-good-table.scss';
-
-.modal-popup-z-index {
-  z-index: 999 !important;
-}
 </style>
