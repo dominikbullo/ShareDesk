@@ -9,6 +9,7 @@ from core.choices import UserTypeChoices
 
 class UserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField(read_only=True)
+    status = serializers.SerializerMethodField(read_only=True)
     full_name = serializers.SerializerMethodField(read_only=True)
     short_name = serializers.SerializerMethodField(read_only=True)
     role = serializers.ChoiceField(choices=UserTypeChoices.choices, read_only=True)
@@ -16,6 +17,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
         return obj.avatar.url if obj.avatar else settings.STATIC_URL + 'images/default_avatar.png'
+
+    def get_status(self, obj):
+        return "active" if obj.is_active else "inactive"
 
     def get_full_name(self, obj):
         return obj.full_name
@@ -29,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
             "id",
             'email',
             'avatar',
+            'status',
             'full_name',
             'short_name',
             'registered_at',

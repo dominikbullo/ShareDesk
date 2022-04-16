@@ -43,43 +43,44 @@
         </div>
 
         <!-- User Stats -->
-        <div class="d-flex align-items-center mt-2">
-          <div class="d-flex align-items-center mr-2">
-            <b-avatar
-              variant="light-primary"
-              rounded
-            >
-              <feather-icon
-                icon="DollarSignIcon"
-                size="18"
-              />
-            </b-avatar>
-            <div class="ml-1">
-              <h5 class="mb-0">
-                23.3k
-              </h5>
-              <small>Monthly Sales</small>
-            </div>
-          </div>
+        <!--        <div class="d-flex align-items-center mt-2">-->
+        <!--          <div class="d-flex align-items-center mr-2">-->
+        <!--            <b-avatar-->
+        <!--              variant="light-primary"-->
+        <!--              rounded-->
+        <!--            >-->
+        <!--              <feather-icon-->
+        <!--                icon="DollarSignIcon"-->
+        <!--                size="18"-->
+        <!--              />-->
+        <!--            </b-avatar>-->
+        <!--            <div class="ml-1">-->
+        <!--              <h5 class="mb-0">-->
+        <!--                23.3k-->
+        <!--              </h5>-->
+        <!--              <small>Monthly Sales</small>-->
+        <!--            </div>-->
+        <!--          </div>-->
 
-          <div class="d-flex align-items-center">
-            <b-avatar
-              variant="light-success"
-              rounded
-            >
-              <feather-icon
-                icon="TrendingUpIcon"
-                size="18"
-              />
-            </b-avatar>
-            <div class="ml-1">
-              <h5 class="mb-0">
-                $99.87k
-              </h5>
-              <small>Annual Profit</small>
-            </div>
-          </div>
-        </div>
+        <!--          <div class="d-flex align-items-center">-->
+        <!--            <b-avatar-->
+        <!--              <b-avatar-->
+        <!--              variant="light-success"-->
+        <!--              rounded-->
+        <!--            >-->
+        <!--              <feather-icon-->
+        <!--                icon="TrendingUpIcon"-->
+        <!--                size="18"-->
+        <!--              />-->
+        <!--            </b-avatar>-->
+        <!--            <div class="ml-1">-->
+        <!--              <h5 class="mb-0">-->
+        <!--                $99.87k-->
+        <!--              </h5>-->
+        <!--              <small>Annual Profit</small>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </b-col>
 
       <!-- Right Col: Table -->
@@ -94,7 +95,7 @@
                 icon="UserIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Username</span>
+              <span class="font-weight-bold">{{ $t('Email') }}</span>
             </th>
             <td class="pb-50">
               {{ userData.email }}
@@ -106,7 +107,7 @@
                 icon="CheckIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Status</span>
+              <span class="font-weight-bold">{{ $t('Status') }}</span>
             </th>
             <td class="pb-50 text-capitalize">
               {{ userData.status }}
@@ -130,22 +131,10 @@
                 icon="FlagIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Country</span>
+              <span class="font-weight-bold">{{ $t('Registration time') }}</span>
             </th>
             <td class="pb-50">
-              {{ userData.country }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <feather-icon
-                icon="PhoneIcon"
-                class="mr-75"
-              />
-              <span class="font-weight-bold">Contact</span>
-            </th>
-            <td>
-              {{ userData.contact }}
+              {{ formatDate(userData.registered_at) }}
             </td>
           </tr>
         </table>
@@ -160,6 +149,7 @@ import {
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
 import useUsersList from '@/views/apps/user/users-list/useUsersList'
+import { formatDate } from '@/utils/filter'
 
 export default {
   components: {
@@ -176,6 +166,7 @@ export default {
     return {
       avatarText,
       resolveUserRoleVariant,
+      formatDate,
     }
   },
 }
