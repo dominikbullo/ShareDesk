@@ -28,21 +28,6 @@
         </b-col>
       </b-row>
 
-      <b-row>
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <team-view-team-timeline-card />
-        </b-col>
-        <b-col
-          cols="12"
-          lg="6"
-        >
-          <team-view-team-permissions-card />
-        </b-col>
-      </b-row>
-
     </template>
 
     <user-list
@@ -61,8 +46,6 @@ import {
 import teamStoreModule from '@/views/apps/team/teamStoreModule'
 import UserList from '@/views/apps/user/users-list/UsersList.vue'
 import TeamViewTeamInfoCard from './TeamViewTeamInfoCard.vue'
-import TeamViewTeamTimelineCard from './TeamViewTeamTimelineCard.vue'
-import TeamViewTeamPermissionsCard from './TeamViewTeamPermissionsCard.vue'
 
 export default {
   components: {
@@ -73,8 +56,6 @@ export default {
 
     // Local Components
     TeamViewTeamInfoCard,
-    TeamViewTeamTimelineCard,
-    TeamViewTeamPermissionsCard,
 
     UserList,
   },

@@ -34,44 +34,44 @@
           </div>
         </div>
 
-        <!-- User Stats -->
-        <div class="d-flex align-items-center mt-2">
-          <div class="d-flex align-items-center mr-2">
-            <b-avatar
-              variant="light-primary"
-              rounded
-            >
-              <feather-icon
-                icon="DollarSignIcon"
-                size="18"
-              />
-            </b-avatar>
-            <div class="ml-1">
-              <h5 class="mb-0">
-                23.3k
-              </h5>
-              <small>Monthly Sales</small>
-            </div>
-          </div>
+        <!--        &lt;!&ndash; User Stats &ndash;&gt;-->
+        <!--        <div class="d-flex align-items-center mt-2">-->
+        <!--          <div class="d-flex align-items-center mr-2">-->
+        <!--            <b-avatar-->
+        <!--              variant="light-primary"-->
+        <!--              rounded-->
+        <!--            >-->
+        <!--              <feather-icon-->
+        <!--                icon="DollarSignIcon"-->
+        <!--                size="18"-->
+        <!--              />-->
+        <!--            </b-avatar>-->
+        <!--            <div class="ml-1">-->
+        <!--              <h5 class="mb-0">-->
+        <!--                23.3k-->
+        <!--              </h5>-->
+        <!--              <small>Monthly Sales</small>-->
+        <!--            </div>-->
+        <!--          </div>-->
 
-          <div class="d-flex align-items-center">
-            <b-avatar
-              variant="light-success"
-              rounded
-            >
-              <feather-icon
-                icon="TrendingUpIcon"
-                size="18"
-              />
-            </b-avatar>
-            <div class="ml-1">
-              <h5 class="mb-0">
-                $99.87k
-              </h5>
-              <small>Annual Profit</small>
-            </div>
-          </div>
-        </div>
+        <!--          <div class="d-flex align-items-center">-->
+        <!--            <b-avatar-->
+        <!--              variant="light-success"-->
+        <!--              rounded-->
+        <!--            >-->
+        <!--              <feather-icon-->
+        <!--                icon="TrendingUpIcon"-->
+        <!--                size="18"-->
+        <!--              />-->
+        <!--            </b-avatar>-->
+        <!--            <div class="ml-1">-->
+        <!--              <h5 class="mb-0">-->
+        <!--                $99.87k-->
+        <!--              </h5>-->
+        <!--              <small>Annual Profit</small>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </b-col>
 
       <!-- Right Col: Table -->
@@ -86,7 +86,7 @@
                 icon="UserIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Username</span>
+              <span class="font-weight-bold">Name</span>
             </th>
             <td class="pb-50">
               {{ teamData.username }}
@@ -110,34 +110,10 @@
                 icon="StarIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Role</span>
+              <span class="font-weight-bold">Size</span>
             </th>
             <td class="pb-50 text-capitalize">
               {{ teamData.role }}
-            </td>
-          </tr>
-          <tr>
-            <th class="pb-50">
-              <feather-icon
-                icon="FlagIcon"
-                class="mr-75"
-              />
-              <span class="font-weight-bold">Country</span>
-            </th>
-            <td class="pb-50">
-              {{ teamData.country }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <feather-icon
-                icon="PhoneIcon"
-                class="mr-75"
-              />
-              <span class="font-weight-bold">Contact</span>
-            </th>
-            <td>
-              {{ teamData.contact }}
             </td>
           </tr>
         </table>
