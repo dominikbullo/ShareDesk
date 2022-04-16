@@ -62,18 +62,19 @@ export default {
   data() {
     return {
       options: {
-        general: ['test'],
+        general: {},
       },
     }
   },
   beforeCreate() {
     this.$http.get('/user/profile').then(res => {
+      console.log(res.data)
       this.options = {
         general: {
-          test: 'test',
+          ...res.data,
         },
         info: {
-          test: 'test',
+          ...res.data,
         },
       }
     })

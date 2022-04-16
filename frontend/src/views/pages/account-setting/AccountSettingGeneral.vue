@@ -72,7 +72,7 @@
             label-for="account-name"
           >
             <b-form-input
-              v-model="optionsLocal.fullName"
+              v-model="optionsLocal.last_name"
               name="name"
               placeholder="Name"
             />
@@ -91,39 +91,39 @@
 
           </b-form-group>
         </b-col>
-        <b-col sm="6">
-          <b-form-group
-            label="Company"
-            label-for="account-company"
-          >
-            <b-form-input
-              v-model="optionsLocal.company"
-              name="company"
-              placeholder="Company name"
-            />
-          </b-form-group>
-        </b-col>
+        <!--        <b-col sm="6">-->
+        <!--          <b-form-group-->
+        <!--            label="Company"-->
+        <!--            label-for="account-company"-->
+        <!--          >-->
+        <!--            <b-form-input-->
+        <!--              v-model="optionsLocal.company"-->
+        <!--              name="company"-->
+        <!--              placeholder="Company name"-->
+        <!--            />-->
+        <!--          </b-form-group>-->
+        <!--        </b-col>-->
 
         <!-- alert -->
-        <b-col
-          cols="12"
-          class="mt-75"
-        >
-          <b-alert
-            show
-            variant="warning"
-            class="mb-50"
-          >
-            <h4 class="alert-heading">
-              Your email is not confirmed. Please check your inbox.
-            </h4>
-            <div class="alert-body">
-              <b-link class="alert-link">
-                Resend confirmation
-              </b-link>
-            </div>
-          </b-alert>
-        </b-col>
+        <!--        <b-col-->
+        <!--          cols="12"-->
+        <!--          class="mt-75"-->
+        <!--        >-->
+        <!--          <b-alert-->
+        <!--            show-->
+        <!--            variant="warning"-->
+        <!--            class="mb-50"-->
+        <!--          >-->
+        <!--            <h4 class="alert-heading">-->
+        <!--              Your email is not confirmed. Please check your inbox.-->
+        <!--            </h4>-->
+        <!--            <div class="alert-body">-->
+        <!--              <b-link class="alert-link">-->
+        <!--                Resend confirmation-->
+        <!--              </b-link>-->
+        <!--            </div>-->
+        <!--          </b-alert>-->
+        <!--        </b-col>-->
         <!--/ alert -->
 
         <b-col cols="12">
@@ -204,6 +204,11 @@ export default {
       optionsLocal: JSON.parse(JSON.stringify(this.generalData)),
       profileFile: null,
     }
+  },
+  watch: {
+    generalData() {
+      this.resetForm()
+    },
   },
   methods: {
     resetForm() {

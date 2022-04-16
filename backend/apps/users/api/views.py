@@ -124,6 +124,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(methods=['POST'], detail=False)
     def password_change(self, request, format=None):
+        # TODO: change to accept jwt
         if User.objects.filter(token=request.data['token']).exists():
             user = User.objects.get(token=request.data['token'])
             user.set_password(request.data['password'])
