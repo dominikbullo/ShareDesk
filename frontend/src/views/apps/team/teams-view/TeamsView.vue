@@ -14,7 +14,7 @@
           class="alert-link"
           :to="{ name: 'apps-teams-list'}"
         >
-          User List
+          Team List
         </b-link>
         for other teams.
       </div>

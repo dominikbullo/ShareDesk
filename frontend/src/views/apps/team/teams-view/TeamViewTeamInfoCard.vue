@@ -33,45 +33,6 @@
             </div>
           </div>
         </div>
-
-        <!--        &lt;!&ndash; User Stats &ndash;&gt;-->
-        <!--        <div class="d-flex align-items-center mt-2">-->
-        <!--          <div class="d-flex align-items-center mr-2">-->
-        <!--            <b-avatar-->
-        <!--              variant="light-primary"-->
-        <!--              rounded-->
-        <!--            >-->
-        <!--              <feather-icon-->
-        <!--                icon="DollarSignIcon"-->
-        <!--                size="18"-->
-        <!--              />-->
-        <!--            </b-avatar>-->
-        <!--            <div class="ml-1">-->
-        <!--              <h5 class="mb-0">-->
-        <!--                23.3k-->
-        <!--              </h5>-->
-        <!--              <small>Monthly Sales</small>-->
-        <!--            </div>-->
-        <!--          </div>-->
-
-        <!--          <div class="d-flex align-items-center">-->
-        <!--            <b-avatar-->
-        <!--              variant="light-success"-->
-        <!--              rounded-->
-        <!--            >-->
-        <!--              <feather-icon-->
-        <!--                icon="TrendingUpIcon"-->
-        <!--                size="18"-->
-        <!--              />-->
-        <!--            </b-avatar>-->
-        <!--            <div class="ml-1">-->
-        <!--              <h5 class="mb-0">-->
-        <!--                $99.87k-->
-        <!--              </h5>-->
-        <!--              <small>Annual Profit</small>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </b-col>
 
       <!-- Right Col: Table -->
@@ -86,34 +47,34 @@
                 icon="UserIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Name</span>
+              <span class="font-weight-bold">{{ $t('Name') }}</span>
             </th>
             <td class="pb-50">
-              {{ teamData.username }}
+              {{ teamData.name }}
             </td>
           </tr>
           <tr>
             <th class="pb-50">
               <feather-icon
-                icon="CheckIcon"
+                icon="UsersIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Status</span>
+              <span class="font-weight-bold">{{ $t('Size') }}</span>
             </th>
             <td class="pb-50 text-capitalize">
-              {{ teamData.status }}
+              {{ teamData.members_count }}
             </td>
           </tr>
           <tr>
             <th class="pb-50">
               <feather-icon
-                icon="StarIcon"
+                icon="CalendarIcon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Size</span>
+              <span class="font-weight-bold">{{ $t('Creation date') }}</span>
             </th>
             <td class="pb-50 text-capitalize">
-              {{ teamData.role }}
+              {{ formatDate(teamData.created_at) }}
             </td>
           </tr>
         </table>
@@ -127,6 +88,7 @@ import {
   BCard, BButton, BAvatar, BRow, BCol,
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
+import { formatDate } from '@/utils/filter'
 
 export default {
   components: {
@@ -141,6 +103,7 @@ export default {
   setup() {
     return {
       avatarText,
+      formatDate,
     }
   },
 }

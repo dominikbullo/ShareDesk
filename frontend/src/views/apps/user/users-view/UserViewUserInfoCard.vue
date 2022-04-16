@@ -116,7 +116,7 @@
           <tr>
             <th class="pb-50">
               <feather-icon
-                icon="StarIcon"
+                icon="FlagIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">Role</span>
@@ -128,7 +128,7 @@
           <tr>
             <th class="pb-50">
               <feather-icon
-                icon="FlagIcon"
+                icon="CalendarIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">{{ $t('Registration time') }}</span>
