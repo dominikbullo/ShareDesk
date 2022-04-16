@@ -17,7 +17,7 @@
         <b-button
           variant="primary"
           class="mb-1 btn-sm-block"
-          :to="loginRoute()"
+          :to="backToHomeRoute()"
         >Back to Home
         </b-button>
         <b-img
@@ -57,9 +57,8 @@ export default {
     },
   },
   methods: {
-    loginRoute() {
-      const user = JSON.parse(localStorage.getItem('userData'))
-      return getHomeRouteForLoggedInUser(user ? user.role : null)
+    backToHomeRoute() {
+      return { name: 'home' }
     },
   },
 }

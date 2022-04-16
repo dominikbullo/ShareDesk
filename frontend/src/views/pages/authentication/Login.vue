@@ -144,7 +144,7 @@ import axios from 'axios'
 import jwt_decode from 'jwt-decode'
 import useJwt from '@/auth/jwt/useJwt'
 import store from '@/store/index'
-import { getHomeRouteForLoggedInUser } from '@/auth/utils'
+import { getAbilityForUserRole } from '@/auth/utils'
 
 import CustomLogo from '@/layouts/components/Logo.vue'
 
@@ -199,7 +199,6 @@ export default {
             email: this.userEmail,
             password: this.password,
           }).then(response => {
-            console.log(response)
             useJwt.setToken(response.data.access)
             useJwt.setRefreshToken(response.data.refresh)
 
@@ -207,8 +206,8 @@ export default {
             this.$http.get(`/users/${decoded.user_id}`).then(res => {
               const userData = res.data
               localStorage.setItem('userData', JSON.stringify(userData))
-              // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
-              // this.$router.replace(getHomeRouteForLoggedInUser(userData.role)).then(() => {
+              this.$ability.update(getAbilityForUserRole(userData.role))
+
               this.$router.replace('/').then(() => {
                 this.$toast({
                   component: ToastificationContent,

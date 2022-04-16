@@ -73,6 +73,7 @@ import {
 } from 'bootstrap-vue'
 import { avatarText } from '@core/utils/filter'
 import useJwt from '@/auth/jwt/useJwt'
+import { initialAbility } from '@/libs/acl/config'
 
 export default {
   components: {
@@ -103,7 +104,7 @@ export default {
       localStorage.removeItem('userData')
 
       // Reset ability
-      // this.$ability.update(initialAbility)
+      this.$ability.update(initialAbility)
 
       // Redirect to login page
       this.$router.push({ name: 'auth-login' })

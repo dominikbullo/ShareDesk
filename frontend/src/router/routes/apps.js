@@ -134,6 +134,8 @@ export default [
     name: 'apps-reservations-manager',
     component: () => import('@/views/apps/reservation/reservation-manager/ReservationManager.vue'),
     meta: {
+      action: 'write',
+      resource: 'Reservations',
       pageTitle: 'Reservations Manager',
       breadcrumb: [
         {
