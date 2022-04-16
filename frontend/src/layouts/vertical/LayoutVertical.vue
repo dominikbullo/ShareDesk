@@ -1,6 +1,10 @@
 <template>
   <layout-vertical>
 
+    <template #breadcrumb>
+      <app-breadcrumb />
+    </template>
+
     <router-view />
 
     <template #navbar="{ toggleVerticalMenuActive }">
@@ -41,6 +45,7 @@ import LayoutVertical from '@core/layouts/layout-vertical/LayoutVertical.vue'
 // import AppCustomizer from '@core/layouts/components/app-customizer/AppCustomizer.vue'
 // import { $themeConfig } from '@themeConfig'
 import { BLink } from 'bootstrap-vue'
+import AppBreadcrumb from '@/layouts/components/AppBreadcrumb.vue'
 import Navbar from '../components/app-navbar/Navbar.vue'
 
 export default {
@@ -48,6 +53,7 @@ export default {
     // AppCustomizer,
     LayoutVertical,
     Navbar,
+    AppBreadcrumb,
     BLink,
   },
   data() {
