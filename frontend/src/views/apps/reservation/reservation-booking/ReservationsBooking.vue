@@ -21,20 +21,17 @@
       class="card-body"
     >
       <b-row>
-        <h1>asd</h1>
-        <pre>{{ seatStatuses }}</pre>
-      </b-row>
-      <b-row>
-        <b-overlay
-          :show="showSeatSpinner"
-          spinner-variant="primary"
-          spinner-type="grow"
-          blur="1rem"
-          variant="transparent"
+        <b-col
+          v-if="roomData.layout"
+          md="6"
+          class="reservation-column d-flex justify-content-center align-items-center"
         >
-          <b-col
-            v-if="roomData.layout"
-            class="col-md-auto p-5"
+          <b-overlay
+            :show="showSeatSpinner"
+            spinner-variant="primary"
+            spinner-type="grow"
+            blur="1rem"
+            variant="transparent"
           >
             <b-row
               v-if="isTouch()"
@@ -72,20 +69,17 @@
                 </tr>
               </tbody>
             </table>
-          </b-col>
-        </b-overlay>
+          </b-overlay>
+        </b-col>
         <b-col
-          class="pt-3 pl-2"
-          align-content="center"
+          md="6"
+          sm="12"
         >
-          <div
-            v-show="selectedSeats && selectedSeats.length >0"
-            class="card"
-            style="display: none;"
+          <b-tabs
+            v-if="selectedSeats && selectedSeats.length >0"
+            content-class="mt-1"
           >
-
-            <div v-if="selectedSeats && selectedSeats.length >0">
-              <!--TODO v for-->
+            <b-tab title="Regular tab">
               <b-row class="mb-2">
                 <b-col>
                   <h5>{{ $t("Start") }}</h5>
@@ -130,37 +124,40 @@
                   </b-form-checkbox>
                 </b-col>
               </b-row>
-            </div>
 
-            <b-row class="mt-3 justify-content-end">
-              <b-button
-                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                variant="outline-danger"
-              >
-                {{ `${$t("Disable")}  ${$tc("spot", selectedSeats.length)}` }}
-              </b-button>
+              <b-row class="mt-3 d-flex justify-content-end btn-block">
+                <b-button
+                  v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                  class="ml-2 mt-1 mt-md-0"
+                  variant="outline-danger"
+                >
+                  {{ `${$t("Disable")}  ${$tc("spot", selectedSeats.length)}` }}
+                </b-button>
 
-              <b-button
-                v-if="selectedSeats.length === 1"
-                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                variant="outline-warning"
-                class="ml-2"
-                @click="isAddNewIssueSidebarActive = true"
-              >
-                {{ $t("Add issue") }}
-              </b-button>
+                <b-button
+                  v-if="selectedSeats.length === 1"
+                  v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                  variant="outline-warning"
+                  class="ml-2 mt-1 mt-md-0"
+                  @click="isAddNewIssueSidebarActive = true"
+                >
+                  {{ $t("Add issue") }}
+                </b-button>
 
-              <b-button
-                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                variant="primary"
-                class="mx-2"
-                @click="submitReservation"
-              >
-                {{ `${$t("Book")}  ${$tc("spot", selectedSeats.length)}` }}
-              </b-button>
-            </b-row>
-
-          </div>
+                <b-button
+                  v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                  variant="primary"
+                  class="ml-2 mt-1 mt-md-0"
+                  @click="submitReservation"
+                >
+                  {{ `${$t("Book")}  ${$tc("spot", selectedSeats.length)}` }}
+                </b-button>
+              </b-row>
+            </b-tab>
+            <b-tab title="Lazy tab">
+              <pre>{{ selectedSeats }}</pre>
+            </b-tab>
+          </b-tabs>
         </b-col>
       </b-row>
     </b-card>
@@ -186,7 +183,7 @@
 <script>
 
 import {
-  BButton, BOverlay, BCard, BFormCheckbox, BCardText, BCol, BModal, BRow, BTable, VBPopover,
+  BButton, BOverlay, BCard, BFormCheckbox, BCardText, BCol, BTabs, BTab, BAlert, BModal, BRow, BTable, VBPopover,
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
@@ -221,6 +218,9 @@ export default {
     BModal,
     BTable,
     BCardText,
+    BTabs,
+    BTab,
+    BAlert,
     vSelect,
   },
   directives: {
@@ -371,18 +371,6 @@ export default {
       .then(response => {
         this.newReservationData.teamOptions = response.data.results
       })
-
-    // const iterate = obj => {
-    //   Object.keys(obj).forEach(key => {
-    //     if (typeof obj[key] !== 'object') {
-    //       this.seatStatuses.push(obj[key])
-    //     }
-    //     if (typeof obj[key] === 'object' && obj[key] !== null) {
-    //       iterate(obj[key])
-    //     }
-    //   })
-    // }
-    // iterate(this.seatStatusString)
   },
   methods: {
     getSeat(r, c) {
@@ -627,6 +615,10 @@ export default {
   margin-bottom: -1px;
   flex-grow: 1;
   text-align: center;
+}
+
+.reservation-column {
+  min-height: 350px;
 }
 
 .cls {
