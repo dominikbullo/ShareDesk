@@ -58,12 +58,13 @@
                   >
                     <div
                       v-if="isEnabled(idxr, idxc)"
-                      v-b-popover.hover.top="`${getSeat(idxr,idxc).data.identifier}`"
+                      v-b-popover.hover.top="`${getSeat(idxr,idxc).data.identifier} | ${getSeat(idxr,idxc).status}`"
                       :class="classifier(idxr, idxc)"
                       style="width: 30px; height: 30px; border: 1px solid black;"
                       @click.exact="onSeatSelected(idxr, idxc, false)"
                       @click.ctrl="onSeatSelected(idxr, idxc, true)"
                       @click.alt="seatReservationsDetail(idxr, idxc)"
+                      @click.shift="resolveSeatStatusVariant(getSeatReservationFromData(r, c))"
                     />
                   </td>
                 </tr>
@@ -79,7 +80,7 @@
             v-if="selectedSeats && selectedSeats.length >0"
             content-class="mt-1"
           >
-            <b-tab title="Regular tab">
+            <b-tab :title="$t('Booking')">
               <b-row class="mb-2">
                 <b-col>
                   <h5>{{ $t("Start") }}</h5>
@@ -103,7 +104,7 @@
                 align-v="center"
               >
                 <b-col>
-                  <h5>{{ $t("Team") }}</h5>
+                  <h5>{{ $tc("Team",1) }}</h5>
                   <v-select
                     v-model="newReservationData.teamFilter"
                     :options="newReservationData.teamOptions"
@@ -154,7 +155,7 @@
                 </b-button>
               </b-row>
             </b-tab>
-            <b-tab title="Lazy tab">
+            <b-tab :title="$t('Information')">
               <pre>{{ selectedSeats }}</pre>
             </b-tab>
           </b-tabs>
@@ -188,7 +189,7 @@ import {
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
 import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
-import { compareStringNoCaseSensitive, isTouch } from '@/utils/utils'
+import { isTouch } from '@/utils/utils'
 import useReservationBooking from '@/views/apps/reservation/reservation-booking/useReservationBooking'
 import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
 import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
@@ -200,8 +201,9 @@ import vSelect from 'vue-select'
 import { getUserData } from '@/auth/utils'
 
 import axios from '@/libs/axios'
-import SpotIssueListAddNew from '@/views/apps/workplace/issues-list/SpotIssueListAddNew'
+import SpotIssueListAddNew from '@/views/apps/workplace/issues-list/SpotIssueListAddNew.vue'
 import workspaceStoreModule from '@/views/apps/workplace/workspaceStoreModule'
+import { isResourceTypeTeam } from '@/views/apps/team/teamUtils'
 
 export default {
   components: {
@@ -281,16 +283,13 @@ export default {
     },
   },
   setup() {
-    const RESERVATIONS_APP_STORE_MODULE_NAME = 'app-reservations'
     const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
 
     // Register module
-    if (!store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.registerModule(RESERVATIONS_APP_STORE_MODULE_NAME, reservationStoreModule)
     if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(RESERVATIONS_APP_STORE_MODULE_NAME)) store.unregisterModule(RESERVATIONS_APP_STORE_MODULE_NAME)
       if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
     })
 
@@ -322,7 +321,7 @@ export default {
         booked: {
           team: 'TB',
           user: 'UB',
-          permanent_pending: 'PB-P',
+          permanent_submitted: 'PB-P',
           permanent_allowed: 'PB-A',
         },
         available: {
@@ -355,6 +354,7 @@ export default {
     dateFilter(val) {
       this.newReservationData.start = new Date(val).setHours(8)
       this.newReservationData.end = new Date(val).setHours(16)
+      this.selectedSeats = []
     },
     roomData(val) {
       this.selectedSeats = []
@@ -385,32 +385,6 @@ export default {
       const seat = this.getSeatFromData(r, c)
       return seat ? seat.enabled : true
     },
-    resolveSeatStatusVariant(seatReservationList) {
-      // TODO better decisions and statuses for example by dates, or multiple events
-      // console.log('seatReservationList')
-      // console.log(seatReservationList)
-      const seatReservation = seatReservationList[0]
-
-      for (let i = 0; i < seatReservationList.length; i++) {
-        console.log(seatReservationList[i])
-      }
-      if (seatReservation.permanent) {
-        switch (seatReservation.permanent_status) {
-          case 'pending':
-            return this.seatStatusString.booked.permanent_pending
-          case 'allowed':
-            return this.seatStatusString.booked.permanent_allowed
-          case 'rejected':
-            return this.seatStatusString.available.permanent_rejected
-          default:
-            return this.seatStatusString.booked.permanent_pending
-        }
-      }
-
-      if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'UserSpotReservation')) return this.seatStatusString.booked.user
-      if (compareStringNoCaseSensitive(seatReservation.resourcetype, 'TeamSpotReservation')) return this.seatStatusString.booked.team
-      return this.seatStatusString.booked.default
-    },
     generateSeats(r, c) {
       this.seats = []
       for (let y = 1; y <= r; ++y) {
@@ -435,6 +409,45 @@ export default {
         }
       }
     },
+    resolveSeatStatusVariant(seatReservationList) {
+      // potrebujem vedieť, či je to permanentná alebo nie
+      // ak nie tak pozerám na každú a vyhodnocujem
+
+      // daj preč zamietnute permanentne, tie nás nezaujímajú
+      const filteredSeatReservationList = seatReservationList.filter(seatReservation => seatReservation.permanent_status !== 'rejected')
+      let resolvedStatusVariant = this.seatStatusString.booked.user
+
+      // If there are no valid reservations
+      if (filteredSeatReservationList.length <= 0) return this.seatStatusString.available.full
+
+      for (let i = 0; i < filteredSeatReservationList.length; i++) {
+        const seatReservation = filteredSeatReservationList[i]
+
+        if (seatReservation.permanent) {
+          if (seatReservation.permanent_status === 'submitted') return this.seatStatusString.booked.permanent_submitted
+          if (seatReservation.permanent_status === 'allowed') return this.seatStatusString.booked.permanent_allowed
+        }
+
+        // TODO: Check if is full day book or there is place for another booking
+        // console.log('seatReservation')
+        // console.log(`${seatReservation.reservation.start} - reservation start`)
+        // console.log(`${seatReservation.reservation.end} - reservation end`)
+        // console.log(`${this.dateFilter} - selected date`)
+        // console.log(`${this.reservationMeta.start} - allowed start`)
+        // console.log(`${this.reservationMeta.end} - allowed end`)
+        // if (currentTime > reservationMeta.start && currentTime < reservationMeta.end) {
+        //
+        // }
+
+        const isFullDayReservation = true
+
+        if (!isFullDayReservation) return this.seatStatusString.available.partial
+
+        // TODO: If one team and one user?
+        if (isResourceTypeTeam(seatReservation.resourcetype)) resolvedStatusVariant = this.seatStatusString.booked.team
+      }
+      return resolvedStatusVariant
+    },
     classifier(r, c) {
       const seat = this.getSeat(r, c)
       if (seat != null) {
@@ -448,9 +461,9 @@ export default {
         if (Object.values(this.seatStatusString.booked).includes(foundSelectedSeat.status)) {
           return 'cls-booked'
         }
-
         return 'cls-available'
       }
+      return 'cls-disabled'
     },
     getSeatFromData(r, c) {
       return this.spots.filter(spot => (spot.row === r && spot.column === c))[0]
@@ -459,12 +472,6 @@ export default {
       if (!this.roomSpotsReservationsData || this.roomSpotsReservationsData.length <= 0) return []
       // Pozor na toom, lebo ten spot síce v tej rezervacií byť môže ale v inej room
       return this.roomSpotsReservationsData.filter(element => element.spots.filter(item => (item.room === this.roomFilter && item.row === r && item.column === c)).length > 0)
-    },
-    isInReservationData(r, c) {
-      return this.roomSpotsReservationsData.filter(item => (item.spots.room === this.roomFilter && item.spots.row === r && item.spots.column === c))
-    },
-    isInSeatData(r, c) {
-      return this.spots.filter(spot => (spot.row === r && spot.column === c)) > 0
     },
     isSeatBooked(seat) {
       return (Object.values(this.seatStatusString.booked).includes(seat.status))
@@ -498,11 +505,10 @@ export default {
       if (this.multipleTouchCheckbox) { multiple = true }
 
       if (!this.isDatepickerValid()) return
+
       const seat = this.getSeat(r, c)
+
       if (this.isSeatBooked(seat)) {
-        // TODO: Only show data
-        console.log('seat.status')
-        console.log(seat.status)
         if (seat.status === this.seatStatusString.booked.permanent_allowed) {
           this.$toast({
             component: ToastificationContent,
@@ -513,21 +519,11 @@ export default {
               variant: 'danger',
             },
           })
-          this.seatReservationsDetail(r, c)
-        } else {
-          // TODO permanent waiting
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Partially reserved',
-              icon: 'EditIcon',
-              text: 'This seat is partially reserved',
-              variant: 'warning',
-            },
-          })
         }
+        this.seatReservationsDetail(r, c)
         return
       }
+
       if (multiple) {
         const seatIndex = this.selectedSeats.findIndex(item => item === seat)
         if (seatIndex <= -1) {
@@ -551,45 +547,59 @@ export default {
         spots: this.selectedSeats.map(item => item.data.id),
         permanent: this.newReservationData.permanent,
       }
-      console.log(data)
 
-      axios
-        .post('/reservations/', { ...data })
-        .then(response => {
-          this.roomSpotsReservationsData.push(response.data)
-          this.selectedSeats = []
-          if (response.data.permanent) {
-            this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: 'Reservation created',
-                icon: 'EditIcon',
-                text: "You're permanent reservation has been submitted. Now is waiting for allowance",
-                variant: 'warning',
-              },
-            })
-          } else {
-            this.$toast({
-              component: ToastificationContent,
-              props: {
-                title: 'Reservation created',
-                icon: 'EditIcon',
-                variant: 'success',
-              },
-            })
-          }
+      this.$bvModal
+        .msgBoxConfirm("Please confirm you're reservation", {
+          title: 'Please Confirm',
+          size: 'sm',
+          okVariant: 'primary',
+          okTitle: 'Book',
+          cancelVariant: 'outline-secondary',
+          hideHeaderClose: false,
+          centered: true,
         })
-        .catch(error => {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Notification',
-              icon: 'AlertTriangleIcon',
-              text: 'Cannot create reservation with selected data',
-              variant: 'danger',
-            },
-          })
-          console.error(error)
+        .then(value => {
+          if (value) {
+            axios
+              .post('/reservations/', { ...data })
+              .then(response => {
+                this.roomSpotsReservationsData.push(response.data)
+                this.selectedSeats = []
+                if (response.data.permanent) {
+                  this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                      title: 'Reservation created',
+                      icon: 'EditIcon',
+                      text: "You're permanent reservation has been submitted. Now is waiting for allowance",
+                      variant: 'warning',
+                    },
+                  })
+                } else {
+                  this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                      title: 'Reservation created',
+                      text: "You're  reservation has been created.",
+                      icon: 'EditIcon',
+                      variant: 'success',
+                    },
+                  })
+                }
+              })
+              .catch(error => {
+                this.$toast({
+                  component: ToastificationContent,
+                  props: {
+                    title: 'Notification',
+                    icon: 'AlertTriangleIcon',
+                    text: 'Cannot create reservation with selected data',
+                    variant: 'danger',
+                  },
+                })
+                console.error(error)
+              })
+          }
         })
     },
   },
@@ -620,21 +630,22 @@ export default {
 .reservation-column {
   min-height: 350px;
 }
+$reservation-light: #d5d5d5;
 
 .cls {
   &-booked {background-color: $danger;}
-  &-available {background-color: $white;}
+  &-available {background-color: $reservation-light;}
   &-selected{background-color:$success;}
   &-tb{background-color: $secondary;}
   &-ub{background-color:$secondary; border: 2px solid $primary !important;}
   &-pb{background-color:$danger;}
   &-db{background-color:$secondary;}
-  &-fa{background-color:$light;}
-    &-pa{background-color:$light;border: 2px solid $warning !important;}
+  &-fa{background-color:$reservation-light;}
+    &-pa{background-color:$reservation-light;border: 2px solid $success !important;}
   &-pb{
     &-a{background-color:$danger; }
     &-p{background-color:$secondary;border: 2px solid $danger !important;}
-    &-r{background-color: $white;border: 2px solid $warning !important;}
+    &-r{background-color: $reservation-light;}
   }
 }
 </style>

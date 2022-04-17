@@ -24,6 +24,7 @@ export default function useReservationBooking() {
   const roomFilter = ref(null)
 
   const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
+  const RESERVATION_APP_STORE_MODULE_NAME = 'app-reservation'
 
   const fetchWorkspaces = () => new Promise((resolve, reject) => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchWorkspaces`, {
