@@ -170,8 +170,8 @@ export default {
   data() {
     return {
       status: '',
-      password: 'testing321',
-      userEmail: 'dominik@bullo.sk',
+      password: process.env.VUE_APP_PASS || '',
+      userEmail: process.env.VUE_APP_LOGIN || '',
       sideImg: require('@/assets/images/pages/login-v2.svg'),
       // validation rules
       required,
