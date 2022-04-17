@@ -376,7 +376,7 @@ export default {
   methods: {
     popoverText(r, c) {
       const seat = this.getSeat(r, c)
-      if (!seat) return
+      if (!seat.data) return ''
       if (this.$ability.can('write', 'Reservation')) {
         return `${seat.data.identifier} | ${seat.status}`
       }
