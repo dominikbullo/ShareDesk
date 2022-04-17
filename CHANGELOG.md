@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.1](https://github.com/dominikbullo/ShareDesk/compare/v0.7.0...v0.7.1) (2022-04-17)
+
+
+### Features
+
+* **ACL:** conditional buttons (should everything be done) ([03e47f8](https://github.com/dominikbullo/ShareDesk/commit/03e47f8a497536edfd770b01a06fd65a30699a9e))
+* reservations better status resolver ([7dd3ba4](https://github.com/dominikbullo/ShareDesk/commit/7dd3ba4e9a5375c2000e7da77798bc8d8e40028a))
+* **seat:** seat popover based on abilities ([564e165](https://github.com/dominikbullo/ShareDesk/commit/564e165a097a3f2922409b0672f76e49b1a1d8b8))
+
+
+### Bug Fixes
+
+* store unregistered when new issue is closed ([988696a](https://github.com/dominikbullo/ShareDesk/commit/988696a51d4f319d8df40fcef8482d4f4da2aaf3))
+
 ## [0.7.0](https://github.com/dominikbullo/ShareDesk/compare/v0.6.2...v0.7.0) (2022-04-16)
 
 
