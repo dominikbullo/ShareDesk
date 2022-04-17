@@ -1,3 +1,5 @@
+import i18n from '@/libs/i18n'
+
 export default [
   // *===============================================---*
   // *--------- USERS ----------------------------------*
@@ -7,14 +9,14 @@ export default [
     name: 'apps-users-list',
     component: () => import('@/views/apps/user/users-list/UsersList.vue'),
     meta: {
-      pageTitle: 'Users List',
+      pageTitle: i18n.t('Users List'),
       breadcrumb: [
         {
-          text: 'Users',
+          text: i18n.t('Users'),
           to: { name: 'apps-users-list' },
         },
         {
-          text: 'List',
+          text: i18n.t('List'),
           active: true,
         },
       ],
@@ -25,14 +27,14 @@ export default [
     name: 'apps-users-view',
     component: () => import('@/views/apps/user/users-view/UsersView.vue'),
     meta: {
-      pageTitle: 'User View',
+      pageTitle: i18n.t('User View'),
       breadcrumb: [
         {
-          text: 'Users',
+          text: i18n.t('Users'),
           to: { name: 'apps-users-list' },
         },
         {
-          text: 'View',
+          text: i18n.t('View'),
           active: true,
         },
       ],
@@ -51,14 +53,14 @@ export default [
     name: 'apps-teams-list',
     component: () => import('@/views/apps/team/teams-list/TeamsList.vue'),
     meta: {
-      pageTitle: 'Teams List',
+      pageTitle: i18n.t('Teams List'),
       breadcrumb: [
         {
-          text: 'Teams',
+          text: i18n.t('Teams'),
           to: { name: 'apps-teams-list' },
         },
         {
-          text: 'List',
+          text: i18n.t('List'),
           active: true,
         },
       ],
@@ -69,14 +71,14 @@ export default [
     name: 'apps-teams-view',
     component: () => import('@/views/apps/team/teams-view/TeamsView.vue'),
     meta: {
-      pageTitle: 'Team View',
+      pageTitle: i18n.t('Team View'),
       breadcrumb: [
         {
-          text: 'Teams',
+          text: i18n.t('Teams'),
           to: { name: 'apps-teams-list' },
         },
         {
-          text: 'View',
+          text: i18n.t('View'),
           active: true,
         },
       ],
@@ -95,14 +97,11 @@ export default [
     name: 'apps-reservations-booking',
     component: () => import('@/views/apps/reservation/reservation-booking/ReservationsBooking.vue'),
     meta: {
-      pageTitle: 'Reservations',
+      pageTitle: i18n.t('Reservations'),
       breadcrumb: [
         {
-          text: 'Reservations',
+          text: i18n.t('Reservations'),
           to: { name: 'apps-reservations-booking' },
-        },
-        {
-          text: 'Bookings',
           active: true,
         },
       ],
@@ -113,17 +112,17 @@ export default [
     name: 'apps-reservations-user',
     component: () => import('@/views/apps/reservation/reservation-user/UserReservationsList.vue'),
     meta: {
-      pageTitle: 'My reservations',
+      pageTitle: i18n.t('My reservations'),
       breadcrumb: [
         {
-          text: 'Reservations',
+          text: i18n.t('Reservations'),
           to: { name: 'apps-reservations-booking' },
         },
         {
-          text: 'My reservations',
+          text: i18n.t('My reservations'),
         },
         {
-          text: 'List',
+          text: i18n.t('List'),
           active: true,
         },
       ],
@@ -136,14 +135,14 @@ export default [
     meta: {
       action: 'write',
       resource: 'Reservations',
-      pageTitle: 'Reservations Manager',
+      pageTitle: i18n.t('Reservations Manager'),
       breadcrumb: [
         {
-          text: 'Reservations',
+          text: i18n.t('Reservations'),
           to: { name: 'apps-reservations-booking' },
         },
         {
-          text: 'Manager',
+          text: i18n.t('Manager'),
           active: true,
         },
       ],
@@ -157,18 +156,18 @@ export default [
     name: 'apps-workspaces-list',
     component: () => import('@/views/apps/workplace/spots-list/SpotsList.vue'),
     meta: {
-      pageTitle: 'Spot List',
+      pageTitle: i18n.t('Spot List'),
       breadcrumb: [
         {
-          text: 'Workspaces',
+          text: i18n.t('Workspaces'),
           to: { name: 'apps-workspaces-list' },
         },
         {
-          text: 'Spots',
+          text: i18n.t('Spots'),
           to: { name: 'apps-workspaces-list' },
         },
         {
-          text: 'List',
+          text: i18n.t('List'),
           active: true,
         },
       ],
@@ -179,18 +178,18 @@ export default [
     name: 'apps-workspaces-issues-list',
     component: () => import('@/views/apps/workplace/issues-list/SpotIssuesList.vue'),
     meta: {
-      pageTitle: 'Issue List',
+      pageTitle: i18n.t('Issue List'),
       breadcrumb: [
         {
-          text: 'Workspaces',
+          text: i18n.t('Workspaces'),
           to: { name: 'apps-workspaces-list' },
         },
         {
-          text: 'Issues',
+          text: i18n.t('Issues'),
           to: { name: 'apps-issues-list' },
         },
         {
-          text: 'List',
+          text: i18n.t('List'),
           active: true,
         },
       ],
@@ -201,20 +200,20 @@ export default [
     name: 'apps-workspaces-layout-list',
     component: () => import('@/views/apps/workplace/layout-list/RoomLayoutList.vue'),
     meta: {
-      pageTitle: 'Room Layouts List',
+      pageTitle: i18n.t('Room Layouts List'),
       breadcrumb: [
         {
-          text: 'Workspaces',
+          text: i18n.t('Workspaces'),
           to: { name: 'apps-workspaces-layout-list' },
         },
         {
-          text: 'Layout',
+          text: i18n.t('Layout'),
         },
         {
-          text: 'Room Layout',
+          text: i18n.t('Room Layout'),
         },
         {
-          text: 'List',
+          text: i18n.t('List'),
           active: true,
         },
       ],
@@ -228,17 +227,17 @@ export default [
       pageTitle: 'Room Layouts List',
       breadcrumb: [
         {
-          text: 'Workspaces',
+          text: i18n.t('Workspaces'),
           to: { name: 'apps-workspaces-layout-list' },
         },
         {
-          text: 'Layout',
+          text: i18n.t('Layout'),
         },
         {
-          text: 'Room Layout',
+          text: i18n.t('Room Layout'),
         },
         {
-          text: 'Edit',
+          text: i18n.t('Edit'),
           active: true,
         },
       ],

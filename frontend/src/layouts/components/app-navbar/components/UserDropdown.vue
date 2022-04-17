@@ -50,7 +50,7 @@
         icon="SettingsIcon"
         class="mr-50"
       />
-      <span>Settings</span>
+      <span>{{ $t("Settings") }}</span>
     </b-dropdown-item>
     <b-dropdown-item
       link-class="d-flex align-items-center"
@@ -61,7 +61,7 @@
         icon="LogOutIcon"
         class="mr-50"
       />
-      <span>Logout</span>
+      <span>{{ $t("Logout") }}</span>
     </b-dropdown-item>
 
   </b-nav-item-dropdown>
