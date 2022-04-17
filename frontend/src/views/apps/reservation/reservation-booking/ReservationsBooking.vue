@@ -58,7 +58,7 @@
                   >
                     <div
                       v-if="isEnabled(idxr, idxc)"
-                      v-b-popover.hover.top="`${getSeat(idxr,idxc).data.identifier} | ${getSeat(idxr,idxc).status}`"
+                      v-b-popover.hover.top="popoverText(idxr, idxc)"
                       :class="classifier(idxr, idxc)"
                       style="width: 30px; height: 30px; border: 1px solid black;"
                       @click.exact="onSeatSelected(idxr, idxc, false)"
@@ -374,6 +374,14 @@ export default {
       })
   },
   methods: {
+    popoverText(r, c) {
+      const seat = this.getSeat(r, c)
+      if (!seat) return
+      if (this.$ability.can('write', 'Reservation')) {
+        return `${seat.data.identifier} | ${seat.status}`
+      }
+      return seat.data.identifier
+    },
     getSeat(r, c) {
       for (let i = 0; i < this.seats.length; i++) {
         if (this.seats[i].position.r == r && this.seats[i].position.c == c) {
