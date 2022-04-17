@@ -171,11 +171,6 @@ export default {
     // Register module
     if (!store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.registerModule(WORKSPACE_APP_STORE_MODULE_NAME, workspaceStoreModule)
 
-    // UnRegister on leave
-    onUnmounted(() => {
-      if (store.hasModule(WORKSPACE_APP_STORE_MODULE_NAME)) store.unregisterModule(WORKSPACE_APP_STORE_MODULE_NAME)
-    })
-
     const blankIssueData = {
       subject: '',
       description: '',

@@ -24,7 +24,6 @@ export default function useReservationBooking() {
   const roomFilter = ref(null)
 
   const WORKSPACE_APP_STORE_MODULE_NAME = 'app-workspace'
-  const RESERVATION_APP_STORE_MODULE_NAME = 'app-reservation'
 
   const fetchWorkspaces = () => new Promise((resolve, reject) => {
     store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchWorkspaces`, {
@@ -158,7 +157,7 @@ export default function useReservationBooking() {
       roomData.value = null
       return
     }
-    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value })
+    store.dispatch(`${WORKSPACE_APP_STORE_MODULE_NAME}/fetchRoom`, { id: roomFilter.value }, { root: true })
       .then(response => {
         roomData.value = response.data
         fetchRoomSpotsReservations()
