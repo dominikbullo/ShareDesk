@@ -110,7 +110,10 @@
               <span class="align-middle ml-50">Details</span>
             </b-dropdown-item>
 
-            <b-dropdown-item @click="deleteTeamModal(data.item)">
+            <b-dropdown-item
+              v-if="$can('delete', 'Team')"
+              @click="deleteTeamModal(data.item)"
+            >
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
             </b-dropdown-item>

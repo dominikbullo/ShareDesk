@@ -167,9 +167,12 @@
               <span class="align-middle ml-50">{{ $tc("Detail", 2) }}</span>
             </b-dropdown-item>
 
-            <b-dropdown-item @click="deleteUserModal(data.item)">
+            <b-dropdown-item
+              v-if="$can('delete', 'User')"
+              @click="deleteUserModal(data.item)"
+            >
               <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">Delete</span>
+              <span class="align-middle ml-50">{{ $t('Delete') }}</span>
             </b-dropdown-item>
           </b-dropdown>
         </template>

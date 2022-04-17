@@ -14,6 +14,14 @@ export const adminAbility = [
     action: 'write',
     subject: 'all',
   },
+  {
+    action: 'update',
+    subject: 'all',
+  },
+  {
+    action: 'delete',
+    subject: 'all',
+  },
 ]
 
 export const employeeAbility = [

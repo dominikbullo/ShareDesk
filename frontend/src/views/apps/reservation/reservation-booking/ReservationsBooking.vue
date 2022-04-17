@@ -128,6 +128,7 @@
 
               <b-row class="mt-3 d-flex justify-content-end btn-block">
                 <b-button
+                  v-if="$can('write', 'Layout')"
                   v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                   class="ml-2 mt-1 mt-md-0"
                   variant="outline-danger"

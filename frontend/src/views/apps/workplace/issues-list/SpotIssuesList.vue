@@ -46,7 +46,7 @@
           </span>
 
           <!-- Column: Action -->
-          <span v-else-if="props.column.field === 'action'">
+          <span v-else-if="$can('write', 'SpotIssue') && props.column.field === 'action'">
             <span>
               <b-dropdown
                 variant="link"

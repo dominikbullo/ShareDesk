@@ -7,6 +7,7 @@ import store from '@/store'
 
 // https://stackoverflow.com/questions/65831314/how-to-use-vue-i18n-translation-in-js-file
 import i18n from '@/libs/i18n'
+import ability from '@/libs/acl/ability'
 
 export default function useIssuesList() {
   // Use toast
@@ -89,13 +90,14 @@ export default function useIssuesList() {
         ],
       },
     },
-    {
+  ]
+  if (ability.can('write', 'SpotIssue')) {
+    tableColumns.push({
       label: i18n.t('Action'),
       field: 'action',
       sortable: false,
-    },
-  ]
-
+    })
+  }
   const totalIssues = ref(0)
   const issuesList = ref([])
 
