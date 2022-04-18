@@ -1,21 +1,4 @@
 {
-  "message": {
-    "title": "Card Title",
-    "text": "Cake sesame snaps cupcake gingerbread danish I love gingerbread. Apple pie pie jujubes chupa chups muffin halvah lollipop. Chocolate cake oat cake tiramisu marzipan sugar plum. Donut sweet pie oat cake dragée fruitcake cotton candy lemon drops.",
-    "pagelength": "Showing 1 to",
-    "of": "of",
-    "pageText2": "entries",
-    "seachLabel": "Search",
-    "SearchPlaceholder": "Search",
-    "tableHeader": {
-      "name": "Name",
-      "email": "Email",
-      "date": "Date",
-      "salary": "Salary",
-      "status": "Status",
-      "action": "Action"
-    }
-  },
   "Access Control": "Access Control",
   "Account Settings": "Account Settings",
   "Add": "Add",
@@ -97,7 +80,7 @@
   "Input": "Input",
   "Invoice": "Invoice",
   "Knowledge Base": "Knowledge Base",
-  "Layout Blank": "Layout Blank"
+  "Layout Blank": "Layout Blank",
   "Layout Boxed": "Layout Boxed",
   "Layout Empty": "Layout Empty",
   "Leaflet": "Leaflet",
@@ -176,4 +159,21 @@
   "Welcome": "Welcome",
   "Wishlist": "Wishlist",
   "Without Menu": "Without Menu",
+  "message": {
+    "title": "Card Title",
+    "text": "Cake sesame snaps cupcake gingerbread danish I love gingerbread. Apple pie pie jujubes chupa chups muffin halvah lollipop. Chocolate cake oat cake tiramisu marzipan sugar plum. Donut sweet pie oat cake dragée fruitcake cotton candy lemon drops.",
+    "pagelength": "Showing 1 to",
+    "of": "of",
+    "pageText2": "entries",
+    "seachLabel": "Search",
+    "SearchPlaceholder": "Search",
+    "tableHeader": {
+      "name": "Name",
+      "email": "Email",
+      "date": "Date",
+      "salary": "Salary",
+      "status": "Status",
+      "action": "Action"
+    }
+  }
 }
