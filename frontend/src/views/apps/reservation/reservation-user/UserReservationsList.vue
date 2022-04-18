@@ -292,7 +292,7 @@ export default {
   created() {
     return new Promise((resolve, reject) => {
       axios
-        .get('/reservations/my_reservations/')
+        .get('/reservations/my-reservations/')
         .then(response => {
           this.rows = response.data
           resolve(response)

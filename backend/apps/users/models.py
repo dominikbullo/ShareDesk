@@ -4,6 +4,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 from django.db import models
 from django.utils import timezone
 
+from core import choices
 from core.choices import UserTypeChoices
 
 
@@ -104,6 +105,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.short_name
+
+    def is_administrator(self):
+        return self.is_admin or self.is_superuser or self.is_staff or (self.role == choices.UserTypeChoices.ADMIN)
 
     def __str__(self):
         return self.full_name

@@ -9,6 +9,7 @@ from apps.reservations.models import SpotReservation, UserSpotReservation, TeamS
 from apps.teams.models import Team
 from apps.workspaces.models import Room, Spot
 from core.choices import SpotPermanentStatusChoices
+from core.permissions import IsAdminOrReadOnly
 
 
 class ReservationFilter(django_filters.FilterSet):
@@ -36,7 +37,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
     queryset = SpotReservation.objects.all()
     filterset_class = ReservationFilter
 
-    @action(methods=['GET'], detail=False)
+    @action(methods=['GET'], detail=False, url_path='my-reservations')
     def my_reservations(self, request):
         # https://django-polymorphic.readthedocs.io/en/stable/advanced.html
         # https://stackoverflow.com/questions/59476948/filtering-a-many-to-many-relationship-with-djangos-q-query
@@ -47,7 +48,7 @@ class ReservationViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return Response(status=status.HTTP_200_OK, data=serializer.data)
 
-    @action(methods=['POST'], detail=True)
+    @action(methods=['POST'], detail=True, url_path='change-status', permission_classes=[IsAdminOrReadOnly])
     def change_status(self, request, pk=None):
         reservation = self.get_object()
         new_status = request.data.get('status', None)

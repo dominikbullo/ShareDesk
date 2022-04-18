@@ -336,7 +336,7 @@ export default {
     resolveResourceType,
     changePermanentStatus(id, status) {
       axios
-        .post(`/reservations/${id}/change_status`, { status })
+        .post(`/reservations/${id}/change-status`, { status })
         .then(response => {
           this.$toast({
             component: ToastificationContent,
