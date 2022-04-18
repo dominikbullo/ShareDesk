@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.1](https://github.com/dominikbullo/ShareDesk/compare/v0.8.0...v0.8.1) (2022-04-18)
+
+
+### Features
+
+* **spots:** correct partial available status on seats ([2ae0a5f](https://github.com/dominikbullo/ShareDesk/commit/2ae0a5f3340acda6e593de8a8a6544ae64ab1613))
+
 ## [0.8.0](https://github.com/dominikbullo/ShareDesk/compare/v0.7.1...v0.8.0) (2022-04-18)
 
 
