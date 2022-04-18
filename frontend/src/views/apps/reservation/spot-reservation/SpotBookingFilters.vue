@@ -28,7 +28,7 @@
           />
         </b-col>
       </b-row>
-      <b-row>
+      <b-row v-if="dateFilter">
         <b-col
           cols="12"
           md="4"

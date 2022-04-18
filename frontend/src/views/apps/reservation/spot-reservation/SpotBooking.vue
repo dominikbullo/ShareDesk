@@ -17,7 +17,7 @@
     />
 
     <b-card
-      v-if="roomData"
+      v-if="roomData && dateFilter"
     >
       <spot-booking-legend :seat-status-string="seatStatusString" />
 
@@ -65,7 +65,7 @@
                       @click.exact="onSeatSelected(idxr, idxc, false)"
                       @click.ctrl="onSeatSelected(idxr, idxc, true)"
                       @click.alt="seatReservationsDetail(idxr, idxc)"
-                      @click.shift="resolveSeatStatusVariant(getSeatReservationFromData(r, c))"
+                      @click.shift="resolveSeatStatusVariant(getSeatReservationFromData(idxr, idxc))"
                     />
                   </td>
                 </tr>
@@ -241,7 +241,7 @@ import {
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
-import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
+import { onUnmounted, ref, watch } from '@vue/composition-api/dist/vue-composition-api'
 import { isTouch } from '@/utils/utils'
 import useSpotBooking from '@/views/apps/reservation/spot-reservation/useSpotBooking'
 import ReservationsListFilters from '@/views/apps/reservation/spot-reservation/SpotBookingFilters.vue'
@@ -258,6 +258,7 @@ import workspaceStoreModule from '@/views/apps/workplace/workspaceStoreModule'
 import { isResourceTypeTeam } from '@/views/apps/team/teamUtils'
 import SpotBookingLegend from '@/views/apps/reservation/spot-reservation/SpotBookingLegend'
 import { seatStatusString } from '@/views/apps/reservation/reservationsUtils'
+import { formatDate } from '@/utils/filter'
 
 export default {
   components: {
@@ -284,6 +285,7 @@ export default {
     'b-popover': VBPopover,
     Ripple,
   },
+
   data() {
     return {
       isTouch,
@@ -395,9 +397,13 @@ export default {
   },
   watch: {
     dateFilter(val) {
+      this.selectedSeats = []
+      if (!val) return
       this.newReservationData.start = new Date(val).setHours(8)
       this.newReservationData.end = new Date(val).setHours(16)
-      this.selectedSeats = []
+
+      this.reservationMeta.start = new Date(val).setHours(8)
+      this.reservationMeta.end = new Date(val).setHours(16)
     },
     roomData(val) {
       this.selectedSeats = []
@@ -418,7 +424,7 @@ export default {
   methods: {
     popoverText(r, c) {
       const seat = this.getSeat(r, c)
-      if (!seat.data) return ''
+      if (!seat || !seat.data) return ''
       if (this.$ability.can('write', 'Reservation')) {
         return `${seat.data.identifier} | ${seat.status}`
       }
@@ -468,6 +474,10 @@ export default {
       const filteredSeatReservationList = seatReservationList.filter(seatReservation => seatReservation.permanent_status !== 'rejected')
       let resolvedStatusVariant = this.seatStatusString.booked.user
 
+      const totalAvailableTimeInDay = Math.abs(new Date(this.reservationMeta.end) - new Date(this.reservationMeta.start))
+      let availableTimeInDay = totalAvailableTimeInDay
+      const thresholdTimeMilliseconds = 1 * 60 * 60 * 1000
+
       // If there are no valid reservations
       if (filteredSeatReservationList.length <= 0) return this.seatStatusString.available.full
 
@@ -479,24 +489,23 @@ export default {
           if (seatReservation.permanent_status === 'allowed') return this.seatStatusString.booked.permanent_allowed
         }
 
-        // TODO: Check if is full day book or there is place for another booking
-        // console.log('seatReservation')
-        // console.log(`${seatReservation.reservation.start} - reservation start`)
-        // console.log(`${seatReservation.reservation.end} - reservation end`)
-        // console.log(`${this.dateFilter} - selected date`)
-        // console.log(`${this.reservationMeta.start} - allowed start`)
-        // console.log(`${this.reservationMeta.end} - allowed end`)
-        // if (currentTime > reservationMeta.start && currentTime < reservationMeta.end) {
-        //
-        // }
+        const selectedDate = new Date(this.dateFilter)
+        let calcTimeStart = new Date(seatReservation.reservation.start)
+        let calcTimeEnd = new Date(seatReservation.reservation.end)
 
-        const isFullDayReservation = true
+        if (new Date(seatReservation.reservation.start) < selectedDate.setHours(8)) {
+          calcTimeStart = selectedDate.setHours(8)
+        }
+        if (new Date(seatReservation.reservation.end) > selectedDate.setHours(16)) {
+          calcTimeEnd = selectedDate.setHours(16)
+        }
+        availableTimeInDay -= Math.abs(calcTimeEnd - calcTimeStart)
 
-        if (!isFullDayReservation) return this.seatStatusString.available.partial
-
-        // TODO: If one team and one user?
         if (isResourceTypeTeam(seatReservation.resourcetype)) resolvedStatusVariant = this.seatStatusString.booked.team
       }
+
+      if (availableTimeInDay > thresholdTimeMilliseconds) return this.seatStatusString.available.partial
+
       return resolvedStatusVariant
     },
     classifier(r, c) {
@@ -729,7 +738,7 @@ $reservation-light: #d5d5d5;
   &-pb{background-color:$danger;}
   &-db{background-color:$secondary;}
   &-fa{background-color:$reservation-light;}
-    &-pa{background-color:$reservation-light;border: 2px solid $warning !important;}
+  &-pa{background-color:$reservation-light;border: 2px solid $warning !important;}
   &-pb{
     &-a{background-color:$danger; }
     &-s{background-color:$secondary;border: 2px solid $danger !important;}
@@ -743,9 +752,6 @@ $reservation-light: #d5d5d5;
 
 @media (max-width: 576px) {
   .table-spot{
-    //td {
-    //  padding-left: 5px;
-    //}
     div{
       width: 100%;
       height: 100%;
