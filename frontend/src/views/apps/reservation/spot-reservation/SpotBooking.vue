@@ -237,11 +237,23 @@
 <script>
 
 import {
-  BButton, BOverlay, BCard, BFormCheckbox, BCardText, BCol, BTabs, BTab, BAlert, BModal, BRow, BTable, VBPopover,
+  BAlert,
+  BButton,
+  BCard,
+  BCardText,
+  BCol,
+  BFormCheckbox,
+  BModal,
+  BOverlay,
+  BRow,
+  BTab,
+  BTable,
+  BTabs,
+  VBPopover,
 } from 'bootstrap-vue'
 import store from '@/store'
 import Ripple from 'vue-ripple-directive'
-import { onUnmounted, ref, watch } from '@vue/composition-api/dist/vue-composition-api'
+import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
 import { isTouch } from '@/utils/utils'
 import useSpotBooking from '@/views/apps/reservation/spot-reservation/useSpotBooking'
 import ReservationsListFilters from '@/views/apps/reservation/spot-reservation/SpotBookingFilters.vue'
@@ -258,7 +270,6 @@ import workspaceStoreModule from '@/views/apps/workplace/workspaceStoreModule'
 import { isResourceTypeTeam } from '@/views/apps/team/teamUtils'
 import SpotBookingLegend from '@/views/apps/reservation/spot-reservation/SpotBookingLegend'
 import { seatStatusString } from '@/views/apps/reservation/reservationsUtils'
-import { formatDate } from '@/utils/filter'
 
 export default {
   components: {
@@ -474,9 +485,8 @@ export default {
       const filteredSeatReservationList = seatReservationList.filter(seatReservation => seatReservation.permanent_status !== 'rejected')
       let resolvedStatusVariant = this.seatStatusString.booked.user
 
-      const totalAvailableTimeInDay = Math.abs(new Date(this.reservationMeta.end) - new Date(this.reservationMeta.start))
-      let availableTimeInDay = totalAvailableTimeInDay
-      const thresholdTimeMilliseconds = 1 * 60 * 60 * 1000
+      let availableTimeInDay = Math.abs(new Date(this.reservationMeta.end) - new Date(this.reservationMeta.start))
+      const thresholdTimeMilliseconds = 60 * 60 * 1000
 
       // If there are no valid reservations
       if (filteredSeatReservationList.length <= 0) return this.seatStatusString.available.full
