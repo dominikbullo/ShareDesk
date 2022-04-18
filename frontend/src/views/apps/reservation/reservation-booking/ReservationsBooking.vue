@@ -23,7 +23,8 @@
       <b-row>
         <b-col
           v-if="roomData.layout"
-          md="6"
+          lg="6"
+          md="12"
           class="reservation-column d-flex justify-content-center align-items-center"
         >
           <b-overlay
@@ -73,8 +74,8 @@
           </b-overlay>
         </b-col>
         <b-col
-          md="6"
-          sm="12"
+          lg="6"
+          md="12"
         >
           <b-tabs
             v-if="selectedSeats && selectedSeats.length >0"
@@ -126,11 +127,11 @@
                 </b-col>
               </b-row>
 
-              <b-row class="mt-3 d-flex justify-content-end btn-block">
+              <b-row class="mt-3 d-flex justify-content-end">
                 <b-button
                   v-if="$can('write', 'Layout')"
                   v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                  class="ml-2 mt-1 mt-md-0"
+                  class="ml-2 mt-1 mt-md-0 btn-md-block"
                   variant="outline-danger"
                 >
                   {{ `${$t("Disable")}  ${$tc("spot", selectedSeats.length)}` }}
@@ -140,7 +141,7 @@
                   v-if="selectedSeats.length === 1"
                   v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                   variant="outline-warning"
-                  class="ml-2 mt-1 mt-md-0"
+                  class="ml-2 mt-1 mt-md-0  btn-md-block"
                   @click="isAddNewIssueSidebarActive = true"
                 >
                   {{ $t("Add issue") }}
@@ -149,7 +150,7 @@
                 <b-button
                   v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                   variant="primary"
-                  class="ml-2 mt-1 mt-md-0"
+                  class="ml-2 mt-1 mt-md-0  btn-md-block"
                   @click="submitReservation"
                 >
                   {{ `${$t("Book")}  ${$tc("spot", selectedSeats.length)}` }}

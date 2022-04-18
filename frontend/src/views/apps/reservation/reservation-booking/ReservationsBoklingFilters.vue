@@ -9,7 +9,7 @@
       <b-row>
         <b-col
           cols="12"
-          md="3"
+          md="4"
           class="mb-md-0 mb-2"
         >
           <label>{{ $t("Date") }}</label>
@@ -27,9 +27,11 @@
             @input="(val) => $emit('update:dateFilter', val)"
           />
         </b-col>
+      </b-row>
+      <b-row>
         <b-col
           cols="12"
-          md="3"
+          md="4"
           class="mb-md-0 mb-2"
         >
           <label>{{ $t("Building") }}</label>
@@ -44,7 +46,7 @@
         </b-col>
         <b-col
           cols="12"
-          md="3"
+          md="4"
           class="mb-md-0 mb-2"
         >
           <label>{{ $t("Floor") }}</label>
@@ -59,7 +61,7 @@
         </b-col>
         <b-col
           cols="12"
-          md="3"
+          md="4"
           class="mb-md-0 mb-2"
         >
           <label>{{ $t("Room") }}</label>
