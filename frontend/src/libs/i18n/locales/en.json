@@ -175,5 +175,17 @@
       "status": "Status",
       "action": "Action"
     }
+  },
+  "booking_statuses": {
+    "booked": {
+      "team": "Team booking",
+      "user": "User booking",
+      "permanent_submitted": "Submitted permanent reservations",
+      "permanent_allowed": "Permanent reservation"
+    },
+    "available": {
+      "full": "Available",
+      "partial": "Partially available"
+    }
   }
 }

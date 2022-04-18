@@ -116,6 +116,7 @@
   "ItemDetails": "Item Details",
   "KnowledgeBase": "Knowledge Base",
   "Layout": "Rozloženie",
+  "Legend": "Legenda",
   "List": "Zoznam",
   "ListView": "List View",
   "Loading": "Načítavanie",
@@ -159,6 +160,8 @@
   "Reservation for": "Rezervácia pre",
   "Reservations Manager": "Manažér rezervácií",
   "Reservations manager": "Manažér rezervácií",
+  "Book": "Rezervovať",
+  "Reservation": "Rezervácia",
   "Reservations": "Rezervácie",
   "ResetPassword": "Resetovať heslo",
   "Resolved": "Vyriešený",
@@ -242,5 +245,17 @@
   },
   "placeholders": {
     "email/username": "Email alebo Používateľské meno"
+  },
+  "booking_statuses": {
+    "booked": {
+      "team": "Rezervácia pre tím",
+      "user": "Rezervácia pre používateľa",
+      "permanent_submitted": "Trvalá rezervácia na schválenie",
+      "permanent_allowed": "Permanentná rezervácia"
+    },
+    "available": {
+      "full": "Voľné celodenne",
+      "partial": "Čiastočne voľné"
+    }
   }
 }

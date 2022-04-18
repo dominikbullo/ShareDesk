@@ -6,7 +6,7 @@ import ToastificationContent from '@core/components/toastification/Toastificatio
 import store from '@/store'
 import { joinArraysSafely } from '@/utils/utils'
 
-export default function useReservationBooking() {
+export default function useSpotBooking() {
   // Use toast
   const toast = useToast()
   const showSeatSpinner = ref(false)

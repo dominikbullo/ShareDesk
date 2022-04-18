@@ -18,9 +18,10 @@
 
     <b-card
       v-if="roomData"
-      class="card-body"
     >
-      <b-row>
+      <spot-booking-legend :seat-status-string="seatStatusString" />
+
+      <b-row class=" d-flex justify-content-center">
         <b-col
           v-if="roomData.layout"
           lg="6"
@@ -54,14 +55,13 @@
                 <tr v-for="idxr, r in roomData.layout.rows">
                   <td
                     v-for="idxc, c in roomData.layout.columns"
-                    class="pl-1"
-                    style="width: 1rem;"
+                    class="table-spot"
                   >
                     <div
                       v-if="isEnabled(idxr, idxc)"
                       v-b-popover.hover.top="popoverText(idxr, idxc)"
                       :class="classifier(idxr, idxc)"
-                      style="width: 30px; height: 30px; border: 1px solid black;"
+                      class="table-spot"
                       @click.exact="onSeatSelected(idxr, idxc, false)"
                       @click.ctrl="onSeatSelected(idxr, idxc, true)"
                       @click.alt="seatReservationsDetail(idxr, idxc)"
@@ -81,7 +81,7 @@
             v-if="selectedSeats && selectedSeats.length >0"
             content-class="mt-1"
           >
-            <b-tab :title="$t('Booking')">
+            <b-tab :title="$t('Reservation')">
               <b-row class="mb-2">
                 <b-col>
                   <h5>{{ $t("Start") }}</h5>
@@ -192,9 +192,8 @@ import store from '@/store'
 import Ripple from 'vue-ripple-directive'
 import { onUnmounted, ref } from '@vue/composition-api/dist/vue-composition-api'
 import { isTouch } from '@/utils/utils'
-import useReservationBooking from '@/views/apps/reservation/reservation-booking/useReservationBooking'
-import reservationStoreModule from '@/views/apps/reservation/reservationStoreModule'
-import ReservationsListFilters from '@/views/apps/reservation/reservation-booking/ReservationsBoklingFilters.vue'
+import useSpotBooking from '@/views/apps/reservation/spot-reservation/useSpotBooking'
+import ReservationsListFilters from '@/views/apps/reservation/spot-reservation/SpotBookingFilters.vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 import flatPickr from 'vue-flatpickr-component'
@@ -206,11 +205,14 @@ import axios from '@/libs/axios'
 import SpotIssueListAddNew from '@/views/apps/workplace/issues-list/SpotIssueListAddNew.vue'
 import workspaceStoreModule from '@/views/apps/workplace/workspaceStoreModule'
 import { isResourceTypeTeam } from '@/views/apps/team/teamUtils'
+import SpotBookingLegend from '@/views/apps/reservation/spot-reservation/SpotBookingLegend'
+import { seatStatusString } from '@/views/apps/reservation/reservationsUtils'
 
 export default {
   components: {
     ReservationsListFilters,
     SpotIssueListAddNew,
+    SpotBookingLegend,
 
     BCard,
     BRow,
@@ -315,23 +317,11 @@ export default {
 
       // UI
       showSeatSpinner,
-    } = useReservationBooking()
+    } = useSpotBooking()
 
     return {
       seatStatuses: [],
-      seatStatusString: {
-        booked: {
-          team: 'TB',
-          user: 'UB',
-          permanent_submitted: 'PB-P',
-          permanent_allowed: 'PB-A',
-        },
-        available: {
-          full: 'FA',
-          partial: 'PA',
-          permanent_rejected: 'PB-R',
-        },
-      },
+      seatStatusString,
       fetchAllWorkspaces,
 
       workspacesList,
@@ -560,10 +550,10 @@ export default {
 
       this.$bvModal
         .msgBoxConfirm("Please confirm you're reservation", {
-          title: 'Please Confirm',
+          title: this.$t('Please confirm'),
           size: 'sm',
           okVariant: 'primary',
-          okTitle: 'Book',
+          okTitle: this.$t('Book'),
           cancelVariant: 'outline-secondary',
           hideHeaderClose: false,
           centered: true,
@@ -651,11 +641,27 @@ $reservation-light: #d5d5d5;
   &-pb{background-color:$danger;}
   &-db{background-color:$secondary;}
   &-fa{background-color:$reservation-light;}
-    &-pa{background-color:$reservation-light;border: 2px solid $success !important;}
+    &-pa{background-color:$reservation-light;border: 2px solid $warning !important;}
   &-pb{
     &-a{background-color:$danger; }
-    &-p{background-color:$secondary;border: 2px solid $danger !important;}
+    &-s{background-color:$secondary;border: 2px solid $danger !important;}
     &-r{background-color: $reservation-light;}
+  }
+}
+
+.table-spot{
+  width: 30px; height: 30px; padding: 3px;
+}
+
+@media (max-width: 576px) {
+  .table-spot{
+    //td {
+    //  padding-left: 5px;
+    //}
+    div{
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

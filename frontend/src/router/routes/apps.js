@@ -95,7 +95,7 @@ export default [
   {
     path: '/apps/reservations/booking',
     name: 'apps-reservations-booking',
-    component: () => import('@/views/apps/reservation/reservation-booking/ReservationsBooking.vue'),
+    component: () => import('@/views/apps/reservation/spot-reservation/SpotBooking.vue'),
     meta: {
       pageTitle: i18n.t('Reservations'),
       breadcrumb: [
