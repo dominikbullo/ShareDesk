@@ -61,9 +61,10 @@ class SpotViewSet(viewsets.ModelViewSet):
     serializer_class = SpotSerializer
     queryset = Spot.objects.all()
 
-    # I dont need this for now
-    # @action(detail=True, methods=['GET'])
-    # def reservations(self, request, pk=None):
-    #     queryset = SpotReservation.objects.filter(spot=pk)
-    #     serializer = SpotReservationPolymorphicSerializer(queryset, many=True)
-    #     return Response(status=status.HTTP_200_OK, data=serializer.data)
+    @action(detail=False, methods=['POST'], url_path='enabled')
+    def multiple_enabled_status_change(self, request, pk=None):
+        spots = Spot.objects.filter(
+            id__in=request.data.get('spots', [])).update(
+            enabled=request.data.get('enabled', False)
+        )
+        return Response(status=status.HTTP_200_OK)

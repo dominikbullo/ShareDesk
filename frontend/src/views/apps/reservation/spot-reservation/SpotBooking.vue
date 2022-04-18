@@ -133,6 +133,7 @@
                   v-ripple.400="'rgba(113, 102, 240, 0.15)'"
                   class="ml-2 mt-1 mt-md-0 btn-md-block"
                   variant="outline-danger"
+                  @click="disableSpot"
                 >
                   {{ `${$t("Disable")}  ${$tc("spot", selectedSeats.length)}` }}
                 </b-button>
@@ -157,9 +158,59 @@
                 </b-button>
               </b-row>
             </b-tab>
-            <b-tab :title="$t('Information')">
-              <pre>{{ selectedSeats }}</pre>
-            </b-tab>
+            <!--            <b-tab :title="$t('Information')">-->
+            <!--              <table class="mt-2 mt-xl-0 w-100">-->
+            <!--                <tr>-->
+            <!--                  <th class="pb-50">-->
+            <!--                    <feather-icon-->
+            <!--                      icon="UserIcon"-->
+            <!--                      class="mr-75"-->
+            <!--                    />-->
+            <!--                    <span class="font-weight-bold">{{ $t('Workspace') }}</span>-->
+            <!--                  </th>-->
+            <!--                  <td class="pb-50">-->
+            <!--                    {{ selectedSeats }}-->
+            <!--                  </td>-->
+            <!--                </tr>-->
+            <!--                <tr>-->
+            <!--                  <th class="pb-50">-->
+            <!--                    <feather-icon-->
+            <!--                      icon="CheckIcon"-->
+            <!--                      class="mr-75"-->
+            <!--                    />-->
+            <!--                    <span class="font-weight-bold">{{ $t('Floor') }}</span>-->
+            <!--                  </th>-->
+            <!--                  <td class="pb-50 text-capitalize">-->
+            <!--                    {{ selectedSeats }}-->
+            <!--                  </td>-->
+            <!--                </tr>-->
+            <!--                <tr>-->
+            <!--                  <th class="pb-50">-->
+            <!--                    <feather-icon-->
+            <!--                      icon="FlagIcon"-->
+            <!--                      class="mr-75"-->
+            <!--                    />-->
+            <!--                    <span class="font-weight-bold">{{ $t("Room") }}</span>-->
+            <!--                  </th>-->
+            <!--                  <td class="pb-50 text-capitalize">-->
+            <!--                    {{ selectedSeats }}-->
+            <!--                  </td>-->
+            <!--                </tr>-->
+            <!--                <tr>-->
+            <!--                  <th class="pb-50">-->
+            <!--                    <feather-icon-->
+            <!--                      icon="CalendarIcon"-->
+            <!--                      class="mr-75"-->
+            <!--                    />-->
+            <!--                    <span class="font-weight-bold">{{ $t('Registration time') }}</span>-->
+            <!--                  </th>-->
+            <!--                  <td class="pb-50">-->
+            <!--                    {{ selectedSeats }}-->
+            <!--                  </td>-->
+            <!--                </tr>-->
+            <!--              </table>-->
+            <!--              <pre>{{ selectedSeats }}</pre>-->
+            <!--            </b-tab>-->
           </b-tabs>
         </b-col>
       </b-row>
@@ -534,6 +585,43 @@ export default {
       } else {
         this.selectedSeats = [seat]
       }
+    },
+    disableSpot() {
+      this.$bvModal
+        .msgBoxConfirm("Please confirm you're decision", {
+          title: this.$t('Please confirm'),
+          size: 'sm',
+          okVariant: 'danger',
+          okTitle: this.$t('Delete seats'),
+          cancelVariant: 'outline-secondary',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if (value) {
+            axios
+              .post('/spots/enabled/', { spots: this.selectedSeats.map(item => item.data.id) })
+              .then(response => {
+                // Not delete but replace status
+                this.seats.filter(i => this.selectedSeats.filter(y => y.data.id === i.data.id).length).forEach(el => {
+                  el.data.enabled = false
+                })
+                this.selectedSeats = []
+              })
+              .catch(error => {
+                this.$toast({
+                  component: ToastificationContent,
+                  props: {
+                    title: 'Notification',
+                    icon: 'AlertTriangleIcon',
+                    text: 'Cannot create reservation with selected data',
+                    variant: 'danger',
+                  },
+                })
+                console.error(error)
+              })
+          }
+        })
     },
     submitReservation() {
       const data = {
