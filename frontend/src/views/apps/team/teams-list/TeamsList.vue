@@ -22,14 +22,14 @@
             md="6"
             class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
           >
-            <label>Show</label>
+            <label>{{ $t("Show") }}</label>
             <v-select
               v-model="perPage"
               :options="perPageOptions"
               :clearable="false"
               class="per-page-selector d-inline-block mx-50"
             />
-            <label>entries</label>
+            <label>{{ $t("entries") }}</label>
           </b-col>
 
           <!-- Search -->
