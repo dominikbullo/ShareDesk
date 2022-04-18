@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/dominikbullo/ShareDesk/compare/v0.7.1...v0.8.0) (2022-04-18)
+
+
+### Features
+
+* environment variables on FE ([0673679](https://github.com/dominikbullo/ShareDesk/commit/0673679c8af7a46944408473697b5f889e597b3d))
+* **i18n:** Added some visible translations ([c8b26c7](https://github.com/dominikbullo/ShareDesk/commit/c8b26c7a14ecaab7e57222311e15e485a76b0303))
+* **i18n:** more translations ([02101c2](https://github.com/dominikbullo/ShareDesk/commit/02101c2dae178f5eb5e515ded45947a21fe720cb))
+* package.json no longer installing packages, install only from docker-compose.yml with ci to respect package-lock file ([846b729](https://github.com/dominikbullo/ShareDesk/commit/846b7293e1e11516cbdf02d4e94e2e30ccedaf89))
+* **permissions:** added backend permissions ([f5445f8](https://github.com/dominikbullo/ShareDesk/commit/f5445f8049e82f42daf3300cfdf24a5f3669d456))
+* **reservations:** added styling, fix buttons ([7c94490](https://github.com/dominikbullo/ShareDesk/commit/7c9449041d9d55d397683dfe0bd834e632e25ddb))
+* **seat:** legend and some mobile styling for spot booking ([a03ddf5](https://github.com/dominikbullo/ShareDesk/commit/a03ddf50dd4982d0ccfe0e917553a7e52320ebc2))
+* **seat:** you can now disable seats from FE ([eb81c8a](https://github.com/dominikbullo/ShareDesk/commit/eb81c8aba60ed899c50f1c7a91e4802e2397c78e))
+
+
+### Bug Fixes
+
+* en.json is not valid ([b8df113](https://github.com/dominikbullo/ShareDesk/commit/b8df1136e3399b0876c3e6febd4009cd99fcda6b))
+* seat.data error ([29e20c1](https://github.com/dominikbullo/ShareDesk/commit/29e20c13267487e6fcfbcc1ec5e70e6f910c3a96))
+
 ### [0.7.1](https://github.com/dominikbullo/ShareDesk/compare/v0.7.0...v0.7.1) (2022-04-17)
 
 
