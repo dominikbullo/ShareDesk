@@ -21,7 +21,8 @@ services:
 
   frontend:
     image: node:14-alpine
-    command: npm run serve
+    command: >
+      sh -c "npm ci && npm run serve"
     volumes:
       - ./.env:/app/.env:ro
       - ./frontend:/app
