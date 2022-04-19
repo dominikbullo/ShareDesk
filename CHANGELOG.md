@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/dominikbullo/ShareDesk/compare/v0.8.1...v1.0.0) (2022-04-19)
+
+
+### Features
+
+* change user details ([fb9bca6](https://github.com/dominikbullo/ShareDesk/commit/fb9bca6c3698bd9b4084563b54978e9e9eda2124))
+* final touches login/register ([fb4e8eb](https://github.com/dominikbullo/ShareDesk/commit/fb4e8eb825784c882c0009dd24a3b09add343220))
+
 ### [0.8.1](https://github.com/dominikbullo/ShareDesk/compare/v0.8.0...v0.8.1) (2022-04-18)
 
 
