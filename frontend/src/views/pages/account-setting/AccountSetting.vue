@@ -68,7 +68,6 @@ export default {
   },
   beforeCreate() {
     this.$http.get('/user/profile').then(res => {
-      console.log(res.data)
       this.options = {
         general: {
           ...res.data,

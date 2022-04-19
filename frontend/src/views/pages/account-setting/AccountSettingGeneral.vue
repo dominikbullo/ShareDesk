@@ -1,155 +1,102 @@
 <template>
   <b-card>
-
-    <!-- media -->
-    <b-media no-body>
-      <b-media-aside>
-        <b-link>
-          <b-img
-            ref="previewEl"
-            rounded
-            :src="optionsLocal.avatar"
-            height="80"
-          />
-        </b-link>
-        <!--/ avatar -->
-      </b-media-aside>
-
-      <b-media-body class="mt-75 ml-75">
-        <!-- upload button -->
-        <b-button
-          v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-          variant="primary"
-          size="sm"
-          class="mb-75 mr-75"
-          @click="$refs.refInputEl.$el.click()"
-        >
-          Upload
-        </b-button>
-        <b-form-file
-          ref="refInputEl"
-          v-model="profileFile"
-          accept=".jpg, .png, .gif"
-          :hidden="true"
-          plain
-          @input="inputImageRenderer"
-        />
-        <!--/ upload button -->
-
-        <!-- reset -->
-        <b-button
-          v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-          variant="outline-secondary"
-          size="sm"
-          class="mb-75 mr-75"
-        >
-          Reset
-        </b-button>
-        <!--/ reset -->
-        <b-card-text>Allowed JPG, GIF or PNG. Max size of 800kB</b-card-text>
-      </b-media-body>
-    </b-media>
-    <!--/ media -->
-
+    {{ optionsLocal }}
     <!-- form -->
-    <b-form class="mt-2">
-      <b-row>
-        <b-col sm="6">
-          <b-form-group
-            label="Username"
-            label-for="account-username"
-          >
-            <b-form-input
-              v-model="optionsLocal.username"
-              placeholder="Username"
-              name="username"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col sm="6">
-          <b-form-group
-            label="Name"
-            label-for="account-name"
-          >
-            <b-form-input
-              v-model="optionsLocal.last_name"
-              name="name"
-              placeholder="Name"
-            />
-          </b-form-group>
-        </b-col>
-        <b-col sm="6">
-          <b-form-group
-            label="E-mail"
-            label-for="account-e-mail"
-          >
-            <b-form-input
-              v-model="optionsLocal.email"
-              name="email"
-              placeholder="Email"
-            />
+    <validation-observer ref="appSettingsGeneralForm">
+      <b-form class="mt-2">
+        <b-row>
+          <b-col sm="6">
+            <b-form-group
+              label="First Name"
+              label-for="app-settings-first-name"
+            >
+              <validation-provider
+                #default="{ errors }"
+                name="first_name"
+                rules="required|alpha"
+              >
+                <b-form-input
+                  id="app-settings-first-name"
+                  v-model="optionsLocal.first_name"
+                  placeholder="First Name"
+                  :state="errors.length > 0 ? false:null"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col sm="6">
+            <!-- Last name -->
+            <b-form-group
+              label="Last Name"
+              label-for="app-settings-last-name"
+            >
+              <validation-provider
+                #default="{ errors }"
+                name="last_name"
+                rules="required|alpha"
+              >
+                <b-form-input
+                  id="app-settings-last-name"
+                  v-model="optionsLocal.last_name"
+                  placeholder="Last Name"
+                  :state="errors.length > 0 ? false:null"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col sm="6">
+            <!-- email -->
+            <b-form-group
+              label="Email"
+              label-for="app-settings-email"
+            >
+              <validation-provider
+                #default="{ errors }"
+                name="email"
+                rules="required|email"
+              >
+                <b-form-input
+                  id="app-settings-email"
+                  v-model="optionsLocal.email"
+                  :state="errors.length > 0 ? false:null"
+                  name="register-email"
+                  placeholder="john@example.com"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
 
-          </b-form-group>
-        </b-col>
-        <!--        <b-col sm="6">-->
-        <!--          <b-form-group-->
-        <!--            label="Company"-->
-        <!--            label-for="account-company"-->
-        <!--          >-->
-        <!--            <b-form-input-->
-        <!--              v-model="optionsLocal.company"-->
-        <!--              name="company"-->
-        <!--              placeholder="Company name"-->
-        <!--            />-->
-        <!--          </b-form-group>-->
-        <!--        </b-col>-->
-
-        <!-- alert -->
-        <!--        <b-col-->
-        <!--          cols="12"-->
-        <!--          class="mt-75"-->
-        <!--        >-->
-        <!--          <b-alert-->
-        <!--            show-->
-        <!--            variant="warning"-->
-        <!--            class="mb-50"-->
-        <!--          >-->
-        <!--            <h4 class="alert-heading">-->
-        <!--              Your email is not confirmed. Please check your inbox.-->
-        <!--            </h4>-->
-        <!--            <div class="alert-body">-->
-        <!--              <b-link class="alert-link">-->
-        <!--                Resend confirmation-->
-        <!--              </b-link>-->
-        <!--            </div>-->
-        <!--          </b-alert>-->
-        <!--        </b-col>-->
-        <!--/ alert -->
-
-        <b-col cols="12">
-          <b-button
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            variant="primary"
-            class="mt-2 mr-1"
-          >
-            Save changes
-          </b-button>
-          <b-button
-            v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-            variant="outline-secondary"
-            type="reset"
-            class="mt-2"
-            @click.prevent="resetForm"
-          >
-            Reset
-          </b-button>
-        </b-col>
-      </b-row>
-    </b-form>
+          <b-col cols="12">
+            <b-button
+              v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+              variant="primary"
+              class="mt-2 mr-1"
+              @click="updateProfile"
+            >
+              {{ $t("Save changes") }}
+            </b-button>
+            <b-button
+              v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+              variant="outline-secondary"
+              type="reset"
+              class="mt-2"
+              @click.prevent="resetForm"
+            >
+              {{ $t("Reset") }}
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-form>
+    </validation-observer>
   </b-card>
 </template>
 
 <script>
+import { required, email } from '@validations'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BFormFile,
   BButton,
@@ -170,6 +117,9 @@ import {
 import Ripple from 'vue-ripple-directive'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
+import useJwt from '@/auth/jwt/useJwt'
+import ToastificationContent from '@core/components/toastification/ToastificationContent'
+import axios from '@/libs/axios'
 
 export default {
   components: {
@@ -188,6 +138,10 @@ export default {
     BMediaAside,
     BMediaBody,
     BLink,
+
+    // validations
+    ValidationProvider,
+    ValidationObserver,
   },
   directives: {
     Ripple,
@@ -203,6 +157,10 @@ export default {
     return {
       optionsLocal: JSON.parse(JSON.stringify(this.generalData)),
       profileFile: null,
+
+      // validation rules
+      required,
+      email,
     }
   },
   watch: {
@@ -213,6 +171,34 @@ export default {
   methods: {
     resetForm() {
       this.optionsLocal = JSON.parse(JSON.stringify(this.generalData))
+    },
+    updateProfile() {
+      this.$refs.appSettingsGeneralForm.validate().then(success => {
+        if (success) {
+          axios
+            .patch(`/user/${this.generalData.id}`, {
+              first_name: this.optionsLocal.first_name,
+              last_name: this.optionsLocal.last_name,
+              email: this.optionsLocal.email,
+            }).then(res => {
+              this.optionsLocal.full_name = `${this.optionsLocal.first_name} ${this.optionsLocal.last_name}`
+              localStorage.setItem('userData', JSON.stringify(this.optionsLocal))
+              this.$router.go()
+              this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: 'Form Submitted',
+                  icon: 'EditIcon',
+                  text: 'Changes will be applied after logout',
+                  variant: 'success',
+                },
+              })
+            }).catch(error => {
+            // Server side validation
+              this.$refs.registerForm.setErrors(error.response.data)
+            })
+        }
+      })
     },
   },
   setup() {

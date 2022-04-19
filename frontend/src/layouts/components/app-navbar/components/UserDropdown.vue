@@ -74,6 +74,7 @@ import {
 import { avatarText } from '@core/utils/filter'
 import useJwt from '@/auth/jwt/useJwt'
 import { initialAbility } from '@/libs/acl/config'
+import { getUserData } from '@/auth/utils'
 
 export default {
   components: {

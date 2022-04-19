@@ -34,6 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
             'email',
             'avatar',
             'status',
+            'first_name',
+            'last_name',
             'full_name',
             'short_name',
             'registered_at',

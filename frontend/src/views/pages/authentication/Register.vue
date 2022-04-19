@@ -60,6 +60,7 @@
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
+
             <!-- email -->
             <b-form-group
               label="Email"
@@ -157,15 +158,15 @@
               block
               type="submit"
             >
-              Sign up
+              {{ $t("Register") }}
             </b-button>
           </b-form>
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-          <span>Already have an account? </span>
+          <span>{{ $t("Already have an account? ") }}</span>
           <b-link :to="{name:'auth-login'}">
-            <span>Sign in instead</span>
+            <span>{{ $t("Log in instead") }}</span>
           </b-link>
         </b-card-text>
 
