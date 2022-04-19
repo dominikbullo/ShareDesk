@@ -433,12 +433,22 @@ export default {
       })
   },
   methods: {
+    resetBookingForm() {
+      this.newReservationData.start = new Date(this.dateFilter).setHours(8)
+      this.newReservationData.end = new Date(this.dateFilter).setHours(16)
+      this.newReservationData.teamFilter = null
+      this.newReservationData.permanent = false
+    },
     popoverText(r, c) {
+      if (isTouch()) return
+
       const seat = this.getSeat(r, c)
-      if (!seat || !seat.data) return ''
+      if (!seat || !seat.data) return
+
       if (this.$ability.can('write', 'Reservation')) {
         return `${seat.data.identifier} | ${seat.status}`
       }
+
       return seat.data.identifier
     },
     getSeat(r, c) {
@@ -672,6 +682,7 @@ export default {
               .then(response => {
                 this.roomSpotsReservationsData.push(response.data)
                 this.selectedSeats = []
+                this.resetBookingForm()
                 if (response.data.permanent) {
                   this.$toast({
                     component: ToastificationContent,

@@ -17,20 +17,20 @@
               </h4>
               <span class="card-text">{{ teamData.email }}</span>
             </div>
-            <div class="d-flex flex-wrap">
-              <b-button
-                :to="{ name: 'apps-users-edit', params: { id: teamData.id } }"
-                variant="primary"
-              >
-                Edit
-              </b-button>
-              <b-button
-                variant="outline-danger"
-                class="ml-1"
-              >
-                Delete
-              </b-button>
-            </div>
+            <!--            <div class="d-flex flex-wrap">-->
+            <!--              <b-button-->
+            <!--                :to="{ name: 'apps-users-edit', params: { id: teamData.id } }"-->
+            <!--                variant="primary"-->
+            <!--              >-->
+            <!--                Edit-->
+            <!--              </b-button>-->
+            <!--              <b-button-->
+            <!--                variant="outline-danger"-->
+            <!--                class="ml-1"-->
+            <!--              >-->
+            <!--                Delete-->
+            <!--              </b-button>-->
+            <!--            </div>-->
           </div>
         </div>
       </b-col>
