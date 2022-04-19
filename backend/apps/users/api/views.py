@@ -20,7 +20,6 @@ from apps.users.api.serializers import UserSerializer, UserWriteSerializer
 
 
 class UsersFilter(django_filters.FilterSet):
-    # FIXME: multiple teams
     # https://devdreamz.com/question/951148-negation-or-exclude-filter-in-django-rest-framework
     teams__not = room = django_filters.ModelChoiceFilter(
         label='Teams (excluded)',
@@ -125,10 +124,9 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(methods=['POST'], detail=False)
     def password_change(self, request, format=None):
         # TODO: change to accept jwt
-        if User.objects.filter(token=request.data['token']).exists():
-            user = User.objects.get(token=request.data['token'])
+        if User.objects.filter(request.user).exists():
+            user = User.objects.get(user=request.user)
             user.set_password(request.data['password'])
-            user.token = uuid4()
             user.save()
             return Response(status=status.HTTP_200_OK)
         else:

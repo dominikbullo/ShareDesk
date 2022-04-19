@@ -28,20 +28,20 @@
     <!--/ general tab -->
 
     <!-- change password tab -->
-    <b-tab>
+    <!--    <b-tab>-->
 
-      <!-- title -->
-      <template #title>
-        <feather-icon
-          icon="LockIcon"
-          size="18"
-          class="mr-50"
-        />
-        <span class="font-weight-bold">Change Password</span>
-      </template>
+    <!--      &lt;!&ndash; title &ndash;&gt;-->
+    <!--      <template #title>-->
+    <!--        <feather-icon-->
+    <!--          icon="LockIcon"-->
+    <!--          size="18"-->
+    <!--          class="mr-50"-->
+    <!--        />-->
+    <!--        <span class="font-weight-bold">Change Password</span>-->
+    <!--      </template>-->
 
-      <account-setting-password />
-    </b-tab>
+    <!--      <account-setting-password />-->
+    <!--    </b-tab>-->
     <!--/ change password tab -->
 
   </b-tabs>

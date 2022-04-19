@@ -10,9 +10,9 @@
           </h2>
         </b-link>
 
-        <b-card-title class="mb-1">
-          Adventure starts here 🚀
-        </b-card-title>
+        <!--        <b-card-title class="mb-1">-->
+        <!--          Adventure starts here 🚀-->
+        <!--        </b-card-title>-->
 
         <!-- form -->
         <validation-observer ref="registerForm">
@@ -23,7 +23,7 @@
 
             <!-- First name -->
             <b-form-group
-              label="First Name"
+              :label="this.$t('First Name')"
               label-for="mc-first-name"
             >
               <validation-provider
@@ -43,7 +43,7 @@
 
             <!-- Last name -->
             <b-form-group
-              label="Last Name"
+              :label="this.$t('Last Name')"
               label-for="mc-last-name"
             >
               <validation-provider
@@ -63,7 +63,7 @@
 
             <!-- email -->
             <b-form-group
-              label="Email"
+              :label="this.$t('Email')"
               label-for="email"
             >
               <validation-provider
@@ -84,7 +84,7 @@
 
             <!-- password -->
             <b-form-group
-              label="Password"
+              :label="this.$t('Password')"
               label-for="password"
             >
               <validation-provider
@@ -119,7 +119,7 @@
 
             <!-- password -->
             <b-form-group
-              label="Password confirm"
+              :label="this.$t('Password confirm')"
               label-for="password"
             >
               <validation-provider
@@ -164,7 +164,7 @@
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-          <span>{{ $t("Already have an account? ") }}</span>
+          <span>{{ $t("Already have an account?") }} </span>
           <b-link :to="{name:'auth-login'}">
             <span>{{ $t("Log in instead") }}</span>
           </b-link>

@@ -49,10 +49,10 @@
             <!-- password -->
             <b-form-group>
               <div class="d-flex justify-content-between">
-                <label for="password">Password</label>
-                <b-link :to="{name:'auth-forgot-password-v1'}">
-                  <small>Forgot Password?</small>
-                </b-link>
+                <label for="password">{{ $t("Password") }}</label>
+                <!--                <b-link :to="{name:'auth-forgot-password-v1'}">-->
+                <!--                  <small>Forgot Password?</small>-->
+                <!--                </b-link>-->
               </div>
               <validation-provider
                 #default="{ errors }"
@@ -86,15 +86,15 @@
             </b-form-group>
 
             <!-- checkbox -->
-            <b-form-group>
-              <b-form-checkbox
-                id="remember-me"
-                v-model="status"
-                name="checkbox-1"
-              >
-                Remember Me
-              </b-form-checkbox>
-            </b-form-group>
+            <!--            <b-form-group>-->
+            <!--              <b-form-checkbox-->
+            <!--                id="remember-me"-->
+            <!--                v-model="status"-->
+            <!--                name="checkbox-1"-->
+            <!--              >-->
+            <!--                Remember Me-->
+            <!--              </b-form-checkbox>-->
+            <!--            </b-form-group>-->
 
             <!-- submit button -->
             <b-button
@@ -103,15 +103,15 @@
               block
               :disabled="invalid"
             >
-              Sign in
+              {{ $t("Login") }}
             </b-button>
           </b-form>
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-          <span>New on our platform? </span>
+          <span>{{ $t("New on our platform?") }} </span>
           <b-link :to="{name:'auth-register'}">
-            <span>Create an account</span>
+            <span>{{ $t("Create an account") }}</span>
           </b-link>
         </b-card-text>
 
@@ -213,10 +213,10 @@ export default {
                   component: ToastificationContent,
                   position: 'top-right',
                   props: {
-                    title: `Welcome ${userData.full_name || userData.email}`,
+                    title: `${this.$t('Welcome')} ${userData.full_name || userData.email}`,
                     icon: 'CoffeeIcon',
                     variant: 'success',
-                    text: `You have successfully logged in as ${userData.role}. Now you can start to explore!`,
+                    text: `${this.$t('You have successfully logged in as')} ${userData.role}. ${this.$t('Now you can start to explore!')}`,
                   },
                 })
               })

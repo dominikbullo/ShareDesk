@@ -1,6 +1,6 @@
 <template>
   <b-card>
-    {{ optionsLocal }}
+
     <!-- form -->
     <validation-observer ref="appSettingsGeneralForm">
       <b-form class="mt-2">
